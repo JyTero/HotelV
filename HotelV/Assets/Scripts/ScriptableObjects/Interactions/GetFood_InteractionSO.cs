@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EatFood_InteractionSO : InteractionBaseSO
+[CreateAssetMenu(fileName = "GetFood_InteractionSO", menuName = "ScriptableObjects/Interactions/GetFood_InteractionSO")]
+public class GetFood_InteractionSO : InteractionBaseSO
 {
 
     protected override void OnInteractionBegin()

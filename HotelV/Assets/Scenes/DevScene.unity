@@ -135,6 +135,9 @@ GameObject:
   - component: {fileID: 62888145}
   - component: {fileID: 62888144}
   - component: {fileID: 62888143}
+  - component: {fileID: 62888150}
+  - component: {fileID: 62888149}
+  - component: {fileID: 62888148}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -252,6 +255,44 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &62888148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62888142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63a3766233380d84c8d1d5c9a90ac7bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterNeeds:
+  - {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
+--- !u!114 &62888149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62888142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd3f76cc9f1045c41bbb32bdfc35811e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &62888150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62888142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82c576221ff1644e9a13f7355e7acb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &203844586
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,6 +411,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &206324241
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 206324242}
+  m_Layer: 0
+  m_Name: InteractionSpot01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &206324242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 206324241}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.44, z: 1.04}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1213619733}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,8 +640,9 @@ GameObject:
   - component: {fileID: 1213619732}
   - component: {fileID: 1213619731}
   - component: {fileID: 1213619730}
+  - component: {fileID: 1213619734}
   m_Layer: 0
-  m_Name: FoodSource
+  m_Name: FoodDispenser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -655,12 +728,30 @@ Transform:
   m_GameObject: {fileID: 1213619729}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.343203, y: -2.0499854, z: 2.4492242}
+  m_LocalPosition: {x: 0, y: 0.54, z: -7.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 206324242}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1213619734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213619729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d05070e3e010d3f4abccbe1262c6bcad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Food Dispenser 2000
+  itemInteractions:
+  - {fileID: 11400000, guid: 4e9f23393b5c22640b4fb55f822f3850, type: 2}
+  itemInteractionSpots:
+  - {fileID: 206324242}
 --- !u!1 &1476899561
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,6 +765,9 @@ GameObject:
   - component: {fileID: 1476899564}
   - component: {fileID: 1476899563}
   - component: {fileID: 1476899562}
+  - component: {fileID: 1476899569}
+  - component: {fileID: 1476899568}
+  - component: {fileID: 1476899567}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -793,19 +887,56 @@ Transform:
   m_GameObject: {fileID: 1476899561}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.02, z: 0}
   m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1476899567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476899561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63a3766233380d84c8d1d5c9a90ac7bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterNeeds: []
+--- !u!114 &1476899568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476899561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd3f76cc9f1045c41bbb32bdfc35811e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1476899569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476899561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82c576221ff1644e9a13f7355e7acb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 961739753}
   - {fileID: 203844589}
+  - {fileID: 62888147}
   - {fileID: 1160234427}
   - {fileID: 1476899566}
-  - {fileID: 62888147}
   - {fileID: 1213619733}
