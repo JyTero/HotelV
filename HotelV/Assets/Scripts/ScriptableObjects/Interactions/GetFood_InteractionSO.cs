@@ -6,18 +6,18 @@ using UnityEngine;
 public class GetFood_InteractionSO : InteractionBaseSO
 {
 
-    protected override void OnInteractionBegin()
+    public override void BeginInteraction()
+    {
+        Debug.Log("GetFood_Interaction started");
+    }
+
+
+    public override void RunInteraction()
     {
         throw new System.NotImplementedException();
     }
 
-
-    protected override void RunInteraction()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void OnInteractionEnd()
+    public override void OnInteractionEnd()
     {
         throw new System.NotImplementedException();
     }

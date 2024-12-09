@@ -1,24 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public abstract class NeedBaseSO : ScriptableObject
 {
+    public event Action<NeedBaseSO> OnLowNeed;
+
     public string NeedName { get => needName; private set => needName = value; }
     [SerializeField]
     private string needName;
-
-    public int NeedValue { get => needValue; private set => needValue = Mathf.Clamp(value, -100, 100); }
-    [SerializeField]
-    private int needValue;
 
     public AnimationCurve NeedWeightCurve { get => needWeightCurve; private set => needWeightCurve = value; }
     [SerializeField]
     private AnimationCurve needWeightCurve;
 
-    protected virtual void AdjustNeed(int needAdjustValue)
+    [SerializeField]
+    public int lowNeedThreshold;
+
+    
+
+    public virtual int AdjustNeed(int needAdjustValue, int needValue)
     {
-        NeedValue += needAdjustValue;
+        needValue += needAdjustValue;
+        Mathf.Clamp(needValue, -100, 100);
+
+        if (needValue < lowNeedThreshold)
+        {
+            OnLowNeed?.Invoke(this);
+        }
+
+        return needValue;
     }
 
 

@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: GetFood_FoodDispenser_InteractionSO
   m_EditorClassIdentifier: 
   interactionName: Get food
+  interactionBaseScore: 10
+  needToUseForWeight: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
