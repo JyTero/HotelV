@@ -44,7 +44,7 @@ public class CharacterBase : MonoBehaviour
             InteractionBaseSO interaction = UtilityAI.ChooseWhatToDo(this);
             if (interaction != null)
             {
-                interaction.BeginInteraction();
+                interaction.BeginInteraction(this);
             }
         }
 
@@ -62,11 +62,14 @@ public class CharacterBase : MonoBehaviour
         InteractionBaseSO interaction = UtilityAI.NeedBasedUtilityAI(this);
         if (interaction != null) 
         {
-            interaction.BeginInteraction();
+            interaction.BeginInteraction(this);
         }
 
-
-
         //TODO: run Weighted Utility AI to search for need improving interactions.
+    }
+
+    public void SetDestination(Vector3 destination)
+    {
+        characterNavigation.SetAndSaveDestination(destination);
     }
 }

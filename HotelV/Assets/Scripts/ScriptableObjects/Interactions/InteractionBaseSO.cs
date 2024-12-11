@@ -27,7 +27,7 @@ public abstract class InteractionBaseSO : ScriptableObject
 
     private ItemBase thisItem;
 
-    public abstract void BeginInteraction();
+    public abstract void BeginInteraction(CharacterBase thisCharacter);
     public abstract void RunInteraction();
     public abstract void OnInteractionEnd();
 }

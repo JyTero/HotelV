@@ -6,9 +6,11 @@ using UnityEngine;
 public class GetFood_InteractionSO : InteractionBaseSO
 {
 
-    public override void BeginInteraction()
+    public override void BeginInteraction(CharacterBase thisCharacter)
     {
         Debug.Log("GetFood_Interaction started");
+
+
     }
 
 
