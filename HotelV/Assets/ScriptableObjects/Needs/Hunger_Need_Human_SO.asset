@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Hunger_Need_Human_SO
   m_EditorClassIdentifier: 
   needName: Hunger
-  needValue: 50
   needWeightCurve:
     serializedVersion: 2
     m_Curve:
@@ -38,3 +37,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  needDeclineRate: 2
+  lowNeedThreshold: 0

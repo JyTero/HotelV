@@ -5,7 +5,8 @@ using UnityEngine;
 
 public abstract class InteractionBaseSO : ScriptableObject
 {
-
+    [HideInInspector]
+    public ItemBase thisItem;
 
     public string InteractionName { get => interactionName; private set => interactionName = value; }
     [SerializeField]
@@ -25,9 +26,11 @@ public abstract class InteractionBaseSO : ScriptableObject
     [SerializeField]
     private NeedBaseSO needToUseForWeight;
 
-    private ItemBase thisItem;
 
+    
+    public abstract void InteractionStart(ItemBase ownerItem);
     public abstract void BeginInteraction(CharacterBase thisCharacter);
-    public abstract void RunInteraction();
-    public abstract void OnInteractionEnd();
+    public abstract void RunInteraction(CharacterBase thisCharacter);
+    public abstract void OnInteractionEnd(CharacterBase thisCharacter);
+
 }

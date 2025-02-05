@@ -17,22 +17,43 @@ public abstract class NeedBaseSO : ScriptableObject
     private AnimationCurve needWeightCurve;
 
     [SerializeField]
+    [Tooltip("Decline 1 need value every X ticks")]
+    private float needDeclineRate;
+
+    [SerializeField]
     public int lowNeedThreshold;
 
-    
 
-    public virtual int AdjustNeed(int needAdjustValue, int needValue)
+    public int NeedPassiveDecline(int needValue, int ellapsedTicksSinceLastDecline)
     {
-        needValue += needAdjustValue;
-        Mathf.Clamp(needValue, -100, 100);
-
-        if (needValue < lowNeedThreshold)
+        if(ellapsedTicksSinceLastDecline %  needDeclineRate == 0)
         {
-            OnLowNeed?.Invoke(this);
+            return AdjustNeedValue(needValue, -1); //1 need decline per x frames
         }
-
         return needValue;
     }
 
+    public int AdjustNeedValue(int needValue, int needValueChange)
+    {
+        needValue += needValueChange;
+        return needValue;
+    }
+
+
+    //public virtual int AdjustNeedValue(int needAdjustValue, int needValue)
+    //{
+    //    needValue += needAdjustValue;
+    //    Mathf.Clamp(needValue, 0, 100);
+
+    //    if (needValue < lowNeedThreshold)
+    //    {
+    //        OnLowNeed?.Invoke(this);
+    //    }
+
+    //    return needValue;
+    //}
+
+    //Adjust
+    //return should be different methods, not all need retrun ,they can ask for it if need be
 
 }

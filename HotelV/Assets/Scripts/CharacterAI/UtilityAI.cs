@@ -7,9 +7,7 @@ using UnityEngine;
 
 public class UtilityAI : MonoBehaviour
 {
-    [Header("DEBUG")]
-    [SerializeField]
-    private bool debugEnabled;
+
     private string interactionSelectDebugString;
 
 
@@ -18,6 +16,11 @@ public class UtilityAI : MonoBehaviour
     private List<InteractionInScoring> foundInteractions = new();
 
     private InteractionInScoring currentInteraction;
+
+    [Header("DEBUG")]
+    [SerializeField]
+    private bool debugEnabled;
+    //TODO: Move to item manager, now each AI has its copy of the same list
     private void Start()
     {
         allItemsInWorld = FindObjectsOfType<ItemBase>().ToList<ItemBase>();
@@ -97,6 +100,7 @@ public class UtilityAI : MonoBehaviour
 
         if (debugEnabled)
             interactionSelectDebugString += "The interactions are scored as follows:\n";
+
         foreach (InteractionInScoring interaction in foundInteractions)
         {
             score = 0;

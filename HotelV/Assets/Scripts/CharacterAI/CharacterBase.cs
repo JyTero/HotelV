@@ -17,10 +17,19 @@ public class CharacterBase : MonoBehaviour
     public int HungerNeedValue { get => hungerNeedValue; private set => hungerNeedValue = value; }
     [SerializeField]
     private int hungerNeedValue;
-    [HideInInspector]
+   
+    
+    [SerializeField]
+    private Energy_NeedSO energyNeedSO;
+    public int EnergyNeedValue { get => energyNeedValue; private set => energyNeedValue = value; }
+    [SerializeField]
+    private int energyNeedValue;
+
+    [HideInInspector]   //Need, value
     public Dictionary<NeedBaseSO,int> characterNeeds = new();
 
     private UtilityAI UtilityAI;
+    private InteractionBaseSO currentInteraction;
     private CharacterNavigation characterNavigation;
 
     private void Start()
@@ -51,9 +60,18 @@ public class CharacterBase : MonoBehaviour
         //DecreaseHunger
         hungerDecrease = hungerDecrease + (1f * Time.deltaTime);
         if(hungerDecrease > 1)
-            hungerNeedSO.AdjustNeed((int)hungerDecrease, hungerNeedValue); 
+            hungerNeedSO.AdjustNeedValue((int)hungerDecrease, hungerNeedValue); 
     }
 
+    public void SetDestination(Vector3 destination)
+    {
+        characterNavigation.SetAndSaveDestination(destination);
+    }
+
+    public void OnAtDestination()
+    {
+        currentInteraction.RunInteraction(this);
+    }
 
     private void HandleLowNeedAlert(NeedBaseSO needSO)
     {
@@ -68,8 +86,9 @@ public class CharacterBase : MonoBehaviour
         //TODO: run Weighted Utility AI to search for need improving interactions.
     }
 
-    public void SetDestination(Vector3 destination)
-    {
-        characterNavigation.SetAndSaveDestination(destination);
-    }
+    //public void SetDestination(Vector3 destination)
+    //{
+    //    characterNavigation.SetAndSaveDestination(destination);
+    //}
+
 }
