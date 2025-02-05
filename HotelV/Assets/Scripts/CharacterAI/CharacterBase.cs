@@ -76,28 +76,14 @@ public class CharacterBase : MonoBehaviour
 
     private void HandleLowNeedAlert(NeedBaseSO needSO)
     {
-        characterNavigation.SetAndSaveDestination(destination);
-    }
+        //characterNavigation.SetAndSaveDestination(destination);
 
-        Debug.Log("Low need alert");
+        //Debug.Log("Low need alert");
         //InteractionBaseSO interaction = UtilityAI.NeedBasedUtilityAI(this);
         //if (interaction != null) 
         //{
         //    interaction.BeginInteraction();
         //}
-
-    private void HandleLowNeedAlert(NeedBaseSO needSO)
-    {
-        //Begin UtilityAI 
-
-        Debug.Log("Low need alert");
-        //InteractionBaseSO interaction = UtilityAI.NeedBasedUtilityAI(this);
-        //if (interaction != null) 
-        //{
-        //    interaction.BeginInteraction();
-        //}
-
-        //TODO: run Weighted Utility AI to search for need improving interactions.
     }
 
 }
