@@ -21,30 +21,29 @@ public abstract class NeedBaseSO : ScriptableObject
     [Tooltip("Decline 1 need value every X ticks")]
     private float needDeclineRate;
 
+    private int needDeclineAmmount = -1;
+
     [SerializeField]
     public int lowNeedThreshold;
 
-    protected virtual void UpdateNeedValue(int newNedValue, CharacterNeedsManager thisNeedManager) 
-    {
-        Mathf.Clamp(newNedValue, 0, 100);
-    }
+    //protected virtual void UpdateNeedValue(int newNeedValue, CharacterNeedsManager thisNeedManager) 
+    //{
+    //    Mathf.Clamp(newNeedValue, 0, 100);
+    //    thisNeedManager.characterNeeds[this] = newNeedValue;
+
+    //}
     
 
-    public int NeedPassiveDecline(int needValue, int ellapsedTicksSinceLastDecline, CharacterNeedsManager thisNeedManager)
+    public void NeedPassiveDecline(int needValue, int ellapsedTicks, CharacterNeedsManager thisNeedManager)
     {
-        if(ellapsedTicksSinceLastDecline %  needDeclineRate == 0)
+        if(ellapsedTicks %  needDeclineRate == 0)
         {
-            return AdjustNeedValue(needValue, -1, thisNeedManager); //1 need decline per x frames
+           thisNeedManager.AdjustNeed(this, needDeclineAmmount) ; //1 need decline per x frames
         }
-        return needValue;
+
     }
 
-    public int AdjustNeedValue(int needValue, int needValueChange, CharacterNeedsManager thisNeedManager)
-    {
-        needValue += needValueChange;
-        UpdateNeedValue(needValue, thisNeedManager);
-        return needValue;
-    }
+
 
 
     //public virtual int AdjustNeedValue(int needAdjustValue, int needValue)

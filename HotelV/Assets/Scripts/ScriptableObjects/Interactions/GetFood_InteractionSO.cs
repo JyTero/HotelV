@@ -6,7 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GetFood_InteractionSO", menuName = "ScriptableObjects/Interactions/GetFood_InteractionSO")]
 public class GetFood_InteractionSO : InteractionBaseSO
 {
-
     public override void InteractionStart(ItemBase thisItem)
     {
 
@@ -31,7 +30,13 @@ public class GetFood_InteractionSO : InteractionBaseSO
 
     public override void OnInteractionTick(CharacterBase thisCharacter, ItemBase thisItem)
     {
-        Debug.Log("Tick!");
+       foreach(NeedRateChangePairs needPair in needSONeedAdjustRates)
+        {
+            float needChangePerTick = needPair.needChangePerSecond/TickManager.Instance.TickCounter;
+
+            thisCharacter.thisCharacterNeedsManager.AdjustNeed(needPair.needSO, (int)needChangePerTick);
+        }
+
     }
     public override void OnInteractionEnd(CharacterBase thisCharacter, ItemBase thisItem)
     {

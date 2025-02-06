@@ -7,6 +7,9 @@ using UnityEngine;
 [RequireComponent(typeof(UtilityAI))]
 public class CharacterBase : MonoBehaviour
 {
+    [HideInInspector]
+    public CharacterNeedsManager thisCharacterNeedsManager;
+
     [Header("Character information")]
     [SerializeField]
     private string characterName;
@@ -17,7 +20,6 @@ public class CharacterBase : MonoBehaviour
     private InteractionBaseSO currentInteraction;
     private ItemBase currentInteractionItem;
     private CharacterNavigation thisCharacterNavigation;
-    private CharacterNeedsManager thisCharacterNeedsManager;
 
     private void Start()
     {

@@ -107,12 +107,12 @@ public class UtilityAI : MonoBehaviour
 
             if (interaction.InteractionSO.NeedToUseForWeighting != null)
             {
-                foreach (KeyValuePair<NeedBaseSO, int> need in thisNeedManager.characterNeeds)
+                foreach(Need need in thisNeedManager.characterNeeds)
                 {
-                    if (need.Key == interaction.InteractionSO.NeedToUseForWeighting)
+                    if(need.needSO == interaction.InteractionSO.NeedToUseForWeighting)
                     {
-                        needSOUsedForWeighting = need.Key;
-                        needWeightedValue = need.Value;
+                        needSOUsedForWeighting = need.needSO;
+                        needWeightedValue = need.needValue;
                     }
                 }
 

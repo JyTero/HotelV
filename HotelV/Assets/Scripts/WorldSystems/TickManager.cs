@@ -8,8 +8,9 @@ public class TickManager : MonoBehaviour
 
     public event Action<int> OnTick;
     [Tooltip("Ticks per second")]
-    public int TickCounter { get; private set; } = 0;
+    public int TickCounter { get; private set; } = -1;
 
+    public int TickRate { get => tickRate; private set => tickRate = value; }
     [SerializeField]
     private int tickRate; 
 
