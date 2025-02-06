@@ -6,16 +6,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GetFood_InteractionSO", menuName = "ScriptableObjects/Interactions/GetFood_InteractionSO")]
 public class GetFood_InteractionSO : InteractionBaseSO
 {
-    FoodDispenser_Item thisItemTrueType;
 
-    public override void InteractionStart(ItemBase ownerItem)
+    public override void InteractionStart(ItemBase thisItem)
     {
-        thisItem = ownerItem;
-        thisItemTrueType = thisItem as FoodDispenser_Item;
+
 
     }
 
-    public override void BeginInteraction(CharacterBase thisCharacter)
+    public override void BeginInteraction(CharacterBase thisCharacter, ItemBase thisItem)
     {
         Debug.Log("GetFood_Interaction started");
 
@@ -23,12 +21,19 @@ public class GetFood_InteractionSO : InteractionBaseSO
     }
 
 
-    public override void RunInteraction(CharacterBase thisCharacter)
+    public override void RunInteraction(CharacterBase thisCharacter, ItemBase thisItem)
     {
         Debug.Log($"{thisCharacter.CharacterName} uses {thisItem.ItemName}.");
+
+        thisItem.RegisterAsActiveInteraction(thisCharacter, this, thisItem);
+
     }
 
-    public override void OnInteractionEnd(CharacterBase thisCharacter)
+    public override void OnInteractionTick(CharacterBase thisCharacter, ItemBase thisItem)
+    {
+        Debug.Log("Tick!");
+    }
+    public override void OnInteractionEnd(CharacterBase thisCharacter, ItemBase thisItem)
     {
         throw new System.NotImplementedException();
     }

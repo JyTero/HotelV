@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [RequireComponent(typeof(CharacterNavigation))]
 [RequireComponent(typeof(UtilityAI))]
 public class CharacterBase : MonoBehaviour
@@ -11,35 +12,18 @@ public class CharacterBase : MonoBehaviour
     private string characterName;
     public string CharacterName { get => characterName; private set => characterName = value; }
 
-    [Header("Needs")]
-    [SerializeField]
-    private Hunger_NeedSO hungerNeedSO;
-    public int HungerNeedValue { get => hungerNeedValue; private set => hungerNeedValue = value; }
-    [SerializeField]
-    private int hungerNeedValue;
-   
-    
-    [SerializeField]
-    private Energy_NeedSO energyNeedSO;
-    public int EnergyNeedValue { get => energyNeedValue; private set => energyNeedValue = value; }
-    [SerializeField]
-    private int energyNeedValue;
-
-    [HideInInspector]   //Need, value
-    public Dictionary<NeedBaseSO,int> characterNeeds = new();
 
     private UtilityAI UtilityAI;
     private InteractionBaseSO currentInteraction;
-    private CharacterNavigation characterNavigation;
+    private ItemBase currentInteractionItem;
+    private CharacterNavigation thisCharacterNavigation;
+    private CharacterNeedsManager thisCharacterNeedsManager;
 
     private void Start()
     {
         UtilityAI = GetComponent<UtilityAI>();
-        characterNavigation = GetComponent<CharacterNavigation>();
-
-        hungerNeedSO.OnLowNeed += HandleLowNeedAlert;
-
-        characterNeeds.Add(hungerNeedSO,hungerNeedValue);
+        thisCharacterNavigation = GetComponent<CharacterNavigation>();
+        thisCharacterNeedsManager = GetComponent<CharacterNeedsManager>();
     }
 
 
@@ -50,40 +34,28 @@ public class CharacterBase : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
            
-            InteractionBaseSO interaction = UtilityAI.ChooseWhatToDo(this);
+            InteractionInScoring interaction = UtilityAI.ChooseWhatToDo(this, thisCharacterNeedsManager);
             if (interaction != null)
             {
-                interaction.BeginInteraction(this);
-                currentInteraction = interaction;
+                interaction.InteractionSO.BeginInteraction(this, interaction.InteractionItem);
+                currentInteraction = interaction.InteractionSO;
+                currentInteractionItem = interaction.InteractionItem;
             }
         }
-
-        //DecreaseHunger
-        hungerDecrease = hungerDecrease + (1f * Time.deltaTime);
-        if(hungerDecrease > 1)
-            hungerNeedSO.AdjustNeedValue((int)hungerDecrease, hungerNeedValue); 
     }
 
     public void SetDestination(Vector3 destination)
     {
-        characterNavigation.SetAndSaveDestination(destination);
+        thisCharacterNavigation.SetAndSaveDestination(destination);
     }
 
     public void OnAtDestination()
     {
-        currentInteraction.RunInteraction(this);
+        currentInteraction.RunInteraction(this, currentInteractionItem);
     }
 
-    private void HandleLowNeedAlert(NeedBaseSO needSO)
+    public void TriggerInteractionCoro(InteractionBaseSO interaction)
     {
-        //characterNavigation.SetAndSaveDestination(destination);
 
-        //Debug.Log("Low need alert");
-        //InteractionBaseSO interaction = UtilityAI.NeedBasedUtilityAI(this);
-        //if (interaction != null) 
-        //{
-        //    interaction.BeginInteraction();
-        //}
     }
-
 }

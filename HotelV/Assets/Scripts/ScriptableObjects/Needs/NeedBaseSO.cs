@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,19 +24,25 @@ public abstract class NeedBaseSO : ScriptableObject
     [SerializeField]
     public int lowNeedThreshold;
 
+    protected virtual void UpdateNeedValue(int newNedValue, CharacterNeedsManager thisNeedManager) 
+    {
+        Mathf.Clamp(newNedValue, 0, 100);
+    }
+    
 
-    public int NeedPassiveDecline(int needValue, int ellapsedTicksSinceLastDecline)
+    public int NeedPassiveDecline(int needValue, int ellapsedTicksSinceLastDecline, CharacterNeedsManager thisNeedManager)
     {
         if(ellapsedTicksSinceLastDecline %  needDeclineRate == 0)
         {
-            return AdjustNeedValue(needValue, -1); //1 need decline per x frames
+            return AdjustNeedValue(needValue, -1, thisNeedManager); //1 need decline per x frames
         }
         return needValue;
     }
 
-    public int AdjustNeedValue(int needValue, int needValueChange)
+    public int AdjustNeedValue(int needValue, int needValueChange, CharacterNeedsManager thisNeedManager)
     {
         needValue += needValueChange;
+        UpdateNeedValue(needValue, thisNeedManager);
         return needValue;
     }
 

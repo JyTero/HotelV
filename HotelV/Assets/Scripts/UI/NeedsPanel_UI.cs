@@ -16,7 +16,7 @@ public class NeedsPanel_UI : MonoBehaviour
     TMP_Text energyNeedNumber;
     //TODO: Make logic to get selected character, refresh UI on character select?
     [SerializeField]
-    private CharacterBase selectedCharacter;
+    private CharacterNeedsManager selectedNeedsManager;
 
 
     // Update is called once per frame
@@ -28,7 +28,7 @@ public class NeedsPanel_UI : MonoBehaviour
 
     private void UpdateHunger()
     {
-        int value = selectedCharacter.HungerNeedValue;
+        int value = selectedNeedsManager.HungerNeedValue;
 
         hungerNeedBar.current = value;
         hungerNeedNumber.text = value.ToString();
@@ -36,7 +36,7 @@ public class NeedsPanel_UI : MonoBehaviour
 
     private void UpdateEnergy()
     {
-        int value = selectedCharacter.EnergyNeedValue;
+        int value = selectedNeedsManager.EnergyNeedValue;
 
         energyNeedBar.current = value;
         energyNeedNumber.text = value.ToString();

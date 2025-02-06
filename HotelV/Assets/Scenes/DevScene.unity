@@ -405,10 +405,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Scarlet Blacklake
-  hungerNeedSO: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
-  hungerNeedValue: 75
-  energyNeedSO: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
-  energyNeedValue: 75
 --- !u!114 &62888149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,6 +443,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb06ba4cb1ac4c34fb2b97ca27104edf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hungerNeedSO: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
+  HungerNeedValue: 75
+  energyNeedSO: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
+  EnergyNeedValue: 80
+  debugEnabled: 0
 --- !u!1 &166907377
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,6 +837,51 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -10}
   m_SizeDelta: {x: 100, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &762269878
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 762269879}
+  - component: {fileID: 762269880}
+  m_Layer: 0
+  m_Name: TickManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &762269879
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762269878}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1672163462}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &762269880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762269878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07bf4dcc24be04ea2fc95c0c70c189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tickRate: 4
 --- !u!1001 &831379328
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1550,6 +1596,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e9f23393b5c22640b4fb55f822f3850, type: 2}
   itemInteractionSpots:
   - {fileID: 206324242}
+  currentItemTick: -1
+  debugEnabled: 0
 --- !u!1 &1476899561
 GameObject:
   m_ObjectHideFlags: 0
@@ -1726,6 +1774,38 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 30}
   m_SizeDelta: {x: 100, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1672163461
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1672163462}
+  m_Layer: 0
+  m_Name: Systems
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1672163462
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672163461}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.5542632, y: 2.4966867, z: -4.687772}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 762269879}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1711862563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1884,7 +1964,7 @@ MonoBehaviour:
   hungerNeedNumber: {fileID: 166907379}
   energyNeedBar: {fileID: 831379330}
   energyNeedNumber: {fileID: 962992567}
-  selectedCharacter: {fileID: 62888148}
+  selectedNeedsManager: {fileID: 62888151}
 --- !u!114 &1736497380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2107,3 +2187,4 @@ SceneRoots:
   - {fileID: 1213619733}
   - {fileID: 1711862567}
   - {fileID: 582608552}
+  - {fileID: 1672163462}

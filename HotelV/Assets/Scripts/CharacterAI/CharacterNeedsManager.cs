@@ -3,13 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class NeedManager : MonoBehaviour
+public class CharacterNeedsManager : MonoBehaviour
 {
     [HideInInspector]   //Need, value
     public Dictionary<NeedBaseSO, int> characterNeeds = new();
 
     private CharacterBase thisCharacter;
 
+    [Header("Needs")]
+    [SerializeField]
+    private Hunger_NeedSO hungerNeedSO;
+    public int HungerNeedValue;
+    //public int HungerNeedValue { get => hungerNeedValue; private set => hungerNeedValue = value; }
+    // [SerializeField]
+    // private int hungerNeedValue;
+
+
+    [SerializeField]
+    private Energy_NeedSO energyNeedSO;
+    public int EnergyNeedValue;
+    //public int EnergyNeedValue { get => energyNeedValue; private set => energyNeedValue = value; }
+    //[SerializeField]
+    // private int energyNeedValue;
 
 
     [Header("DEBUG")]
@@ -19,7 +34,12 @@ public class NeedManager : MonoBehaviour
     private void Awake()
     {
         thisCharacter = GetComponent<CharacterBase>();
-        characterNeeds = thisCharacter.characterNeeds;
+
+        //Purkka: In the future, two lists, Needs<NeedBaseSO> and needValues<int> which then get tied together into the dictionary
+
+        characterNeeds.Add(hungerNeedSO, HungerNeedValue);
+        characterNeeds.Add(energyNeedSO, EnergyNeedValue);
+
     }
 
     private int totalTics = 0;
@@ -51,14 +71,14 @@ public class NeedManager : MonoBehaviour
         {
             if (debugEnabled)
                 dbString += $"need {need.NeedName} decline from {characterNeeds[need]} ";
-           
-            needValue = need.NeedPassiveDecline(characterNeeds[need], totalTics);
+
+            needValue = need.NeedPassiveDecline(characterNeeds[need], totalTics, this);
             characterNeeds[need] = needValue;
-           
+
             if (debugEnabled)
                 dbString += $"to {characterNeeds[need]}.\n";
         }
-        if(debugEnabled)
+        if (debugEnabled)
             Debug.Log(dbString);
 
         if (totalTics >= 120)

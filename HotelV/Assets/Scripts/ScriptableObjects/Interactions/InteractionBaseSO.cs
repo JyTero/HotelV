@@ -5,9 +5,6 @@ using UnityEngine;
 
 public abstract class InteractionBaseSO : ScriptableObject
 {
-    [HideInInspector]
-    public ItemBase thisItem;
-
     public string InteractionName { get => interactionName; private set => interactionName = value; }
     [SerializeField]
     private string interactionName;
@@ -15,6 +12,10 @@ public abstract class InteractionBaseSO : ScriptableObject
     public int InteractionBaseScore { get => interactionBaseScore; private set => interactionBaseScore = Mathf.Clamp(value, -100, 100); }
     [SerializeField]
     private int interactionBaseScore;
+
+    public int InteractionLenghtTicks { get => interactionLenghtTicks; private set => interactionBaseScore = value; }
+    [SerializeField]
+    private int interactionLenghtTicks;
 
     //Later for when interactions may use multiple needs to weight
     //public List<NeedBaseSO> NeedWeightsToUse { get => needWeightsToUse; private set => needWeightsToUse = Mathf.Clamp(value, -100, 100); }
@@ -28,9 +29,12 @@ public abstract class InteractionBaseSO : ScriptableObject
 
 
     
-    public abstract void InteractionStart(ItemBase ownerItem);
-    public abstract void BeginInteraction(CharacterBase thisCharacter);
-    public abstract void RunInteraction(CharacterBase thisCharacter);
-    public abstract void OnInteractionEnd(CharacterBase thisCharacter);
-
+    public abstract void InteractionStart(ItemBase thisItem);
+    public abstract void BeginInteraction(CharacterBase thisCharacter, ItemBase thisItem);
+    public abstract void RunInteraction(CharacterBase thisCharacter, ItemBase thisItem);
+    public abstract void OnInteractionEnd(CharacterBase thisCharacter, ItemBase thisItem);
+    public abstract void OnInteractionTick(CharacterBase thisCharacter, ItemBase thisItem);
+   // public abstract IEnumerable InteractionCoro01(CharacterBase thisCharacter, ItemBase thisItem);
+      
+    
 }

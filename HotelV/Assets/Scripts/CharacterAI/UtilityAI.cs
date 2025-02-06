@@ -27,18 +27,18 @@ public class UtilityAI : MonoBehaviour
     }
 
 
-    public InteractionBaseSO ChooseWhatToDo(CharacterBase thisCharacter)
+    public InteractionInScoring ChooseWhatToDo(CharacterBase thisCharacter, CharacterNeedsManager thisNeedsManager)
     {
         if (debugEnabled)
         {
             interactionSelectDebugString = "";
-            interactionSelectDebugString += $"{thisCharacter.CharacterName} what to do:\n";
+            interactionSelectDebugString += $"{thisCharacter.CharacterName} ponders what to do:\n";
         }
 
         GatherInteractions();
-        ScoreGatheredInteractions(thisCharacter);
+        ScoreGatheredInteractions(thisCharacter, thisNeedsManager);
         SortFoundInteractionsByScore();
-        InteractionBaseSO highestScoringInteractionSO = foundInteractions[0].InteractionSO;
+        InteractionInScoring highestScoringInteractionSO = foundInteractions[0];
         currentInteraction = foundInteractions[0];
         return highestScoringInteractionSO;
 
@@ -46,10 +46,10 @@ public class UtilityAI : MonoBehaviour
     }
 
     //TODO: add implementation get and score actions relating to the need triggering the search
-    public InteractionBaseSO NeedBasedUtilityAI(CharacterBase thisCharacter)
+    public InteractionBaseSO NeedBasedUtilityAI(CharacterBase thisCharacter, CharacterNeedsManager thisNeedsManager)
     {
         GatherInteractions();
-        ScoreGatheredInteractions(thisCharacter);
+        ScoreGatheredInteractions(thisCharacter, thisNeedsManager);
         SortFoundInteractionsByScore();
         if (HigestScoringInteractionScoreHigherThanCurrentInteraction())
         {
@@ -92,7 +92,7 @@ public class UtilityAI : MonoBehaviour
         }
     }
 
-    private void ScoreGatheredInteractions(CharacterBase thisCharacter)
+    private void ScoreGatheredInteractions(CharacterBase thisCharacter, CharacterNeedsManager thisNeedManager)
     {
         int score;
         NeedBaseSO needSOUsedForWeighting = null;
@@ -107,7 +107,7 @@ public class UtilityAI : MonoBehaviour
 
             if (interaction.InteractionSO.NeedToUseForWeighting != null)
             {
-                foreach (KeyValuePair<NeedBaseSO, int> need in thisCharacter.characterNeeds)
+                foreach (KeyValuePair<NeedBaseSO, int> need in thisNeedManager.characterNeeds)
                 {
                     if (need.Key == interaction.InteractionSO.NeedToUseForWeighting)
                     {
@@ -133,21 +133,20 @@ public class UtilityAI : MonoBehaviour
     {
         foundInteractions.Sort((a, b) => b.InteractionScore.CompareTo(a.InteractionScore));
     }
-
-
-
-    private class InteractionInScoring
-    {
-        public InteractionBaseSO InteractionSO;
-        public ItemBase InteractionItem;
-        public int InteractionScore = 0;
-
-        public InteractionInScoring(InteractionBaseSO interactionBaseSO, ItemBase interactionItem)
-        {
-            InteractionSO = interactionBaseSO;
-            InteractionItem = interactionItem;
-        }
-    }
-
 }
+
+
+public class InteractionInScoring
+{
+    public InteractionBaseSO InteractionSO;
+    public ItemBase InteractionItem;
+    public int InteractionScore = 0;
+
+    public InteractionInScoring(InteractionBaseSO interactionBaseSO, ItemBase interactionItem)
+    {
+        InteractionSO = interactionBaseSO;
+        InteractionItem = interactionItem;
+    }
+}
+
 
