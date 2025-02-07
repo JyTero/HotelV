@@ -404,6 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a3766233380d84c8d1d5c9a90ac7bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thisCharacterNeedsManager: {fileID: 0}
   characterName: Scarlet Blacklake
 --- !u!114 &62888149
 MonoBehaviour:
@@ -445,8 +446,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hungerNeedSO: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
   HungerNeedValue: 75
+  hungerNeedValue: 0
   energyNeedSO: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
   EnergyNeedValue: 80
+  energyNeedValue: 0
   debugEnabled: 0
 --- !u!1 &166907377
 GameObject:
@@ -1597,7 +1600,8 @@ MonoBehaviour:
   itemInteractionSpots:
   - {fileID: 206324242}
   currentItemTick: -1
-  debugEnabled: 0
+  debugEnabled: 1
+  dbString: 
 --- !u!1 &1476899561
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ using UnityEngine;
 public class CharacterNeedsManager : MonoBehaviour
 {
     [HideInInspector]
-    public List<Need> characterNeeds = new List<Need>();
+    public List<NeedBase> characterNeeds = new List<NeedBase>();
     //Need, value
     //public Dictionary<NeedBaseSO, int> characterNeeds = new();
 
@@ -16,18 +16,18 @@ public class CharacterNeedsManager : MonoBehaviour
     [Header("Needs")]
     [SerializeField]
     private Hunger_NeedSO hungerNeedSO;
-    //public int HungerNeedValue;
+    public int HungerNeedValue;
     //public int HungerNeedValue { get => hungerNeedValue; private set => hungerNeedValue = value; }
-    // [SerializeField]
-    // private int hungerNeedValue;
+     [SerializeField]
+     private int hungerNeedValue;
 
 
     [SerializeField]
     private Energy_NeedSO energyNeedSO;
     public int EnergyNeedValue;
     //public int EnergyNeedValue { get => energyNeedValue; private set => energyNeedValue = value; }
-    //[SerializeField]
-    // private int energyNeedValue;
+    [SerializeField]
+    private int energyNeedValue;
 
 
     [Header("DEBUG")]
@@ -40,8 +40,8 @@ public class CharacterNeedsManager : MonoBehaviour
 
         //Purkka: In the future, two lists, Needs<NeedBaseSO> and needValues<int> which then get tied together into the dictionary
 
-        characterNeeds.Add(new Need(hungerNeedSO, HungerNeedValue));
-        characterNeeds.Add(new Need(energyNeedSO, EnergyNeedValue));
+        characterNeeds.Add(new Hunger_Need(hungerNeedSO, HungerNeedValue));
+        characterNeeds.Add(new Energy_Need(energyNeedSO, EnergyNeedValue));
 
     }
 
@@ -61,22 +61,22 @@ public class CharacterNeedsManager : MonoBehaviour
     public void DeclineNeeds()
     {
         totalTicks++;
-        int needValue = 0;
 
         if (debugEnabled)
             dbString = $"{thisCharacter.CharacterName}'s needs decline:\n";
-
-        foreach (Need need in characterNeeds) 
+        int i = 0;
+        foreach (NeedBase need in characterNeeds) 
         {
 
             if (debugEnabled)
-                dbString += $"need {need.needSO.NeedName} from {characterNeeds[need.needValue]} ";
+                dbString += $"need {need.needSO.NeedName} from {characterNeeds[i].needValue} ";
 
             need.needSO.NeedPassiveDecline(need.needValue, totalTicks, this);
 
 
             if (debugEnabled)
-                dbString += $"to {characterNeeds[need.needValue]}.\n";
+                dbString += $"to {characterNeeds[i].needValue}.\n";
+            i++;
         }
         if (debugEnabled)
             Debug.Log(dbString);
@@ -88,11 +88,11 @@ public class CharacterNeedsManager : MonoBehaviour
 
     public void AdjustNeed(NeedBaseSO adjustNeed, int adjustValue)
     {
-        foreach (Need need in characterNeeds)
+        foreach (NeedBase need in characterNeeds)
         {
             if (need.needSO == adjustNeed)
             {
-                need.needValue += adjustValue;
+                need.AdjustNeedValue(adjustValue, need, this);
                 return;
             }
             else

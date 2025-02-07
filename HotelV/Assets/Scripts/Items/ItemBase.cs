@@ -21,9 +21,9 @@ public abstract class ItemBase : MonoBehaviour
     public int currentItemTick = -1;
 
     [Header("DEBUG")]
-    [SerializeField]
-    private bool debugEnabled;
-    private string dbString = "";
+    public bool debugEnabled;
+    [HideInInspector]
+    public string dbString = "";
 
     private List<ActiveInteraction> activeInteractions = new();
     protected virtual void Start()
@@ -42,14 +42,16 @@ public abstract class ItemBase : MonoBehaviour
     {
         foreach (ActiveInteraction activeInteraction in activeInteractions)
         {
-            if(IsInteractionFinished(activeInteraction) == true)
+            if (IsInteractionFinished(activeInteraction) == true)
             {
                 //End Ineraction
+                activeInteraction.interactionSO.OnInteractionEnd(activeInteraction.interactionPefromer, this);
             }
             else
             {
                 //Update Interaction
-                activeInteraction.interactionSO.OnInteractionTick(activeInteraction.interactionPefromer,activeInteraction.interactionItem);
+                activeInteraction.interactionSO.OnInteractionTick(activeInteraction.interactionPefromer,
+                                                                  activeInteraction.interactionItem);
             }
         }
 
@@ -64,6 +66,26 @@ public abstract class ItemBase : MonoBehaviour
         activeInteractions.Add(activeInteraction);
     }
 
+    public void DeregisterAsActiveInteraction(CharacterBase thisCharacter, InteractionBaseSO interactionSO, ItemBase interactionItem)
+    {
+        for (int i = activeInteractions.Count - 1; i >= 0; i--)
+        {
+            if (activeInteractions[i].interactionPefromer == thisCharacter)
+            {
+                if (activeInteractions[i].interactionSO == interactionSO)
+                {
+                    if (activeInteractions[i].interactionItem == interactionItem)
+                    {
+                        activeInteractions.Remove(activeInteractions[i]);
+                        return;
+                    }
+                }
+
+            }
+
+        }
+    }
+
     protected bool IsInteractionFinished(ActiveInteraction activeInteraction)
     {
         int ticksRemaining = InteractionTicksRemaining(activeInteraction.interactionSO.InteractionLenghtTicks,
@@ -76,7 +98,7 @@ public abstract class ItemBase : MonoBehaviour
             return false;
 
 
-       
+
     }
 
     private int InteractionTicksRemaining(int interactionLenght, int interactionStartTicks)
