@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,11 +14,10 @@ public class NeedBase
         this.needValue = needValue;
     }
 
-    
-
     public virtual void AdjustNeedValue(int adjust, NeedBase adjustNeed, CharacterNeedsManager thisNeedsManager)
     {
         needValue += adjust;
+        needValue = Math.Clamp(needValue, 0, 100);
     }
 }
 

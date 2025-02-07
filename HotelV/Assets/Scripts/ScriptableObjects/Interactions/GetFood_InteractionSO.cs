@@ -14,8 +14,8 @@ public class GetFood_InteractionSO : InteractionBaseSO
 
     public override void BeginInteraction(CharacterBase thisCharacter, ItemBase thisItem)
     {
-        if(thisItem.debugEnabled)
-        Debug.Log("GetFood_Interaction started");
+        if (thisItem.debugEnabled)
+            Debug.Log("GetFood_Interaction started");
 
         thisCharacter.SetDestination(thisItem.ItemInteractionSpots[0].position);
     }
@@ -32,12 +32,14 @@ public class GetFood_InteractionSO : InteractionBaseSO
 
     public override void OnInteractionTick(CharacterBase thisCharacter, ItemBase thisItem)
     {
-       foreach(NeedRateChangePairs needPair in needSONeedAdjustRates)
-        {
-            if (thisItem.debugEnabled)
-                Debug.Log($"{thisCharacter.CharacterName} continues using {thisItem.ItemName}");
+        if (thisItem.debugEnabled)
+            Debug.Log($"{thisCharacter.CharacterName} continues using {thisItem.ItemName}");
 
-            float needChangePerTick = needPair.needChangePerSecond/TickManager.Instance.TickCounter;
+        foreach (NeedRateChangePairs needPair in needSONeedAdjustRates)
+        {
+
+            float needChangePerTick = needPair.needChangePerSecond / TickManager.Instance.TickRate;
+            Debug.Log("NeedChangePerTick: " + needChangePerTick + " VS " + (int)needChangePerTick);
             thisCharacter.thisCharacterNeedsManager.AdjustNeed(needPair.needSO, (int)needChangePerTick);
 
         }
@@ -48,7 +50,7 @@ public class GetFood_InteractionSO : InteractionBaseSO
         if (thisItem.debugEnabled)
             Debug.Log($"{thisCharacter.CharacterName} stopped using {thisItem.ItemName}");
 
-      thisItem.DeregisterAsActiveInteraction(thisCharacter, this, thisItem);
+        // thisItem.DeregisterAsActiveInteraction(thisCharacter, this, thisItem);
 
     }
 

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionName: Get food
   interactionBaseScore: 10
-  interactionLenghtTicks: 12
+  interactionLenghtTicks: 20
   needSONeedAdjustRates:
-  - needSO: {fileID: 0}
-    needChangePerSecond: 0
+  - needSO: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
+    needChangePerSecond: 9
   needToUseForWeight: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}

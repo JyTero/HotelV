@@ -1600,7 +1600,7 @@ MonoBehaviour:
   itemInteractionSpots:
   - {fileID: 206324242}
   currentItemTick: -1
-  debugEnabled: 1
+  debugEnabled: 0
   dbString: 
 --- !u!1 &1476899561
 GameObject:

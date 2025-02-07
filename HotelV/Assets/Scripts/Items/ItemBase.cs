@@ -26,6 +26,8 @@ public abstract class ItemBase : MonoBehaviour
     public string dbString = "";
 
     private List<ActiveInteraction> activeInteractions = new();
+    private List<ActiveInteraction> deregisterActiveInteractions = new();
+
     protected virtual void Start()
     {
         TickManager.Instance.OnTick += CauseTick;
@@ -40,12 +42,17 @@ public abstract class ItemBase : MonoBehaviour
 
     private void UpdateActiveInteractions()
     {
+        if (activeInteractions.Count <= 0)
+            return;
         foreach (ActiveInteraction activeInteraction in activeInteractions)
         {
             if (IsInteractionFinished(activeInteraction) == true)
             {
                 //End Ineraction
                 activeInteraction.interactionSO.OnInteractionEnd(activeInteraction.interactionPefromer, this);
+                //Mark for deregistration, deregister after iteration
+                deregisterActiveInteractions.Add(activeInteraction);
+
             }
             else
             {
@@ -54,6 +61,12 @@ public abstract class ItemBase : MonoBehaviour
                                                                   activeInteraction.interactionItem);
             }
         }
+
+        foreach(ActiveInteraction activeInteraction in deregisterActiveInteractions)
+        {
+            DeregisterAsActiveInteraction(activeInteraction.interactionPefromer, activeInteraction.interactionSO, this);
+        }
+        deregisterActiveInteractions.Clear();
 
         //Debug.LogWarning($"Item {ItemName} failed to match interaction to Active interaction\n" +
         //   $"Character: {thisCharacter.CharacterName}\nInteraction: {interactionSO.InteractionName}");
