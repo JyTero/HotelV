@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GetFood_InteractionSO", menuName = "ScriptableObjects/Interactions/GetFood_InteractionSO")]
-public class GetFood_InteractionSO : InteractionBaseSO
+[CreateAssetMenu(fileName = "Sleep_InteractionSO", menuName = "ScriptableObjects/Interactions/Sleep_InteractionSO")]
+public class Sleep_InteractionSO : InteractionBaseSO
 {
+
     public override void InteractionStart(ItemBase thisItem)
     {
-        base.InteractionStart(thisItem);
+       base.InteractionStart(thisItem);
     }
 
     public override void BeginInteraction(CharacterBase thisCharacter, ItemBase thisItem)
@@ -18,15 +18,12 @@ public class GetFood_InteractionSO : InteractionBaseSO
         thisCharacter.SetDestination(thisItem.ItemInteractionSpots[0].position);
     }
 
-
     public override void RunInteraction(CharacterBase thisCharacter, ItemBase thisItem)
     {
         base.RunInteraction(thisCharacter, thisItem);
 
         thisItem.RegisterAsActiveInteraction(thisCharacter, this, thisItem);
-
     }
-
     public override void OnInteractionTick(CharacterBase thisCharacter, ItemBase thisItem)
     {
         base.OnInteractionTick(thisCharacter, thisItem);
@@ -35,15 +32,19 @@ public class GetFood_InteractionSO : InteractionBaseSO
         {
 
             float needChangePerTick = NeedChangePerTick(needPair.needChangePerSecond, TickManager.Instance.TickRate);
-           
+
             thisCharacter.thisCharacterNeedsManager.AdjustNeed(needPair.needSO, (int)needChangePerTick);
-
         }
-
     }
+
     public override void OnInteractionEnd(CharacterBase thisCharacter, ItemBase thisItem)
     {
-        base.OnInteractionEnd(thisCharacter, thisItem);
+       base.OnInteractionEnd(thisCharacter, thisItem);
     }
+
+ 
+
+
+
 
 }

@@ -32,12 +32,35 @@ public abstract class InteractionBaseSO : ScriptableObject
 
 
     
-    public abstract void InteractionStart(ItemBase thisItem);
-    public abstract void BeginInteraction(CharacterBase thisCharacter, ItemBase thisItem);
-    public abstract void RunInteraction(CharacterBase thisCharacter, ItemBase thisItem);
-    public abstract void OnInteractionEnd(CharacterBase thisCharacter, ItemBase thisItem);
-    public abstract void OnInteractionTick(CharacterBase thisCharacter, ItemBase thisItem);
-    // public abstract IEnumerable InteractionCoro01(CharacterBase thisCharacter, ItemBase thisItem);
+    public virtual void InteractionStart(ItemBase thisItem)
+    {
+
+    }
+    public virtual void BeginInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    {
+        if (thisItem.debugEnabled)
+            Debug.Log("GetFood_Interaction started");
+    }
+    public virtual void RunInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    {
+        if (thisItem.debugEnabled)
+            Debug.Log($"{thisCharacter.CharacterName} uses {thisItem.ItemName}.");
+    }
+    public virtual void OnInteractionTick(CharacterBase thisCharacter, ItemBase thisItem)
+    {
+        if (thisItem.debugEnabled)
+            Debug.Log($"{thisCharacter.CharacterName} continues using {thisItem.ItemName}");
+    }
+    public virtual void OnInteractionEnd(CharacterBase thisCharacter, ItemBase thisItem)
+    {
+        if (thisItem.debugEnabled)
+            Debug.Log($"{thisCharacter.CharacterName} stopped using {thisItem.ItemName}");
+    }
+
+    protected int NeedChangePerTick(int changePerSecond, int tickRate)
+    {
+        return changePerSecond / tickRate;
+    }
 
 
     [System.Serializable]
