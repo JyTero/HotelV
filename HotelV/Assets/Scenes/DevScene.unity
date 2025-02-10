@@ -2074,7 +2074,7 @@ MonoBehaviour:
   itemInteractions:
   - {fileID: 11400000, guid: 070ed6db72e6e16478c5fc51e9a1b9ae, type: 2}
   itemInteractionSpots:
-  - {fileID: 0}
+  - {fileID: 697323741}
   currentItemTick: -1
   debugEnabled: 0
   dbString: 

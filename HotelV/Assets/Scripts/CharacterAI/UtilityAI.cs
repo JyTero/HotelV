@@ -40,6 +40,11 @@ public class UtilityAI : MonoBehaviour
         SortFoundInteractionsByScore();
         InteractionInScoring highestScoringInteractionSO = foundInteractions[0];
         currentInteraction = foundInteractions[0];
+
+        if (debugEnabled)
+        {
+            Debug.Log(interactionSelectDebugString);
+        }
         return highestScoringInteractionSO;
 
 
@@ -74,7 +79,10 @@ public class UtilityAI : MonoBehaviour
     private void GatherInteractions()
     {
         foundInteractions.Clear();
-        interactionSelectDebugString += "They found: \n";
+        if (debugEnabled)
+        {
+            interactionSelectDebugString += "They found:\n";
+        }
         foreach (ItemBase item in allItemsInWorld)
         {
             foreach (InteractionBaseSO interactionSO in item.ItemInteractions)
@@ -83,40 +91,41 @@ public class UtilityAI : MonoBehaviour
                 if (debugEnabled)
                     interactionSelectDebugString += $"{interactionSO.InteractionName},\n";
             }
-            if (debugEnabled)
-            {
-                interactionSelectDebugString += $"In total they found {foundInteractions.Count} interactions.\n";
-                Debug.Log(interactionSelectDebugString);
-                interactionSelectDebugString = "";
-            }
+
         }
+        if (debugEnabled)
+            interactionSelectDebugString += $"In total they found {foundInteractions.Count} interactions.\n";
     }
 
     private void ScoreGatheredInteractions(CharacterBase thisCharacter, CharacterNeedsManager thisNeedManager)
     {
         int score;
         NeedBaseSO needSOUsedForWeighting = null;
-        int needWeightedValue = 0;
+        float weightedNeedValue = 0;
 
+        string interactionScoreBreakdownDebug = "";
         if (debugEnabled)
             interactionSelectDebugString += "The interactions are scored as follows:\n";
 
         foreach (InteractionInScoring interaction in foundInteractions)
         {
             score = 0;
-
+            interactionScoreBreakdownDebug = "";
             if (interaction.InteractionSO.NeedToUseForWeighting != null)
             {
-                foreach(NeedBase need in thisNeedManager.characterNeeds)
+                foreach (NeedBase need in thisNeedManager.characterNeeds)
                 {
-                    if(need.needSO == interaction.InteractionSO.NeedToUseForWeighting)
+                    if (need.needSO == interaction.InteractionSO.NeedToUseForWeighting)
                     {
                         needSOUsedForWeighting = need.needSO;
-                        needWeightedValue = need.needValue;
+                        weightedNeedValue = (float)need.needValue / 100;
                     }
                 }
 
-                score += (int)(interaction.InteractionSO.InteractionBaseScore * needSOUsedForWeighting.NeedWeightCurve.Evaluate(needWeightedValue));
+                score += (int)(interaction.InteractionSO.InteractionBaseScore * needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue));
+                if (debugEnabled)
+                    interactionScoreBreakdownDebug = $"interactionBase: {interaction.InteractionSO.InteractionBaseScore} * " +
+                                                     $"needValue: {needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue)}" ;
             }
             else
             {
@@ -125,7 +134,8 @@ public class UtilityAI : MonoBehaviour
 
             interaction.InteractionScore = score;
             if (debugEnabled)
-                interactionSelectDebugString += $"Interaction {interaction.InteractionSO.InteractionName} scored {interaction.InteractionScore}";
+                interactionSelectDebugString += $"Interaction {interaction.InteractionSO.InteractionName} score: {interaction.InteractionScore} ({interactionScoreBreakdownDebug})\n";
+                //interactionSelectDebugString += $"Interaction {interaction.InteractionSO.InteractionName} scored {interaction.InteractionScore}\n";
         }
     }
 
