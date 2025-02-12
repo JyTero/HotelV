@@ -53,3 +53,19 @@ public class Energy_Need : NeedBase
 
     }
 }
+
+public class Fun_Need : NeedBase
+{
+    public Fun_Need(Fun_NeedSO needSO, int needValue)
+        : base(needSO, needValue)
+    {
+        this.needSO = needSO;
+        this.needValue = needValue;
+    }
+
+    public override void AdjustNeedValue(int adjust, NeedBase adjustNeed, CharacterNeedsManager thisNeedsManager)
+    {
+        base.AdjustNeedValue(adjust, adjustNeed, thisNeedsManager);
+        thisNeedsManager.FunNeedValue = needValue;
+    }
+}

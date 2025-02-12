@@ -6,9 +6,12 @@ using UnityEngine;
 public abstract class ItemBase : MonoBehaviour
 {
     public string ItemName { get => itemName; protected set => itemName = value; }
-    public List<Transform> ItemInteractionSpots { get => itemInteractionSpots; protected set => ItemInteractionSpots = new(); }
     public List<InteractionBaseSO> ItemInteractions { get => itemInteractions; protected set => ItemInteractions = new(); }
 
+    public Dictionary<Transform, bool> ItemInteractionSpots = new();
+
+    [HideInInspector]
+    public int currentItemTick = -1;
 
     [SerializeField]
     protected string itemName;
@@ -17,8 +20,6 @@ public abstract class ItemBase : MonoBehaviour
     [SerializeField]
     protected List<Transform> itemInteractionSpots = new();
 
-    [HideInInspector]
-    public int currentItemTick = -1;
 
     [Header("DEBUG")]
     public bool debugEnabled;
@@ -27,6 +28,19 @@ public abstract class ItemBase : MonoBehaviour
 
     private List<ActiveInteraction> activeInteractions = new();
     private List<ActiveInteraction> deregisterActiveInteractions = new();
+
+    protected virtual void Awake()
+    {
+        MoveInteractionSportsFromListToDictionary();
+    }
+
+    private void MoveInteractionSportsFromListToDictionary()
+    {
+        foreach (Transform t in itemInteractionSpots)
+        {
+            ItemInteractionSpots.Add(t, false);
+        }
+    }
 
     protected virtual void Start()
     {
@@ -62,15 +76,43 @@ public abstract class ItemBase : MonoBehaviour
             }
         }
 
-        foreach(ActiveInteraction activeInteraction in deregisterActiveInteractions)
+        foreach (ActiveInteraction activeInteraction in deregisterActiveInteractions)
         {
             DeregisterAsActiveInteraction(activeInteraction.interactionPefromer, activeInteraction.interactionSO, this);
+            FreeInteractionSpot(activeInteraction);
         }
         deregisterActiveInteractions.Clear();
 
         //Debug.LogWarning($"Item {ItemName} failed to match interaction to Active interaction\n" +
         //   $"Character: {thisCharacter.CharacterName}\nInteraction: {interactionSO.InteractionName}");
         //return false;
+    }
+
+    public Transform GetInteractionSpot()
+    {
+        foreach (Transform t in ItemInteractionSpots.Keys)
+        {
+            if (ItemInteractionSpots[t] == true)
+                continue;
+            else
+            {
+                ItemInteractionSpots[t] = true;
+                return t;
+            }
+        }
+        return null;
+    }
+
+    public bool ItemHasFreeInteractionSpots()
+    {
+        foreach (Transform t in ItemInteractionSpots.Keys)
+        {
+            if (ItemInteractionSpots[t] == true)
+                continue;
+            else
+                return true;
+        }
+        return false;
     }
 
     public void RegisterAsActiveInteraction(CharacterBase thisCharacter, InteractionBaseSO interactionSO, ItemBase interactionItem)
@@ -98,6 +140,19 @@ public abstract class ItemBase : MonoBehaviour
 
         }
     }
+    private void FreeInteractionSpot(ActiveInteraction activeInteraction)
+    {
+        foreach (Transform t in ItemInteractionSpots.Keys)
+        {
+            if (t == activeInteraction.interactionSpot)
+            {
+                ItemInteractionSpots[t] = false;
+                return;
+            }
+            else
+                continue;
+        }
+    }
 
     protected bool IsInteractionFinished(ActiveInteraction activeInteraction)
     {
@@ -119,8 +174,7 @@ public abstract class ItemBase : MonoBehaviour
         return (interactionStartTicks + interactionLenght) - currentItemTick;
     }
 
-    //TODO: Logic to automatically go though each interaction spot, return first free slot, to be used when gathering
-    //interactions.
+
 
 
     protected virtual void OnDisable()

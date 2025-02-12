@@ -3,27 +3,37 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class NeedsPanel_UI : MonoBehaviour
+public class NeedsPanel_UI : UIPanel
 {
     [SerializeField]
     private ProgressBar hungerNeedBar;
     [SerializeField]
-    TMP_Text hungerNeedNumber;
+    private TMP_Text hungerNeedNumber;
 
     [SerializeField]
     private ProgressBar energyNeedBar;
     [SerializeField]
-    TMP_Text energyNeedNumber;
-    //TODO: Make logic to get selected character, refresh UI on character select?
-    [SerializeField]
-    private CharacterNeedsManager selectedNeedsManager;
+    private TMP_Text energyNeedNumber;
 
+    [SerializeField]
+    private ProgressBar funNeedbar;
+    [SerializeField]
+    private TMP_Text funNeedNumber;
+
+
+
+
+    public override void OnPanelActivation(CharacterBase selectedCharacter)
+    {
+        base.OnPanelActivation(selectedCharacter);
+    }
 
     // Update is called once per frame
     void Update()
     {
         UpdateHunger();
         UpdateEnergy();
+        UpdateFun();
     }
 
     private void UpdateHunger()
@@ -40,5 +50,18 @@ public class NeedsPanel_UI : MonoBehaviour
 
         energyNeedBar.current = value;
         energyNeedNumber.text = value.ToString();
+    }
+
+    private void UpdateFun()
+    {
+        int value = selectedNeedsManager.FunNeedValue;
+
+        funNeedbar.current = value;
+        funNeedNumber.text = value.ToString();
+    }
+
+    public override void OnPanelDeactivation()
+    {
+        base.OnPanelDeactivation();
     }
 }

@@ -8,8 +8,6 @@ public class CharacterNeedsManager : MonoBehaviour
 {
     [HideInInspector]
     public List<NeedBase> characterNeeds = new List<NeedBase>();
-    //Need, value
-    //public Dictionary<NeedBaseSO, int> characterNeeds = new();
 
     private CharacterBase thisCharacter;
 
@@ -17,18 +15,14 @@ public class CharacterNeedsManager : MonoBehaviour
     [SerializeField]
     private Hunger_NeedSO hungerNeedSO;
     public int HungerNeedValue;
-    //public int HungerNeedValue { get => hungerNeedValue; private set => hungerNeedValue = value; }
-     [SerializeField]
-     private int hungerNeedValue;
-
 
     [SerializeField]
     private Energy_NeedSO energyNeedSO;
     public int EnergyNeedValue;
-    //public int EnergyNeedValue { get => energyNeedValue; private set => energyNeedValue = value; }
-    [SerializeField]
-    private int energyNeedValue;
 
+    [SerializeField]
+    private Fun_NeedSO funNeedSO;
+    public int FunNeedValue;
 
     [Header("DEBUG")]
     [SerializeField]
@@ -42,6 +36,7 @@ public class CharacterNeedsManager : MonoBehaviour
 
         characterNeeds.Add(new Hunger_Need(hungerNeedSO, HungerNeedValue));
         characterNeeds.Add(new Energy_Need(energyNeedSO, EnergyNeedValue));
+        characterNeeds.Add(new Fun_Need(funNeedSO, FunNeedValue));
 
     }
 

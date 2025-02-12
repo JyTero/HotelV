@@ -11,6 +11,7 @@ public class UtilityAI : MonoBehaviour
     private string interactionSelectDebugString;
 
 
+    //TODO: Move to item manager, now each AI has its copy of the same list
     private List<ItemBase> allItemsInWorld = new();
 
     private List<InteractionInScoring> foundInteractions = new();
@@ -20,7 +21,7 @@ public class UtilityAI : MonoBehaviour
     [Header("DEBUG")]
     [SerializeField]
     private bool debugEnabled;
-    //TODO: Move to item manager, now each AI has its copy of the same list
+
     private void Start()
     {
         allItemsInWorld = FindObjectsOfType<ItemBase>().ToList<ItemBase>();
@@ -85,12 +86,17 @@ public class UtilityAI : MonoBehaviour
         }
         foreach (ItemBase item in allItemsInWorld)
         {
-            foreach (InteractionBaseSO interactionSO in item.ItemInteractions)
+            if (item.ItemHasFreeInteractionSpots())
             {
-                foundInteractions.Add(new InteractionInScoring(interactionSO, item));
-                if (debugEnabled)
-                    interactionSelectDebugString += $"{interactionSO.InteractionName},\n";
+                foreach (InteractionBaseSO interactionSO in item.ItemInteractions)
+                {
+                    foundInteractions.Add(new InteractionInScoring(interactionSO, item));
+                    if (debugEnabled)
+                        interactionSelectDebugString += $"{interactionSO.InteractionName},\n";
+                }
             }
+            else
+                continue;
 
         }
         if (debugEnabled)
@@ -125,7 +131,7 @@ public class UtilityAI : MonoBehaviour
                 score += (int)(interaction.InteractionSO.InteractionBaseScore * needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue));
                 if (debugEnabled)
                     interactionScoreBreakdownDebug = $"interactionBase: {interaction.InteractionSO.InteractionBaseScore} * " +
-                                                     $"needValue: {needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue)}" ;
+                                                     $"needValue: {needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue)}";
             }
             else
             {
@@ -135,7 +141,7 @@ public class UtilityAI : MonoBehaviour
             interaction.InteractionScore = score;
             if (debugEnabled)
                 interactionSelectDebugString += $"Interaction {interaction.InteractionSO.InteractionName} score: {interaction.InteractionScore} ({interactionScoreBreakdownDebug})\n";
-                //interactionSelectDebugString += $"Interaction {interaction.InteractionSO.InteractionName} scored {interaction.InteractionScore}\n";
+            //interactionSelectDebugString += $"Interaction {interaction.InteractionSO.InteractionName} scored {interaction.InteractionScore}\n";
         }
     }
 

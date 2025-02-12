@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86dbb7f7607ed2f43bc7ce008758aeff, type: 3}
-  m_Name: Energy_Need_Human_SO
+  m_Script: {fileID: 11500000, guid: 13ed7fc838e069442825f316a5e1eae1, type: 3}
+  m_Name: FunNeedSO
   m_EditorClassIdentifier: 
-  needName: Energy
+  needName: Fun
   needWeightCurve:
     serializedVersion: 2
     m_Curve:
@@ -37,5 +37,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  needDeclineRate: 36
+  needDeclineRate: 16
   lowNeedThreshold: 0

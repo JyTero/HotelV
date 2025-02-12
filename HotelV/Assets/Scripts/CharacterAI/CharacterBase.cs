@@ -16,16 +16,28 @@ public class CharacterBase : MonoBehaviour
     public string CharacterName { get => characterName; private set => characterName = value; }
 
 
+    [SerializeField]
+    [Tooltip("Idle time in ticks before new interaction search begins")]
+    private int idleTimer;
+    private int idleTimeStart = -1;
+
+
     private UtilityAI UtilityAI;
     private InteractionBaseSO currentInteraction;
     private ItemBase currentInteractionItem;
     private CharacterNavigation thisCharacterNavigation;
 
+
+    [Header("DEBUG")]
+    [SerializeField]
+    private bool debugEnabled;
     private void Start()
     {
         UtilityAI = GetComponent<UtilityAI>();
         thisCharacterNavigation = GetComponent<CharacterNavigation>();
         thisCharacterNeedsManager = GetComponent<CharacterNeedsManager>();
+
+        TickManager.Instance.OnTick += IdleTick;
     }
 
 
@@ -35,14 +47,21 @@ public class CharacterBase : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-           
-            InteractionInScoring interaction = UtilityAI.ChooseWhatToDo(this, thisCharacterNeedsManager);
-            if (interaction != null)
-            {
-                interaction.InteractionSO.BeginInteraction(this, interaction.InteractionItem);
-                currentInteraction = interaction.InteractionSO;
-                currentInteractionItem = interaction.InteractionItem;
-            }
+         StartUtilityAI();
+        }
+    }
+
+    public void StartUtilityAI()
+    {
+        TickManager.Instance.OnTick -= IdleTick;
+        idleTimeStart = -1;
+
+        InteractionInScoring interaction = UtilityAI.ChooseWhatToDo(this, thisCharacterNeedsManager);
+        if (interaction != null)
+        {
+            interaction.InteractionSO.InitiateInteraction(this, interaction.InteractionItem);
+            currentInteraction = interaction.InteractionSO;
+            currentInteractionItem = interaction.InteractionItem;
         }
     }
 
@@ -53,11 +72,48 @@ public class CharacterBase : MonoBehaviour
 
     public void OnAtDestination()
     {
-        currentInteraction.RunInteraction(this, currentInteractionItem);
+        currentInteraction.StartInteraction(this, currentInteractionItem);
     }
 
-    public void TriggerInteractionCoro(InteractionBaseSO interaction)
+    public void OnInteractionEnd()
     {
+        currentInteraction = null;
+        currentInteractionItem = null;
+        TickManager.Instance.OnTick += IdleTick;
+    }
 
+    private void IdleTick(int currentTick)
+    {
+        if (idleTimeStart == -1)
+        {
+            idleTimeStart = currentTick;
+            return;
+        }
+        else
+        {
+            if (idleTimeStart + idleTimer > currentTick)
+            {
+                return;
+            }
+            else
+            {
+                if (debugEnabled)
+                    Debug.Log($"{characterName} begins idle UtilityAI");
+                StartUtilityAI();
+            }
+        }
+    }
+
+    public InteractionBaseSO CurrentInteraction()
+    {
+        return currentInteraction;
+    }
+    public ItemBase CurrentInteractionItem()
+    {
+        return currentInteractionItem;
+    }
+    private void OnDisable()
+    {
+        TickManager.Instance.OnTick -= IdleTick;
     }
 }

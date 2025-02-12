@@ -36,12 +36,12 @@ public abstract class InteractionBaseSO : ScriptableObject
     {
 
     }
-    public virtual void BeginInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    public virtual void InitiateInteraction(CharacterBase thisCharacter, ItemBase thisItem)
     {
         if (thisItem.debugEnabled)
             Debug.Log("GetFood_Interaction started");
     }
-    public virtual void RunInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    public virtual void StartInteraction(CharacterBase thisCharacter, ItemBase thisItem)
     {
         if (thisItem.debugEnabled)
             Debug.Log($"{thisCharacter.CharacterName} uses {thisItem.ItemName}.");
@@ -55,6 +55,8 @@ public abstract class InteractionBaseSO : ScriptableObject
     {
         if (thisItem.debugEnabled)
             Debug.Log($"{thisCharacter.CharacterName} stopped using {thisItem.ItemName}");
+        thisCharacter.OnInteractionEnd();
+
     }
 
     protected int NeedChangePerTick(int changePerSecond, int tickRate)
@@ -62,6 +64,38 @@ public abstract class InteractionBaseSO : ScriptableObject
         return changePerSecond / tickRate;
     }
 
+    protected Transform GetInteractionSpot(CharacterBase thisCharacter, ItemBase thisItem)
+    {
+        Transform itemInterctionSpot = thisItem.GetInteractionSpot();
+        if(itemInterctionSpot == null)
+        {
+            if (thisItem.debugEnabled)
+                Debug.Log($"{thisCharacter.name} cannot find free interaction spots on {thisItem.name} ({thisItem.gameObject.name}). " +
+                    $"Selecting new interaction");
+            //Select 2nd highest scoring interaction
+            return null;
+        }
+            else
+                return itemInterctionSpot;
+    }
+
+    protected bool CanRunInteraction(Transform interactionSpot)
+    {
+        if (interactionSpot == null)
+            return false;
+        else
+            return true;
+    }
+
+    protected void RunInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    {
+        Transform interactionSpot = GetInteractionSpot(thisCharacter, thisItem);
+        if (CanRunInteraction(interactionSpot))
+        {
+            thisCharacter.SetDestination(interactionSpot.position);
+        }
+        else { }
+    }
 
     [System.Serializable]
     public class NeedRateChangePairs

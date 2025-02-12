@@ -11,16 +11,17 @@ public class Sleep_InteractionSO : InteractionBaseSO
        base.InteractionStart(thisItem);
     }
 
-    public override void BeginInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    public override void InitiateInteraction(CharacterBase thisCharacter, ItemBase thisItem)
     {
-        base.BeginInteraction(thisCharacter, thisItem);
+        base.InitiateInteraction(thisCharacter, thisItem);
 
-        thisCharacter.SetDestination(thisItem.ItemInteractionSpots[0].position);
+        RunInteraction(thisCharacter, thisItem);
+
     }
 
-    public override void RunInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    public override void StartInteraction(CharacterBase thisCharacter, ItemBase thisItem)
     {
-        base.RunInteraction(thisCharacter, thisItem);
+        base.StartInteraction(thisCharacter, thisItem);
 
         thisItem.RegisterAsActiveInteraction(thisCharacter, this, thisItem);
     }
