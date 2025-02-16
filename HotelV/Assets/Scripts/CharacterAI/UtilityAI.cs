@@ -44,6 +44,7 @@ public class UtilityAI : MonoBehaviour
 
         if (debugEnabled)
         {
+            interactionSelectDebugString += $"They chose to {currentInteraction.InteractionSO.InteractionName}\n";
             Debug.Log(interactionSelectDebugString);
         }
         return highestScoringInteractionSO;

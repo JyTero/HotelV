@@ -29,6 +29,10 @@ public abstract class ItemBase : MonoBehaviour
     private List<ActiveInteraction> activeInteractions = new();
     private List<ActiveInteraction> deregisterActiveInteractions = new();
 
+    private List<InteractionBaseSO> disabledInteractions = new();
+
+
+
     protected virtual void Awake()
     {
         MoveInteractionSportsFromListToDictionary();
@@ -174,9 +178,38 @@ public abstract class ItemBase : MonoBehaviour
         return (interactionStartTicks + interactionLenght) - currentItemTick;
     }
 
+    public void DisableInteraction(InteractionBaseSO interaction)
+    {
+        foreach (InteractionBaseSO interactionInList in ItemInteractions)
+        {
+            if (interactionInList == interaction)
+            {
+                ItemInteractions.Remove(interactionInList);
+                disabledInteractions.Add(interactionInList);
+                return;
+            }
+        }
+    }
+
+    public void DisableAllInteractions()
+    {
+        for (int i = 0; i <= ItemInteractions.Count; i++)
+        {
+            disabledInteractions.Add(ItemInteractions[i]);
+            ItemInteractions.RemoveAt(i);
+        }
+    }
 
 
-
+    public void EnableInteraction()
+    {
+        foreach(InteractionBaseSO interaction in disabledInteractions)
+        {
+            disabledInteractions.Remove(interaction);
+            ItemInteractions.Add(interaction);
+            return;
+        }
+    }
     protected virtual void OnDisable()
     {
         TickManager.Instance.OnTick -= CauseTick;

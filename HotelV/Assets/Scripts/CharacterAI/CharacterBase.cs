@@ -10,11 +10,12 @@ public class CharacterBase : MonoBehaviour
     [HideInInspector]
     public CharacterNeedsManager thisCharacterNeedsManager;
 
-    [Header("Character information")]
-    [SerializeField]
-    private string characterName;
-    public string CharacterName { get => characterName; private set => characterName = value; }
+    public Dictionary<Transform, bool> CharacterInteractionSpots = new();
+    public List<InteractionBaseSO> CharacterInteractions { get => characterInteractions; protected set => CharacterInteractions = new(); }
+    private List<InteractionBaseSO> disabledInteractions = new();
 
+    [SerializeField]
+    protected List<InteractionBaseSO> characterInteractions = new();
 
     [SerializeField]
     [Tooltip("Idle time in ticks before new interaction search begins")]
@@ -27,10 +28,13 @@ public class CharacterBase : MonoBehaviour
     private ItemBase currentInteractionItem;
     private CharacterNavigation thisCharacterNavigation;
 
+    [Header("Character details")]
+    [SerializeField]
+    private string characterName;
+    public string CharacterName { get => characterName; private set => characterName = value; }
 
     [Header("DEBUG")]
-    [SerializeField]
-    private bool debugEnabled;
+    public bool debugEnabled;
     private void Start()
     {
         UtilityAI = GetComponent<UtilityAI>();
@@ -82,6 +86,20 @@ public class CharacterBase : MonoBehaviour
         TickManager.Instance.OnTick += IdleTick;
     }
 
+    public Transform GetInteractionSpot()
+    {
+        foreach (Transform t in CharacterInteractionSpots.Keys)
+        {
+            if (CharacterInteractionSpots[t] == true)
+                continue;
+            else
+            {
+                CharacterInteractionSpots[t] = true;
+                return t;
+            }
+        }
+        return null;
+    }
     private void IdleTick(int currentTick)
     {
         if (idleTimeStart == -1)
@@ -97,8 +115,6 @@ public class CharacterBase : MonoBehaviour
             }
             else
             {
-                if (debugEnabled)
-                    Debug.Log($"{characterName} begins idle UtilityAI");
                 StartUtilityAI();
             }
         }

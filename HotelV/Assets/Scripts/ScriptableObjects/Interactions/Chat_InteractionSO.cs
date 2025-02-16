@@ -2,30 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Sleep_InteractionSO", menuName = "ScriptableObjects/Interactions/Sleep_InteractionSO")]
-public class Sleep_InteractionSO : InteractionBaseSO
+public class Chat_InteractionSO : InteractionBaseSO
 {
-
-    public override void InteractionStart(ItemBase interactionOwner)
+    public override void InteractionStart(CharacterBase interactionOwner)
     {
-       base.InteractionStart(interactionOwner);
+        base.InteractionStart(interactionOwner);
     }
 
-    public override void InitiateInteraction(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public override void InitiateInteraction(CharacterBase thisCharacter, CharacterBase interactionOwner)
     {
         base.InitiateInteraction(thisCharacter, interactionOwner);
 
         RunInteraction(thisCharacter, interactionOwner);
 
     }
-
-    public override void StartInteraction(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public override void StartInteraction(CharacterBase thisCharacter, CharacterBase interactionOwner)
     {
         base.StartInteraction(thisCharacter, interactionOwner);
 
         interactionOwner.RegisterAsActiveInteraction(thisCharacter, this, interactionOwner);
     }
-    public override void OnInteractionTick(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public override void OnInteractionTick(CharacterBase thisCharacter, CharacterBase interactionOwner)
     {
         base.OnInteractionTick(thisCharacter, interactionOwner);
 
@@ -38,14 +35,9 @@ public class Sleep_InteractionSO : InteractionBaseSO
         }
     }
 
-    public override void OnInteractionEnd(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public override void OnInteractionEnd(CharacterBase thisCharacter, CharacterBase interactionOwner)
     {
-       base.OnInteractionEnd(thisCharacter, interactionOwner);
+        base.OnInteractionEnd(thisCharacter, interactionOwner);
     }
-
- 
-
-
-
 
 }

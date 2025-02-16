@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ac097cc8d7d2e547ba81efdfbfe22bf, type: 3}
-  m_Name: Sleep_SleepDevice_InteractionSO
+  m_Script: {fileID: 11500000, guid: 7c26492dacaffaf4f9f18609d053f0d8, type: 3}
+  m_Name: PlayOnArcadeMachine_InteractionSO
   m_EditorClassIdentifier: 
-  interactionName: Sleep
+  interactionName: Play on arcade machine
   interactionBaseScore: 10
-  interactionLenghtTicks: 48
+  interactionLenghtTicks: 24
   needSONeedAdjustRates:
-  - needSO: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
+  - needSO: {fileID: 11400000, guid: 196053246064ed242adad3ad5a9db61a, type: 2}
     needChangePerSecond: 9
-  needToUseForWeight: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
+  needToUseForWeight: {fileID: 11400000, guid: 196053246064ed242adad3ad5a9db61a, type: 2}

@@ -32,51 +32,95 @@ public abstract class InteractionBaseSO : ScriptableObject
 
 
     
-    public virtual void InteractionStart(ItemBase thisItem)
+    public virtual void InteractionStart(ItemBase interactionOwner)
     {
 
     }
-    public virtual void InitiateInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    public virtual void InteractionStart(CharacterBase interactionOwner)
     {
-        if (thisItem.debugEnabled)
+
+    }
+
+    public virtual void InitiateInteraction(CharacterBase thisCharacter, ItemBase interactionOwner)
+    {
+        if (interactionOwner.debugEnabled)
             Debug.Log("GetFood_Interaction started");
     }
-    public virtual void StartInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    public virtual void InitiateInteraction(CharacterBase thisCharacter, CharacterBase interactionOwner)
     {
-        if (thisItem.debugEnabled)
-            Debug.Log($"{thisCharacter.CharacterName} uses {thisItem.ItemName}.");
+        if (interactionOwner.debugEnabled)
+            Debug.Log("GetFood_Interaction started");
     }
-    public virtual void OnInteractionTick(CharacterBase thisCharacter, ItemBase thisItem)
+
+    public virtual void StartInteraction(CharacterBase thisCharacter, ItemBase interactionOwner)
     {
-        if (thisItem.debugEnabled)
-            Debug.Log($"{thisCharacter.CharacterName} continues using {thisItem.ItemName}");
+        if (interactionOwner.debugEnabled)
+            Debug.Log($"{thisCharacter.CharacterName} uses {interactionOwner.ItemName}.");
     }
-    public virtual void OnInteractionEnd(CharacterBase thisCharacter, ItemBase thisItem)
+    public virtual void StartInteraction(CharacterBase thisCharacter, CharacterBase interactionOwner)
     {
-        if (thisItem.debugEnabled)
-            Debug.Log($"{thisCharacter.CharacterName} stopped using {thisItem.ItemName}");
+        if (interactionOwner.debugEnabled)
+            Debug.Log($"{thisCharacter.CharacterName} uses {interactionOwner.CharacterName}.");
+    }
+
+    public virtual void OnInteractionTick(CharacterBase thisCharacter, ItemBase interactionOwner)
+    {
+        if (interactionOwner.debugEnabled)
+            Debug.Log($"{thisCharacter.CharacterName} continues using {interactionOwner.ItemName}");
+    }
+    public virtual void OnInteractionTick(CharacterBase thisCharacter, CharacterBase interactionOwner)
+    {
+        if (interactionOwner.debugEnabled)
+            Debug.Log($"{thisCharacter.CharacterName} continues using {interactionOwner.CharacterName}");
+    }
+
+    public virtual void OnInteractionEnd(CharacterBase thisCharacter, ItemBase interactionOwner)
+    {
+        if (interactionOwner.debugEnabled)
+            Debug.Log($"{thisCharacter.CharacterName} stopped using {interactionOwner.ItemName}");
         thisCharacter.OnInteractionEnd();
 
     }
+    public virtual void OnInteractionEnd(CharacterBase thisCharacter, CharacterBase interactionOwner)
+    {
+        if (interactionOwner.debugEnabled)
+            Debug.Log($"{thisCharacter.CharacterName} stopped using {interactionOwner.CharacterName}");
+        thisCharacter.OnInteractionEnd();
+    }
+
 
     protected int NeedChangePerTick(int changePerSecond, int tickRate)
     {
         return changePerSecond / tickRate;
     }
 
-    protected Transform GetInteractionSpot(CharacterBase thisCharacter, ItemBase thisItem)
+    protected Transform GetInteractionSpot(CharacterBase thisCharacter, ItemBase interactionOwner)
     {
-        Transform itemInterctionSpot = thisItem.GetInteractionSpot();
+        Transform itemInterctionSpot = interactionOwner.GetInteractionSpot();
         if(itemInterctionSpot == null)
         {
-            if (thisItem.debugEnabled)
-                Debug.Log($"{thisCharacter.name} cannot find free interaction spots on {thisItem.name} ({thisItem.gameObject.name}). " +
+            if (interactionOwner.debugEnabled)
+                Debug.Log($"{thisCharacter.name} cannot find free interaction spots on {interactionOwner.name} ({interactionOwner.gameObject.name}). " +
                     $"Selecting new interaction");
             //Select 2nd highest scoring interaction
             return null;
         }
             else
                 return itemInterctionSpot;
+    }
+    protected Transform GetInteractionSpot(CharacterBase thisCharacter, CharacterBase interactionOwner)
+    {
+        Transform itemInterctionSpot = interactionOwner.GetInteractionSpot();
+        if (itemInterctionSpot == null)
+        {
+            if (interactionOwner.debugEnabled)
+                Debug.Log($"{thisCharacter.name} cannot find free interaction spots on {interactionOwner.name} ({interactionOwner.gameObject.name}). " +
+                    $"Selecting new interaction");
+            //Select 2nd highest scoring interaction
+            return null;
+        }
+        else
+            return itemInterctionSpot;
     }
 
     protected bool CanRunInteraction(Transform interactionSpot)
@@ -87,15 +131,25 @@ public abstract class InteractionBaseSO : ScriptableObject
             return true;
     }
 
-    protected void RunInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    protected void RunInteraction(CharacterBase thisCharacter, ItemBase interactionOwner)
     {
-        Transform interactionSpot = GetInteractionSpot(thisCharacter, thisItem);
+        Transform interactionSpot = GetInteractionSpot(thisCharacter, interactionOwner);
         if (CanRunInteraction(interactionSpot))
         {
             thisCharacter.SetDestination(interactionSpot.position);
         }
         else { }
     }
+    protected void RunInteraction(CharacterBase thisCharacter, CharacterBase interactionOwner)
+    {
+        Transform interactionSpot = GetInteractionSpot(thisCharacter, interactionOwner);
+        if (CanRunInteraction(interactionSpot))
+        {
+            thisCharacter.SetDestination(interactionSpot.position);
+        }
+        else { }
+    }
+
 
     [System.Serializable]
     public class NeedRateChangePairs
