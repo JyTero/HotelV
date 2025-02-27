@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
@@ -7,6 +8,8 @@ using UnityEngine;
 public class WorldClickHandler : MonoBehaviour
 {
     public static WorldClickHandler Instance { get; private set; }
+
+    public event Action<CharacterBase> CharacterSelected;
 
     [SerializeField]
     private UIManager uiManager;
@@ -31,6 +34,7 @@ public class WorldClickHandler : MonoBehaviour
                 if (hitCharacter)
                 {
                     uiManager.EnableCharacterUI(hitCharacter);
+                    CharacterSelected.Invoke(hitCharacter);
                 }
                 else
                     uiManager.DisableCharacterUI();

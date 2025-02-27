@@ -119,12 +119,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491b713c167b6284e859bac5a22acf89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItemTick: -1
-  itemName: Sleep Induser v2
-  itemInteractions:
+  objectName: Sleep Induser v2
+  objectInteractions:
   - {fileID: 11400000, guid: 070ed6db72e6e16478c5fc51e9a1b9ae, type: 2}
-  itemInteractionSpots:
+  objectInteractionSpots:
   - {fileID: 8581442571491787235}
+  currentObjectTick: -1
+  objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   debugEnabled: 0
   dbString: 
 --- !u!1 &1582365286836803011

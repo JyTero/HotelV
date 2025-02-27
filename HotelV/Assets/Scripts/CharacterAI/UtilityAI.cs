@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UtilityAI : MonoBehaviour
@@ -12,7 +13,7 @@ public class UtilityAI : MonoBehaviour
 
 
     //TODO: Move to item manager, now each AI has its copy of the same list
-    private List<ItemBase> allItemsInWorld = new();
+    private List<InteractableObject> allInteractablesInTheWorld = new();
 
     private List<InteractionInScoring> foundInteractions = new();
 
@@ -24,7 +25,7 @@ public class UtilityAI : MonoBehaviour
 
     private void Start()
     {
-        allItemsInWorld = FindObjectsOfType<ItemBase>().ToList<ItemBase>();
+        allInteractablesInTheWorld = FindObjectsOfType<InteractableObject>().ToList<InteractableObject>();
     }
 
 
@@ -33,10 +34,10 @@ public class UtilityAI : MonoBehaviour
         if (debugEnabled)
         {
             interactionSelectDebugString = "";
-            interactionSelectDebugString += $"{thisCharacter.CharacterName} ponders what to do:\n";
+            interactionSelectDebugString += $"{thisCharacter.ObjectName} ponders what to do:\n";
         }
 
-        GatherInteractions();
+        GatherInteractions(thisCharacter);
         ScoreGatheredInteractions(thisCharacter, thisNeedsManager);
         SortFoundInteractionsByScore();
         InteractionInScoring highestScoringInteractionSO = foundInteractions[0];
@@ -55,7 +56,7 @@ public class UtilityAI : MonoBehaviour
     //TODO: add implementation get and score actions relating to the need triggering the search
     public InteractionBaseSO NeedBasedUtilityAI(CharacterBase thisCharacter, CharacterNeedsManager thisNeedsManager)
     {
-        GatherInteractions();
+        GatherInteractions(thisCharacter);
         ScoreGatheredInteractions(thisCharacter, thisNeedsManager);
         SortFoundInteractionsByScore();
         if (HigestScoringInteractionScoreHigherThanCurrentInteraction())
@@ -78,20 +79,26 @@ public class UtilityAI : MonoBehaviour
             return false;
     }
 
-    private void GatherInteractions()
+    private void GatherInteractions(CharacterBase thisCharacter)
     {
         foundInteractions.Clear();
         if (debugEnabled)
         {
             interactionSelectDebugString += "They found:\n";
         }
-        foreach (ItemBase item in allItemsInWorld)
+        foreach (InteractableObject interactable in allInteractablesInTheWorld)
         {
-            if (item.ItemHasFreeInteractionSpots())
+            if (interactable == thisCharacter)
+                continue;
+
+            if (interactable.ItemHasFreeInteractionSpots())
             {
-                foreach (InteractionBaseSO interactionSO in item.ItemInteractions)
+                foreach (InteractionBaseSO interactionSO in interactable.ObjectInteractions)
                 {
-                    foundInteractions.Add(new InteractionInScoring(interactionSO, item));
+                    if (interactionSO.InteractionEnabled)
+                        foundInteractions.Add(new InteractionInScoring(interactionSO, interactable));
+                    else
+                        continue;
                     if (debugEnabled)
                         interactionSelectDebugString += $"{interactionSO.InteractionName},\n";
                 }
@@ -156,13 +163,13 @@ public class UtilityAI : MonoBehaviour
 public class InteractionInScoring
 {
     public InteractionBaseSO InteractionSO;
-    public ItemBase InteractionItem;
+    public InteractableObject InteractableObject;
     public int InteractionScore = 0;
 
-    public InteractionInScoring(InteractionBaseSO interactionBaseSO, ItemBase interactionItem)
+    public InteractionInScoring(InteractionBaseSO interactionBaseSO, InteractableObject interactable)
     {
         InteractionSO = interactionBaseSO;
-        InteractionItem = interactionItem;
+        InteractableObject = interactable;
     }
 }
 

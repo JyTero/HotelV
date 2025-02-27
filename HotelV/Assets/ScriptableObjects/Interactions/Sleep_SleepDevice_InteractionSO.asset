@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ac097cc8d7d2e547ba81efdfbfe22bf, type: 3}
   m_Name: Sleep_SleepDevice_InteractionSO
   m_EditorClassIdentifier: 
+  objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   interactionName: Sleep
   interactionBaseScore: 10
-  interactionLenghtTicks: 48
+  interactionLenghtTicks: 480
   needSONeedAdjustRates:
   - needSO: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
     needChangePerSecond: 9
   needToUseForWeight: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
+  InteractionEnabled: 1

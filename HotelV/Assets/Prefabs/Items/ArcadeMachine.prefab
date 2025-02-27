@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 811439446276248282}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.4260526, y: -0.46447974, z: -1.4121007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -119,12 +119,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3dae1ea204743b45b0cc39af6d2789b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItemTick: -1
-  itemName: Bing Bang Bong
-  itemInteractions:
+  objectName: Lines in Blood - The Arcade Experience
+  objectInteractions:
   - {fileID: 11400000, guid: 3dee8bdfe545f944d9cf185ca3857809, type: 2}
-  itemInteractionSpots:
+  objectInteractionSpots:
   - {fileID: 8795455711702134900}
+  currentObjectTick: -1
+  objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   debugEnabled: 0
   dbString: 
 --- !u!1 &3853059283120765595

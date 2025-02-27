@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -21,16 +22,21 @@ public class NeedsPanel_UI : UIPanel
     private TMP_Text funNeedNumber;
 
 
-
-
     public override void OnPanelActivation(CharacterBase selectedCharacter)
     {
         base.OnPanelActivation(selectedCharacter);
+
+        if (selectedCharacter.thisCharacterNeedsManager.characterNeeds.OfType<Hunger_Need>().Any())
+        {
+            //if contains need, enable need
+            //on close disable each need UI
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (selectedCharacter == null)
+            return;
         UpdateHunger();
         UpdateEnergy();
         UpdateFun();

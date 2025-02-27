@@ -6,26 +6,28 @@ using UnityEngine;
 public class Sleep_InteractionSO : InteractionBaseSO
 {
 
-    public override void InteractionStart(ItemBase interactionOwner)
+    public override void InteractionStart(InteractableObject interactionOwner)
     {
-       base.InteractionStart(interactionOwner);
+        base.InteractionStart(interactionOwner);
     }
 
-    public override void InitiateInteraction(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public override void BeginInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
-        base.InitiateInteraction(thisCharacter, interactionOwner);
+        base.BeginInteraction(thisCharacter, interactionOwner);
 
         RunInteraction(thisCharacter, interactionOwner);
 
     }
 
-    public override void StartInteraction(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public override void StartInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         base.StartInteraction(thisCharacter, interactionOwner);
 
         interactionOwner.RegisterAsActiveInteraction(thisCharacter, this, interactionOwner);
+
+        thisCharacter.AddState(objectStatesSO.SleepState);
     }
-    public override void OnInteractionTick(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public override void OnInteractionTick(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         base.OnInteractionTick(thisCharacter, interactionOwner);
 
@@ -38,12 +40,14 @@ public class Sleep_InteractionSO : InteractionBaseSO
         }
     }
 
-    public override void OnInteractionEnd(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public override void OnInteractionEnd(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
-       base.OnInteractionEnd(thisCharacter, interactionOwner);
+        base.OnInteractionEnd(thisCharacter, interactionOwner);
+
+        thisCharacter.RemoveState(objectStatesSO.SleepState);
     }
 
- 
+
 
 
 

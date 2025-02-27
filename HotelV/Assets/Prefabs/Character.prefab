@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4554115113510152732}
   - component: {fileID: 6979245204452419530}
   - component: {fileID: 1123457701430909815}
+  - component: {fileID: 4047772587890462291}
   - component: {fileID: 541145859611065351}
   - component: {fileID: 8718597965210811948}
   m_Layer: 0
@@ -36,7 +37,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.63, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2395173861143709604}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8520344551004940435
@@ -67,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 8d74ff573db182f439e92dad03b93192, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -146,10 +148,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a3766233380d84c8d1d5c9a90ac7bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisCharacterNeedsManager: {fileID: 0}
-  characterName: Scarlet Blacklake
-  idleTimer: 6
+  objectName: Scarlet Blacklake
+  objectInteractions:
+  - {fileID: 11400000, guid: 9c14dc7d8f8cbdd4ca07b25fa724eabc, type: 2}
+  objectInteractionSpots:
+  - {fileID: 2395173861143709604}
+  currentObjectTick: -1
+  objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   debugEnabled: 1
+  dbString: 
+  thisCharacterNeedsManager: {fileID: 0}
+  thisCharacterTraitsManager: {fileID: 0}
+  idleTimer: 6
 --- !u!114 &1123457701430909815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,12 +173,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hungerNeedSO: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
-  HungerNeedValue: 75
+  HungerNeedValue: 10
   energyNeedSO: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
   EnergyNeedValue: 80
   funNeedSO: {fileID: 11400000, guid: 196053246064ed242adad3ad5a9db61a, type: 2}
   FunNeedValue: 50
   debugEnabled: 0
+  FreezeNeeds: 0
+--- !u!114 &4047772587890462291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2357627346963797432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2ab00cbfabb684997e2d10a3273615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugEnabled: 0
+  dbString: 
 --- !u!114 &541145859611065351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,3 +220,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   atDestinationThreshold: 1.5
+--- !u!1 &3307653417106538721
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2395173861143709604}
+  m_Layer: 0
+  m_Name: InteractionSpot01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2395173861143709604
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3307653417106538721}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4676896508650092511}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

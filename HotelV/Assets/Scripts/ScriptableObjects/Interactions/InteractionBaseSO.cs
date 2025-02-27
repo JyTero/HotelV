@@ -5,11 +5,14 @@ using UnityEngine;
 
 public abstract class InteractionBaseSO : ScriptableObject
 {
+    [SerializeField]
+    protected ObjectStateHolderSO objectStatesSO;
+
     public string InteractionName { get => interactionName; protected set => interactionName = value; }
     [SerializeField]
     protected string interactionName;
 
-    public int InteractionBaseScore { get => interactionBaseScore; protected set => interactionBaseScore = Mathf.Clamp(value, -100, 100); }
+    public int InteractionBaseScore { get => interactionBaseScore; protected set => interactionBaseScore = value; }
     [SerializeField]
     protected int interactionBaseScore;
 
@@ -17,8 +20,14 @@ public abstract class InteractionBaseSO : ScriptableObject
     [SerializeField]
     protected int interactionLenghtTicks;
 
+    public HashSet<ObjectState_BaseSO> InvalidInteractionOwnerStates { get => invalidInteractionOwnerStates; protected set => invalidInteractionOwnerStates = value; }
+    [SerializeField]
+    [Tooltip("If the Object this interaction is attached to is in these states, the interaction will be disabled")]
+    protected HashSet<ObjectState_BaseSO> invalidInteractionOwnerStates = new();
+
     [SerializeField]
     protected List<NeedRateChangePairs> needSONeedAdjustRates = new();
+
 
     //Later for when interactions may use multiple needs to weight
     //public List<NeedBaseSO> NeedWeightsToUse { get => needWeightsToUse; private set => needWeightsToUse = Mathf.Clamp(value, -100, 100); }
@@ -30,71 +39,47 @@ public abstract class InteractionBaseSO : ScriptableObject
     [SerializeField]
     private NeedBaseSO needToUseForWeight;
 
-
+    [HideInInspector]
+    public bool InteractionEnabled = true;
     
-    public virtual void InteractionStart(ItemBase interactionOwner)
-    {
-
-    }
-    public virtual void InteractionStart(CharacterBase interactionOwner)
+    public virtual void InteractionStart(InteractableObject interactionOwner)
     {
 
     }
 
-    public virtual void InitiateInteraction(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public virtual void BeginInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         if (interactionOwner.debugEnabled)
-            Debug.Log("GetFood_Interaction started");
-    }
-    public virtual void InitiateInteraction(CharacterBase thisCharacter, CharacterBase interactionOwner)
-    {
-        if (interactionOwner.debugEnabled)
-            Debug.Log("GetFood_Interaction started");
+            Debug.Log($"{interactionName} started by {thisCharacter.ObjectName}");
+        thisCharacter.ObjectStates.Remove(objectStatesSO.IdleState);
     }
 
-    public virtual void StartInteraction(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public virtual void StartInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         if (interactionOwner.debugEnabled)
-            Debug.Log($"{thisCharacter.CharacterName} uses {interactionOwner.ItemName}.");
-    }
-    public virtual void StartInteraction(CharacterBase thisCharacter, CharacterBase interactionOwner)
-    {
-        if (interactionOwner.debugEnabled)
-            Debug.Log($"{thisCharacter.CharacterName} uses {interactionOwner.CharacterName}.");
+            Debug.Log($"{thisCharacter.ObjectName} uses {interactionOwner.ObjectName}.");
     }
 
-    public virtual void OnInteractionTick(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public virtual void OnInteractionTick(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         if (interactionOwner.debugEnabled)
-            Debug.Log($"{thisCharacter.CharacterName} continues using {interactionOwner.ItemName}");
-    }
-    public virtual void OnInteractionTick(CharacterBase thisCharacter, CharacterBase interactionOwner)
-    {
-        if (interactionOwner.debugEnabled)
-            Debug.Log($"{thisCharacter.CharacterName} continues using {interactionOwner.CharacterName}");
+            Debug.Log($"{thisCharacter.ObjectName} continues using {interactionOwner.ObjectName}");
     }
 
-    public virtual void OnInteractionEnd(CharacterBase thisCharacter, ItemBase interactionOwner)
+    public virtual void OnInteractionEnd(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         if (interactionOwner.debugEnabled)
-            Debug.Log($"{thisCharacter.CharacterName} stopped using {interactionOwner.ItemName}");
+            Debug.Log($"{thisCharacter.ObjectName} stopped using {interactionOwner.ObjectName}");
         thisCharacter.OnInteractionEnd();
 
     }
-    public virtual void OnInteractionEnd(CharacterBase thisCharacter, CharacterBase interactionOwner)
-    {
-        if (interactionOwner.debugEnabled)
-            Debug.Log($"{thisCharacter.CharacterName} stopped using {interactionOwner.CharacterName}");
-        thisCharacter.OnInteractionEnd();
-    }
-
 
     protected int NeedChangePerTick(int changePerSecond, int tickRate)
     {
         return changePerSecond / tickRate;
     }
 
-    protected Transform GetInteractionSpot(CharacterBase thisCharacter, ItemBase interactionOwner)
+    protected Transform GetInteractionSpot(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         Transform itemInterctionSpot = interactionOwner.GetInteractionSpot();
         if(itemInterctionSpot == null)
@@ -108,20 +93,7 @@ public abstract class InteractionBaseSO : ScriptableObject
             else
                 return itemInterctionSpot;
     }
-    protected Transform GetInteractionSpot(CharacterBase thisCharacter, CharacterBase interactionOwner)
-    {
-        Transform itemInterctionSpot = interactionOwner.GetInteractionSpot();
-        if (itemInterctionSpot == null)
-        {
-            if (interactionOwner.debugEnabled)
-                Debug.Log($"{thisCharacter.name} cannot find free interaction spots on {interactionOwner.name} ({interactionOwner.gameObject.name}). " +
-                    $"Selecting new interaction");
-            //Select 2nd highest scoring interaction
-            return null;
-        }
-        else
-            return itemInterctionSpot;
-    }
+
 
     protected bool CanRunInteraction(Transform interactionSpot)
     {
@@ -131,7 +103,9 @@ public abstract class InteractionBaseSO : ScriptableObject
             return true;
     }
 
-    protected void RunInteraction(CharacterBase thisCharacter, ItemBase interactionOwner)
+
+
+    protected void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         Transform interactionSpot = GetInteractionSpot(thisCharacter, interactionOwner);
         if (CanRunInteraction(interactionSpot))
@@ -140,15 +114,7 @@ public abstract class InteractionBaseSO : ScriptableObject
         }
         else { }
     }
-    protected void RunInteraction(CharacterBase thisCharacter, CharacterBase interactionOwner)
-    {
-        Transform interactionSpot = GetInteractionSpot(thisCharacter, interactionOwner);
-        if (CanRunInteraction(interactionSpot))
-        {
-            thisCharacter.SetDestination(interactionSpot.position);
-        }
-        else { }
-    }
+
 
 
     [System.Serializable]

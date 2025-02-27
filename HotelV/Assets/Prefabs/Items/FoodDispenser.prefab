@@ -150,11 +150,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05070e3e010d3f4abccbe1262c6bcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItemTick: -1
-  itemName: Food Dispenser 2000
-  itemInteractions:
+  objectName: Food Dispenser 2000
+  objectInteractions:
   - {fileID: 11400000, guid: 4e9f23393b5c22640b4fb55f822f3850, type: 2}
-  itemInteractionSpots:
+  objectInteractionSpots:
   - {fileID: 6481360188837785227}
+  currentObjectTick: -1
+  objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   debugEnabled: 0
   dbString: 

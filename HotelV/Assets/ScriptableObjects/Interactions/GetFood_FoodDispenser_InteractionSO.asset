@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b192c87108d1946af030453b15955a, type: 3}
   m_Name: GetFood_FoodDispenser_InteractionSO
   m_EditorClassIdentifier: 
+  objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   interactionName: Get food
   interactionBaseScore: 10
   interactionLenghtTicks: 20
@@ -19,3 +20,4 @@ MonoBehaviour:
   - needSO: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
     needChangePerSecond: 9
   needToUseForWeight: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
+  InteractionEnabled: 1

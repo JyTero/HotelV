@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c26492dacaffaf4f9f18609d053f0d8, type: 3}
   m_Name: PlayOnArcadeMachine_InteractionSO
   m_EditorClassIdentifier: 
+  objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   interactionName: Play on arcade machine
   interactionBaseScore: 10
   interactionLenghtTicks: 24
@@ -19,3 +20,4 @@ MonoBehaviour:
   - needSO: {fileID: 11400000, guid: 196053246064ed242adad3ad5a9db61a, type: 2}
     needChangePerSecond: 9
   needToUseForWeight: {fileID: 11400000, guid: 196053246064ed242adad3ad5a9db61a, type: 2}
+  InteractionEnabled: 1

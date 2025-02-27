@@ -10,9 +10,11 @@ public class UIManager : MonoBehaviour
 
     private GameObject currentActiveUIView;
     private NeedsPanel_UI needsPanelUI;
+    private CharacterDebug_UI characterDebugUI;
     private void Start()
     {
         needsPanelUI = FindObjectOfType<NeedsPanel_UI>();
+        characterDebugUI = FindObjectOfType<CharacterDebug_UI>();
         characterUI.SetActive(false);
 
     }
@@ -23,7 +25,10 @@ public class UIManager : MonoBehaviour
         {
             currentActiveUIView.SetActive(false);
         }
+
         needsPanelUI.OnPanelActivation(character);
+        characterDebugUI.OnPanelActivation(character);
+
         characterUI.SetActive(true);
         currentActiveUIView = characterUI;
     }

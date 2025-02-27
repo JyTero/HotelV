@@ -1,21 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 
 [RequireComponent(typeof(CharacterNavigation))]
 [RequireComponent(typeof(UtilityAI))]
-public class CharacterBase : MonoBehaviour
+public class CharacterBase : InteractableObject
 {
     [HideInInspector]
     public CharacterNeedsManager thisCharacterNeedsManager;
+    [HideInInspector]
+    public CharacterTraitsManager thisCharacterTraitsManager;
 
-    public Dictionary<Transform, bool> CharacterInteractionSpots = new();
-    public List<InteractionBaseSO> CharacterInteractions { get => characterInteractions; protected set => CharacterInteractions = new(); }
-    private List<InteractionBaseSO> disabledInteractions = new();
-
-    [SerializeField]
-    protected List<InteractionBaseSO> characterInteractions = new();
 
     [SerializeField]
     [Tooltip("Idle time in ticks before new interaction search begins")]
@@ -24,24 +21,22 @@ public class CharacterBase : MonoBehaviour
 
 
     private UtilityAI UtilityAI;
-    private InteractionBaseSO currentInteraction;
-    private ItemBase currentInteractionItem;
+    private InteractionInScoring currentInteraction;
+    private InteractionInScoring queueInteraction;
     private CharacterNavigation thisCharacterNavigation;
 
-    [Header("Character details")]
-    [SerializeField]
-    private string characterName;
-    public string CharacterName { get => characterName; private set => characterName = value; }
+    private Material defaultCharacterMat;
 
-    [Header("DEBUG")]
-    public bool debugEnabled;
-    private void Start()
+
+    protected override void Start()
     {
+        base.Start();
         UtilityAI = GetComponent<UtilityAI>();
         thisCharacterNavigation = GetComponent<CharacterNavigation>();
         thisCharacterNeedsManager = GetComponent<CharacterNeedsManager>();
+        thisCharacterTraitsManager = GetComponent<CharacterTraitsManager>();
 
-        TickManager.Instance.OnTick += IdleTick;
+        BeIdle();
     }
 
 
@@ -51,22 +46,27 @@ public class CharacterBase : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-         StartUtilityAI();
+            StartUtilityAI();
         }
     }
 
     public void StartUtilityAI()
     {
-        TickManager.Instance.OnTick -= IdleTick;
         idleTimeStart = -1;
 
         InteractionInScoring interaction = UtilityAI.ChooseWhatToDo(this, thisCharacterNeedsManager);
-        if (interaction != null)
-        {
-            interaction.InteractionSO.InitiateInteraction(this, interaction.InteractionItem);
-            currentInteraction = interaction.InteractionSO;
-            currentInteractionItem = interaction.InteractionItem;
-        }
+
+
+        RunInteraction(interaction);
+
+
+    }
+
+    private void RunInteraction(InteractionInScoring interaction)
+    {
+        currentInteraction = interaction;
+        RemoveState(objectStatesSO.IdleState);
+        interaction.InteractionSO.BeginInteraction(this, interaction.InteractableObject);
     }
 
     public void SetDestination(Vector3 destination)
@@ -76,32 +76,48 @@ public class CharacterBase : MonoBehaviour
 
     public void OnAtDestination()
     {
-        currentInteraction.StartInteraction(this, currentInteractionItem);
+        currentInteraction.InteractionSO.StartInteraction(this, currentInteraction.InteractableObject);
     }
 
     public void OnInteractionEnd()
     {
         currentInteraction = null;
-        currentInteractionItem = null;
-        TickManager.Instance.OnTick += IdleTick;
+
+        if (queueInteraction != null)
+        {
+            RunQueuedInteraction();
+        }
+        else
+        {
+            AddState(objectStatesSO.IdleState);
+            BeIdle();
+        }
+
     }
 
-    public Transform GetInteractionSpot()
+    private void BeIdle()
     {
-        foreach (Transform t in CharacterInteractionSpots.Keys)
-        {
-            if (CharacterInteractionSpots[t] == true)
-                continue;
-            else
-            {
-                CharacterInteractionSpots[t] = true;
-                return t;
-            }
-        }
-        return null;
+        idleTimeStart = -1;
+        AddState(objectStatesSO.IdleState);
+        TickManager.Instance.OnTick += IdleTick;
+
     }
     private void IdleTick(int currentTick)
     {
+        if (currentInteraction != null)
+        {
+            TickManager.Instance.OnTick -= IdleTick;
+            RunInteraction(currentInteraction);
+            return;
+        }
+        if (queueInteraction != null)
+        {
+            RunQueuedInteraction();
+
+            TickManager.Instance.OnTick -= IdleTick;
+            return;
+        }
+
         if (idleTimeStart == -1)
         {
             idleTimeStart = currentTick;
@@ -116,20 +132,99 @@ public class CharacterBase : MonoBehaviour
             else
             {
                 StartUtilityAI();
+                TickManager.Instance.OnTick -= IdleTick;
             }
         }
     }
 
-    public InteractionBaseSO CurrentInteraction()
+    public void WaitInteractionTargetToHaveSocialState(InteractableObject interactionTarget)
+    {
+        TickManager.Instance.OnTick += WaitTargetSocialIdleTick;
+    }
+
+    private void WaitTargetSocialIdleTick(int currentTick)
+    {
+        if (currentInteraction.InteractableObject.ObjectStates.Contains(objectStatesSO.SocialState))
+        {
+            TickManager.Instance.OnTick -= WaitTargetSocialIdleTick;
+            currentInteraction.InteractionSO.BeginInteraction(this, currentInteraction.InteractableObject);
+            //StartSocialInteractionRecieverInteration();fgh
+            //currentInteraction.InteractionSO.BeginInteraction(this, currentInteraction.InteractableObject);
+        }
+        else
+        {
+
+        }
+    }
+
+    public override void AddState(ObjectState_BaseSO newState)
+    {
+        base.AddState(newState);
+    }
+
+    public override void RemoveState(ObjectState_BaseSO newState)
+    {
+        base.RemoveState(newState);
+    }
+
+    public void PrepareToBeSocialTarget(InteractionBaseSO socialRecieverInteractionSO, InteractableObject interactionInitiator)
+    {
+        InteractionInScoring beChattedTo = new(socialRecieverInteractionSO, interactionInitiator);
+        if (currentInteraction == null)
+            currentInteraction = beChattedTo;
+        else
+            queueInteraction = beChattedTo;
+
+    }
+
+    public void StartSocialInteractionRecieverInteration()
+    {
+        if (currentInteraction.InteractionSO is BeChattedWith_InteractionSO)
+            RunInteraction(currentInteraction);
+        else if (queueInteraction.InteractionSO is BeChattedWith_InteractionSO)
+        {
+            RunQueuedInteraction();
+        }
+        else
+            Debug.LogWarning("No valid social response interaction found on " + objectName);
+    }
+
+    private void RunQueuedInteraction()
+    {
+        currentInteraction = queueInteraction;
+        queueInteraction = null;
+        RunInteraction(currentInteraction);
+
+    }
+
+
+    public void ChangCharacterMaterialByTrait(TraitBaseSO trait)
+    {
+        var mr = GetComponent<MeshRenderer>();
+        defaultCharacterMat = mr.material;
+        mr.material = trait.TraitCharacterAppearanceMaterial;
+    }
+
+    public void RestoreDefaultMateria()
+    {
+        var mr = GetComponent<MeshRenderer>();
+        mr.material = defaultCharacterMat;
+
+    }
+
+    public InteractionInScoring CurrentInteraction()
     {
         return currentInteraction;
     }
-    public ItemBase CurrentInteractionItem()
+
+    public InteractionInScoring QueuedInteraction()
     {
-        return currentInteractionItem;
+        return queueInteraction;
     }
-    private void OnDisable()
+
+    protected override void OnDisable()
     {
+        base.OnDisable();
         TickManager.Instance.OnTick -= IdleTick;
     }
 }

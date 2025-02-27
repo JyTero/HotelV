@@ -6,20 +6,20 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayOnArcadeMachine_InteractionSO", menuName = "ScriptableObjects/Interactions/PlayOnArcadeMachine_InteractionSO")]
 public class PlayOnArcadeMachine_InteractionSO : InteractionBaseSO
 {
-    public override void InteractionStart(ItemBase thisItem)
+    public override void InteractionStart(InteractableObject thisItem)
     {
         base.InteractionStart(thisItem);
     }
 
-    public override void InitiateInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    public override void BeginInteraction(CharacterBase thisCharacter, InteractableObject thisItem)
     {
-        base.InitiateInteraction(thisCharacter, thisItem);
+        base.BeginInteraction(thisCharacter, thisItem);
 
         RunInteraction(thisCharacter, thisItem);
     }
 
 
-    public override void StartInteraction(CharacterBase thisCharacter, ItemBase thisItem)
+    public override void StartInteraction(CharacterBase thisCharacter, InteractableObject thisItem)
     {
         base.StartInteraction(thisCharacter, thisItem);
 
@@ -27,7 +27,7 @@ public class PlayOnArcadeMachine_InteractionSO : InteractionBaseSO
 
     }
 
-    public override void OnInteractionTick(CharacterBase thisCharacter, ItemBase thisItem)
+    public override void OnInteractionTick(CharacterBase thisCharacter, InteractableObject thisItem)
     {
         base.OnInteractionTick(thisCharacter, thisItem);
 
@@ -41,7 +41,7 @@ public class PlayOnArcadeMachine_InteractionSO : InteractionBaseSO
         }
 
     }
-    public override void OnInteractionEnd(CharacterBase thisCharacter, ItemBase thisItem)
+    public override void OnInteractionEnd(CharacterBase thisCharacter, InteractableObject thisItem)
     {
         base.OnInteractionEnd(thisCharacter, thisItem);
     }
