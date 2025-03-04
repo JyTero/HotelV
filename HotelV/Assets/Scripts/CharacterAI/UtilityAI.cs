@@ -95,12 +95,18 @@ public class UtilityAI : MonoBehaviour
             {
                 foreach (InteractionBaseSO interactionSO in interactable.ObjectInteractions)
                 {
-                    if (interactionSO.InteractionEnabled)
-                        foundInteractions.Add(new InteractionInScoring(interactionSO, interactable));
-                    else
+                    if (InteractionSOHasForbiddenTraits(interactionSO, thisCharacter))
                         continue;
-                    if (debugEnabled)
-                        interactionSelectDebugString += $"{interactionSO.InteractionName},\n";
+                    else
+                    {
+                        if (interactionSO.InteractionEnabled)
+                            foundInteractions.Add(new InteractionInScoring(interactionSO, interactable));
+                        else
+                            continue;
+                        if (debugEnabled)
+                            interactionSelectDebugString += $"{interactionSO.InteractionName},\n";
+                    }
+
                 }
             }
             else
@@ -111,6 +117,13 @@ public class UtilityAI : MonoBehaviour
             interactionSelectDebugString += $"In total they found {foundInteractions.Count} interactions.\n";
     }
 
+    private bool InteractionSOHasForbiddenTraits(InteractionBaseSO interactionSO, CharacterBase thisCharacter)
+    {
+        if (thisCharacter.thisCharacterTraitsManager.CharacterTraits.Overlaps(interactionSO.ForbiddenTraits))
+            return true;
+        else
+            return false;
+    }
     private void ScoreGatheredInteractions(CharacterBase thisCharacter, CharacterNeedsManager thisNeedManager)
     {
         int score;
@@ -129,6 +142,9 @@ public class UtilityAI : MonoBehaviour
             {
                 foreach (NeedBase need in thisNeedManager.characterNeeds)
                 {
+                    needSOUsedForWeighting = null;
+                    weightedNeedValue = 0;
+
                     if (need.needSO == interaction.InteractionSO.NeedToUseForWeighting)
                     {
                         needSOUsedForWeighting = need.needSO;
@@ -136,10 +152,19 @@ public class UtilityAI : MonoBehaviour
                     }
                 }
 
-                score += (int)(interaction.InteractionSO.InteractionBaseScore * needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue));
-                if (debugEnabled)
-                    interactionScoreBreakdownDebug = $"interactionBase: {interaction.InteractionSO.InteractionBaseScore} * " +
-                                                     $"needValue: {needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue)}";
+                //If character does not have the need interaction uses for weighting
+                if (needSOUsedForWeighting == null)
+                {
+                    score = (int)(interaction.InteractionSO.InteractionBaseScore) / 2;
+                }
+                else
+                {
+                    score += (int)(interaction.InteractionSO.InteractionBaseScore * needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue));
+                    if (debugEnabled)
+                        interactionScoreBreakdownDebug = $"interactionBase: {interaction.InteractionSO.InteractionBaseScore} * " +
+                                                         $"needValue: {needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue)}";
+                }
+
             }
             else
             {

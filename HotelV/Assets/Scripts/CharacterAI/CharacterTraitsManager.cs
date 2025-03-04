@@ -48,6 +48,11 @@ public class CharacterTraitsManager : MonoBehaviour
         trait.OnTraitAdd(thisCharacter);
     }
 
+    private void OnTraitAdd()
+    {
+
+    }
+
     public void RemoveTrait(TraitBaseSO trait)
     {
         if (debugEnabled)

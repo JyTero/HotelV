@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class InteractionBaseSO : ScriptableObject
@@ -19,6 +20,11 @@ public abstract class InteractionBaseSO : ScriptableObject
     public int InteractionLenghtTicks { get => interactionLenghtTicks; protected set => interactionBaseScore = value; }
     [SerializeField]
     protected int interactionLenghtTicks;
+
+    public HashSet<TraitBaseSO> ForbiddenTraits { get => forbiddenTraits; protected set => forbiddenTraits = value; }
+    protected HashSet<TraitBaseSO> forbiddenTraits = new();
+    [SerializeField]
+    protected List<TraitBaseSO> forbiddenTraitsList = new();
 
     public HashSet<ObjectState_BaseSO> InvalidInteractionOwnerStates { get => invalidInteractionOwnerStates; protected set => invalidInteractionOwnerStates = value; }
     [SerializeField]
@@ -44,7 +50,7 @@ public abstract class InteractionBaseSO : ScriptableObject
     
     public virtual void InteractionStart(InteractableObject interactionOwner)
     {
-
+        forbiddenTraits = forbiddenTraitsList.ToHashSet<TraitBaseSO>();
     }
 
     public virtual void BeginInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)

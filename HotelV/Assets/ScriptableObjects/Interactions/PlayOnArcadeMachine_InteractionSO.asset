@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   interactionName: Play on arcade machine
-  interactionBaseScore: 10
+  interactionBaseScore: 12
   interactionLenghtTicks: 24
+  forbiddenTraitsList: []
   needSONeedAdjustRates:
   - needSO: {fileID: 11400000, guid: 196053246064ed242adad3ad5a9db61a, type: 2}
     needChangePerSecond: 9

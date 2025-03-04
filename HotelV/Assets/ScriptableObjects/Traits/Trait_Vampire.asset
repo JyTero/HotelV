@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: Trait_Vampire
   m_EditorClassIdentifier: 
   traitName: Vampirism
-  needsTraitAdds: []
-  needsTraitRemoves: []
+  needsTraitAdds:
+  - {fileID: 11400000, guid: c036e457601e2aa4d85cc55da67d3b6c, type: 2}
+  needsTraitRemoves:
+  - {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
+  - {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
   traitCharacterAppearanceMaterial: {fileID: 2100000, guid: 6d4333ff5cf73a84d9d999081852f155,
     type: 2}
+  enableDebug: 1
