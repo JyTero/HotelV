@@ -17,9 +17,9 @@ public class BeChattedWith_InteractionSO : InteractionBaseSO
 
         thisCharacter.AddState(objectStatesSO.SocialState);
     }
-    public override void StartInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public override void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
-        base.StartInteraction(thisCharacter, interactionOwner);
+        base.RunInteraction(thisCharacter, interactionOwner);
 
         interactionOwner.RegisterAsActiveInteraction(thisCharacter, this, interactionOwner);
 

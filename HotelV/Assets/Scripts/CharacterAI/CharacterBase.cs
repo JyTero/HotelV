@@ -74,9 +74,10 @@ public class CharacterBase : InteractableObject
         thisCharacterNavigation.SetAndSaveDestination(destination);
     }
 
+    //Seperate when arriving to interaction destination and when other sort of destination
     public void OnAtDestination()
     {
-        currentInteraction.InteractionSO.StartInteraction(this, currentInteraction.InteractableObject);
+        currentInteraction.InteractionSO.RunInteraction(this, currentInteraction.InteractableObject);
     }
 
     public void OnInteractionEnd()

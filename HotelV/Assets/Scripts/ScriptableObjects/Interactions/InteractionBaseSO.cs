@@ -60,7 +60,7 @@ public abstract class InteractionBaseSO : ScriptableObject
         thisCharacter.ObjectStates.Remove(objectStatesSO.IdleState);
     }
 
-    public virtual void StartInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public virtual void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         if (interactionOwner.debugEnabled)
             Debug.Log($"{thisCharacter.ObjectName} uses {interactionOwner.ObjectName}.");
@@ -111,7 +111,7 @@ public abstract class InteractionBaseSO : ScriptableObject
 
 
 
-    protected void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    protected void RouteToInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         Transform interactionSpot = GetInteractionSpot(thisCharacter, interactionOwner);
         if (CanRunInteraction(interactionSpot))

@@ -13,7 +13,6 @@ public class UtilityAI : MonoBehaviour
 
 
     //TODO: Move to item manager, now each AI has its copy of the same list
-    private List<InteractableObject> allInteractablesInTheWorld = new();
 
     private List<InteractionInScoring> foundInteractions = new();
 
@@ -25,7 +24,7 @@ public class UtilityAI : MonoBehaviour
 
     private void Start()
     {
-        allInteractablesInTheWorld = FindObjectsOfType<InteractableObject>().ToList<InteractableObject>();
+
     }
 
 
@@ -86,7 +85,7 @@ public class UtilityAI : MonoBehaviour
         {
             interactionSelectDebugString += "They found:\n";
         }
-        foreach (InteractableObject interactable in allInteractablesInTheWorld)
+        foreach (InteractableObject interactable in InteractionManager.Instance.AllInteractableObjects)
         {
             if (interactable == thisCharacter)
                 continue;
@@ -95,16 +94,28 @@ public class UtilityAI : MonoBehaviour
             {
                 foreach (InteractionBaseSO interactionSO in interactable.ObjectInteractions)
                 {
-                    if (InteractionSOHasForbiddenTraits(interactionSO, thisCharacter))
+                    if (debugEnabled)
+                        interactionSelectDebugString += $"{interactionSO.InteractionName}, ";
+                    if (CharacterHasForbiddenTraits(interactionSO, thisCharacter))
+                    {
+                        if (debugEnabled)
+                            interactionSelectDebugString += "not valid\n";
                         continue;
+                    }
                     else
                     {
                         if (interactionSO.InteractionEnabled)
+                        {
+                            if (debugEnabled)
+                                interactionSelectDebugString += "valid\n";
                             foundInteractions.Add(new InteractionInScoring(interactionSO, interactable));
+                        }
                         else
+                        {
+                            if (debugEnabled)
+                                interactionSelectDebugString += "not valid\n";
                             continue;
-                        if (debugEnabled)
-                            interactionSelectDebugString += $"{interactionSO.InteractionName},\n";
+                        }
                     }
 
                 }
@@ -117,7 +128,7 @@ public class UtilityAI : MonoBehaviour
             interactionSelectDebugString += $"In total they found {foundInteractions.Count} interactions.\n";
     }
 
-    private bool InteractionSOHasForbiddenTraits(InteractionBaseSO interactionSO, CharacterBase thisCharacter)
+    private bool CharacterHasForbiddenTraits(InteractionBaseSO interactionSO, CharacterBase thisCharacter)
     {
         if (thisCharacter.thisCharacterTraitsManager.CharacterTraits.Overlaps(interactionSO.ForbiddenTraits))
             return true;

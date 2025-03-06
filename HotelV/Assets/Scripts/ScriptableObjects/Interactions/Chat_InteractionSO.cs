@@ -17,9 +17,9 @@ public class Chat_InteractionSO : InteractionBaseSO
     {
         base.BeginInteraction(thisCharacter, interactionOwner);
 
-
+        //Would currently allow running the interaction if target chats with someone else
         if (interactionOwner.ObjectStates.Contains(objectStatesSO.SocialState))
-            RunInteraction(thisCharacter, interactionOwner);
+            RouteToInteraction(thisCharacter, interactionOwner);
         else
         {
             ((CharacterBase)interactionOwner).PrepareToBeSocialTarget(interactionRecieverInteractionSO, thisCharacter);
@@ -27,9 +27,9 @@ public class Chat_InteractionSO : InteractionBaseSO
         }
 
     }
-    public override void StartInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public override void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
-        base.StartInteraction(thisCharacter, interactionOwner);
+        base.RunInteraction(thisCharacter, interactionOwner);
 
         interactionOwner.RegisterAsActiveInteraction(thisCharacter, this, interactionOwner);
 

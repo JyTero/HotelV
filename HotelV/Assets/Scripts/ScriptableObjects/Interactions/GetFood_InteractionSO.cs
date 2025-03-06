@@ -15,13 +15,13 @@ public class GetFood_InteractionSO : InteractionBaseSO
     {
         base.BeginInteraction(thisCharacter, thisItem);
 
-        RunInteraction(thisCharacter, thisItem);
+        RouteToInteraction(thisCharacter, thisItem);
     }
 
 
-    public override void StartInteraction(CharacterBase thisCharacter, InteractableObject thisItem)
+    public override void RunInteraction(CharacterBase thisCharacter, InteractableObject thisItem)
     {
-        base.StartInteraction(thisCharacter, thisItem);
+        base.RunInteraction(thisCharacter, thisItem);
 
         thisItem.RegisterAsActiveInteraction(thisCharacter, this, thisItem);
 

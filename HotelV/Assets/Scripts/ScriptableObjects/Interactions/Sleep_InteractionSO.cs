@@ -15,13 +15,13 @@ public class Sleep_InteractionSO : InteractionBaseSO
     {
         base.BeginInteraction(thisCharacter, interactionOwner);
 
-        RunInteraction(thisCharacter, interactionOwner);
+        RouteToInteraction(thisCharacter, interactionOwner);
 
     }
 
-    public override void StartInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public override void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
-        base.StartInteraction(thisCharacter, interactionOwner);
+        base.RunInteraction(thisCharacter, interactionOwner);
 
         interactionOwner.RegisterAsActiveInteraction(thisCharacter, this, interactionOwner);
 
