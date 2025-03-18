@@ -151,10 +151,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Food Dispenser 2000
-  objectInteractions:
-  - {fileID: 11400000, guid: 4e9f23393b5c22640b4fb55f822f3850, type: 2}
   objectInteractionSpots:
   - {fileID: 6481360188837785227}
+  interactionSOs:
+  - {fileID: 11400000, guid: 4e9f23393b5c22640b4fb55f822f3850, type: 2}
   currentObjectTick: -1
   objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   debugEnabled: 0

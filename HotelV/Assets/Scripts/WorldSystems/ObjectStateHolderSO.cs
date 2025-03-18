@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ObjectStatesSO", menuName = "ScriptableObjects/Tools/ObjectStatesSO")]
 public class ObjectStateHolderSO : ScriptableObject 
 {
+    //Keeps refrence to all states InteractableObjects can have
+
     //States
     public ObjectState_IdleSO IdleState { get => idleState; private set => idleState = value; }
     [SerializeField]

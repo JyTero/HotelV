@@ -40,7 +40,7 @@ public class CharacterDebug_UI : UIPanel
         if (selectedCharacter.CurrentInteraction() == null)
             charCurrentInteractionTMP.text = "null";
         else
-            charCurrentInteractionTMP.text = selectedCharacter.CurrentInteraction().InteractionSO.InteractionName;
+            charCurrentInteractionTMP.text = selectedCharacter.CurrentInteraction().InteractionName;
     }
     private void UpdateCharQueuedInteraction()
     {
@@ -48,7 +48,7 @@ public class CharacterDebug_UI : UIPanel
         if (queuedInteraction == null)
             charQueuedInteractionTMP.text = "null";
         else
-            charQueuedInteractionTMP.text = queuedInteraction.InteractionSO.InteractionName;
+            charQueuedInteractionTMP.text = queuedInteraction.InteractionName;
     }
     private void UpdateCharCurrentState()
     {

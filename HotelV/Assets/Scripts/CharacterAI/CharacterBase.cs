@@ -21,8 +21,8 @@ public class CharacterBase : InteractableObject
 
 
     private UtilityAI UtilityAI;
-    private InteractionInScoring currentInteraction;
-    private InteractionInScoring queueInteraction;
+    private Interaction currentInteraction;
+    private Interaction queueInteraction;
     private CharacterNavigation thisCharacterNavigation;
 
     private Material defaultCharacterMat;
@@ -38,7 +38,6 @@ public class CharacterBase : InteractableObject
 
         BeIdle();
     }
-
 
     //DEBUG
     private float hungerDecrease = 0;
@@ -58,14 +57,15 @@ public class CharacterBase : InteractableObject
 
         RunInteraction(currentInteraction);
 
-
     }
 
-    private void RunInteraction(InteractionInScoring interaction)
+    private void RunInteraction(Interaction interaction)
     {
        // currentInteraction = interaction;
         RemoveState(objectStatesSO.IdleState);
-        interaction.InteractionSO.BeginInteraction(this, interaction.InteractableObject);
+
+        interaction.InteractionSO.BeginInteraction(this, interaction.InteractionOwner);
+        interaction.BeginInteraction(this);
     }
 
     public void SetDestination(Vector3 destination)
@@ -76,7 +76,7 @@ public class CharacterBase : InteractableObject
     //Seperate when arriving to interaction destination and when other sort of destination
     public void OnAtDestination()
     {
-        currentInteraction.InteractionSO.RunInteraction(this, currentInteraction.InteractableObject);
+        currentInteraction.RunInteraction(this);
     }
 
     public void OnInteractionEnd()
@@ -144,10 +144,10 @@ public class CharacterBase : InteractableObject
 
     private void WaitTargetSocialIdleTick(int currentTick)
     {
-        if (currentInteraction.InteractableObject.ObjectStates.Contains(objectStatesSO.SocialState))
+        if (currentInteraction.InteractionOwner.ObjectStates.Contains(objectStatesSO.SocialState))
         {
             TickManager.Instance.OnTick -= WaitTargetSocialIdleTick;
-            currentInteraction.InteractionSO.BeginInteraction(this, currentInteraction.InteractableObject);
+            currentInteraction.BeginInteraction(this);
             //StartSocialInteractionRecieverInteration();fgh
             //currentInteraction.InteractionSO.BeginInteraction(this, currentInteraction.InteractableObject);
         }
@@ -169,7 +169,7 @@ public class CharacterBase : InteractableObject
 
     public void PrepareToBeSocialTarget(InteractionBaseSO socialRecieverInteractionSO, InteractableObject interactionInitiator)
     {
-        InteractionInScoring beChattedTo = new(socialRecieverInteractionSO, interactionInitiator);
+        Interaction beChattedTo = new(socialRecieverInteractionSO, interactionInitiator);
         queueInteraction = beChattedTo;
 
         //if (currentInteraction == null)
@@ -204,7 +204,7 @@ public class CharacterBase : InteractableObject
 
     public void InteractionTargetReady()
     {
-        ((SocialInteractionBaseSO)currentInteraction.InteractionSO).ContinueInteractionOnTargetReady(this, currentInteraction.InteractableObject);
+        ((SocialInteractionBaseSO)currentInteraction.InteractionSO).ContinueInteractionOnTargetReady(this, currentInteraction.InteractionOwner);
     }
 
     public void ChangCharacterMaterialByTrait(TraitBaseSO trait)
@@ -221,12 +221,12 @@ public class CharacterBase : InteractableObject
 
     }
 
-    public InteractionInScoring CurrentInteraction()
+    public Interaction CurrentInteraction()
     {
         return currentInteraction;
     }
 
-    public InteractionInScoring QueuedInteraction()
+    public Interaction QueuedInteraction()
     {
         return queueInteraction;
     }

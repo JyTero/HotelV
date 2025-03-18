@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public abstract class InteractableObject : MonoBehaviour
@@ -8,14 +9,17 @@ public abstract class InteractableObject : MonoBehaviour
     [SerializeField]
     protected string objectName;
 
-    public List<InteractionBaseSO> ObjectInteractions { get => objectInteractions; protected set => ObjectInteractions = new(); }
+    public List<Interaction> ObjectInteractions { get; private set; }
 
     public Dictionary<Transform, bool> ObjectInteractionSpots = new();
 
-    [SerializeField]
-    protected List<InteractionBaseSO> objectInteractions = new();
+    //[SerializeField]
+    //protected List<Interaction> objectInteractions = new();
     [SerializeField]
     protected List<Transform> objectInteractionSpots = new();
+
+    [SerializeField]
+    private List<InteractionBaseSO> interactionSOs = new();
 
     [HideInInspector]
     public int currentObjectTick = -1;
@@ -36,14 +40,25 @@ public abstract class InteractableObject : MonoBehaviour
 
     protected virtual void Awake()
     {
-        MoveInteractionSportsFromListToDictionary();
+        ObjectInteractions = new();
+        MoveInteractionSpotsFromListToDictionary();
+        IntialiseInteractionsFromSOs();
     }
 
-    private void MoveInteractionSportsFromListToDictionary()
+    private void MoveInteractionSpotsFromListToDictionary()
     {
         foreach (Transform t in objectInteractionSpots)
         {
             ObjectInteractionSpots.Add(t, false);
+        }
+    }
+
+    private void IntialiseInteractionsFromSOs()
+    {
+        foreach(InteractionBaseSO interactionSO in interactionSOs)
+        {
+            ObjectInteractions.Add(new(interactionSO, this));
+
         }
     }
 
@@ -180,27 +195,27 @@ public abstract class InteractableObject : MonoBehaviour
         return (interactionStartTicks + interactionLenght) - currentObjectTick;
     }
 
-    public void DisableInteraction(InteractionBaseSO interaction)
+    public void DisableInteraction(Interaction interaction)
     {
         interaction.InteractionEnabled = false;
     }
 
     public void DisableAllInteractions()
     {
-        foreach (InteractionBaseSO interaction in ObjectInteractions)
+        foreach (Interaction interaction in ObjectInteractions)
         {
             interaction.InteractionEnabled = false;
         }
     }
 
-    public void EnableInteraction(InteractionBaseSO interaction)
+    public void EnableInteraction(Interaction interaction)
     {
         interaction.InteractionEnabled = true;
     }
 
     public void EnableAllInteractions()
     {
-        foreach (InteractionBaseSO interaction in ObjectInteractions)
+        foreach (Interaction interaction in ObjectInteractions)
         {
             interaction.InteractionEnabled = true;
         }
@@ -224,11 +239,11 @@ public abstract class InteractableObject : MonoBehaviour
 
     private void UpdateObjectInteractionValidity()
     {
-        foreach (InteractionBaseSO interaction in objectInteractions)
+        foreach (Interaction interaction in ObjectInteractions)
         {
             foreach (ObjectState_BaseSO state in ObjectStates)
             {
-                if (interaction.InvalidInteractionOwnerStates.Contains(state))
+                if (interaction.InteractionSO.InvalidInteractionOwnerStates.Contains(state))
                     interaction.InteractionEnabled = false;
                 else
                     interaction.InteractionEnabled = true;

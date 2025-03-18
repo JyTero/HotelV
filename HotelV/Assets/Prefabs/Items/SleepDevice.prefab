@@ -120,10 +120,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Sleep Induser v2
-  objectInteractions:
-  - {fileID: 11400000, guid: 070ed6db72e6e16478c5fc51e9a1b9ae, type: 2}
   objectInteractionSpots:
   - {fileID: 8581442571491787235}
+  interactionSOs:
+  - {fileID: 11400000, guid: 070ed6db72e6e16478c5fc51e9a1b9ae, type: 2}
   currentObjectTick: -1
   objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   debugEnabled: 0

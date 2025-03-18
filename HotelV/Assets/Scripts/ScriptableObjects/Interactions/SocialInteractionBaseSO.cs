@@ -40,6 +40,6 @@ public class SocialInteractionBaseSO : InteractionBaseSO
 
     public void RunReceiverInteraction(InteractableObject interactionInitiator, InteractableObject interactionReceiver)
     {
-        ((CharacterBase)interactionReceiver).CurrentInteraction().InteractionSO.RunInteraction((CharacterBase)interactionReceiver, interactionInitiator);
+        ((CharacterBase)interactionReceiver).CurrentInteraction().RunInteraction((CharacterBase)interactionReceiver);
     }
 }

@@ -6,8 +6,8 @@ using UnityEngine;
 public class InteractionManager : MonoBehaviour
 {
     public static InteractionManager Instance { get; private set; }
-    public HashSet<InteractionBaseSO> AllInteractions { get => allInteractions; protected set => allInteractions = value; }
-    protected HashSet<InteractionBaseSO> allInteractions = new();
+    public HashSet<Interaction> AllInteractions { get => allInteractions; protected set => allInteractions = value; }
+    protected HashSet<Interaction> allInteractions = new();
 
     public HashSet<InteractableObject> AllInteractableObjects { get => allInteractableObjects; protected set => allInteractableObjects = value; }
     protected HashSet<InteractableObject> allInteractableObjects = new();
@@ -33,10 +33,10 @@ public class InteractionManager : MonoBehaviour
     {
         foreach (InteractableObject interactable in allInteractableObjects)
         {
-            foreach (InteractionBaseSO interaction in interactable.ObjectInteractions)
+            foreach (Interaction interaction in interactable.ObjectInteractions)
             {
                 allInteractions.Add(interaction);
-                interaction.InteractionStart(interactable);
+                interaction.InteractionSO.InteractionStart(interactable);
             }
         }
     }

@@ -45,9 +45,7 @@ public abstract class InteractionBaseSO : ScriptableObject
     [SerializeField]
     private NeedBaseSO needToUseForWeight;
 
-    [HideInInspector]
-    public bool InteractionEnabled = true;
-    
+
     public virtual void InteractionStart(InteractableObject interactionOwner)
     {
         forbiddenTraits = forbiddenTraitsList.ToHashSet<TraitBaseSO>();
@@ -85,20 +83,20 @@ public abstract class InteractionBaseSO : ScriptableObject
         return changePerSecond / tickRate;
     }
 
-    protected Transform GetInteractionSpot(CharacterBase thisCharacter, InteractableObject interactionOwner)
-    {
-        Transform itemInterctionSpot = interactionOwner.GetInteractionSpot();
-        if(itemInterctionSpot == null)
-        {
-            if (interactionOwner.debugEnabled)
-                Debug.Log($"{thisCharacter.name} cannot find free interaction spots on {interactionOwner.name} ({interactionOwner.gameObject.name}). " +
-                    $"Selecting new interaction");
-            //Select 2nd highest scoring interaction
-            return null;
-        }
-            else
-                return itemInterctionSpot;
-    }
+    //protected Transform GetInteractionSpot(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    //{
+    //    Transform itemInterctionSpot = interactionOwner.GetInteractionSpot();
+    //    if(itemInterctionSpot == null)
+    //    {
+    //        if (interactionOwner.debugEnabled)
+    //            Debug.Log($"{thisCharacter.ObjectName} cannot find free interaction spots on {interactionOwner.ObjectName} ({interactionOwner.ObjectName}). " +
+    //                $"Selecting new interaction");
+    //        //Select 2nd highest scoring interaction
+    //        return null;
+    //    }
+    //        else
+    //            return itemInterctionSpot;
+    //}
 
 
     protected bool CanRunInteraction(Transform interactionSpot)
@@ -113,7 +111,7 @@ public abstract class InteractionBaseSO : ScriptableObject
 
     protected void RouteToInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
-        Transform interactionSpot = GetInteractionSpot(thisCharacter, interactionOwner);
+        Transform interactionSpot = interactionOwner.GetInteractionSpot();
         if (CanRunInteraction(interactionSpot))
         {
             thisCharacter.SetDestination(interactionSpot.position);

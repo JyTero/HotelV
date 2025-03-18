@@ -149,17 +149,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Scarlet Blacklake
-  objectInteractions:
-  - {fileID: 11400000, guid: 9c14dc7d8f8cbdd4ca07b25fa724eabc, type: 2}
   objectInteractionSpots:
   - {fileID: 2395173861143709604}
+  interactionSOs:
+  - {fileID: 11400000, guid: 9c14dc7d8f8cbdd4ca07b25fa724eabc, type: 2}
   currentObjectTick: -1
   objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   debugEnabled: 1
   dbString: 
   thisCharacterNeedsManager: {fileID: 0}
   thisCharacterTraitsManager: {fileID: 0}
-  idleTimer: 6
+  idleTimer: 4
 --- !u!114 &1123457701430909815
 MonoBehaviour:
   m_ObjectHideFlags: 0

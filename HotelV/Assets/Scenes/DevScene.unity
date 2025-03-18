@@ -820,6 +820,17 @@ PrefabInstance:
       propertyPath: characterName
       value: Cath Brooks
       objectReference: {fileID: 0}
+    - target: {fileID: 6979245204452419530, guid: 5c18d4502ac83d047aa2087e0d07a7e3,
+        type: 3}
+      propertyPath: interactionSOs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979245204452419530, guid: 5c18d4502ac83d047aa2087e0d07a7e3,
+        type: 3}
+      propertyPath: interactionSOs.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9c14dc7d8f8cbdd4ca07b25fa724eabc,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -882,6 +893,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SleepDevice (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 480535534370160237, guid: 1e981a54e46ebfe40aa6c212df743349,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4387814740963865266, guid: 1e981a54e46ebfe40aa6c212df743349,
         type: 3}
@@ -1867,6 +1883,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FoodDispenser (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2476707569328206529, guid: bb9a98abf9477c740b792787e46ea8d5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3128,7 +3149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1293417559
 Transform:
   m_ObjectHideFlags: 0
@@ -3240,6 +3261,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ArcadeMachine (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 811439446276248282, guid: d8a554fe3c8efb445b3ec890634bb252,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5132299520591051116, guid: d8a554fe3c8efb445b3ec890634bb252,
         type: 3}
@@ -4671,11 +4697,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FoodDispenser
       objectReference: {fileID: 0}
-    - target: {fileID: 2476707569328206529, guid: bb9a98abf9477c740b792787e46ea8d5,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4693,11 +4714,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SleepDevice
-      objectReference: {fileID: 0}
-    - target: {fileID: 480535534370160237, guid: 1e981a54e46ebfe40aa6c212df743349,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4387814740963865266, guid: 1e981a54e46ebfe40aa6c212df743349,
         type: 3}
@@ -4767,11 +4783,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
-    - target: {fileID: 2357627346963797432, guid: 5c18d4502ac83d047aa2087e0d07a7e3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4676896508650092511, guid: 5c18d4502ac83d047aa2087e0d07a7e3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4821,16 +4832,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6979245204452419530, guid: 5c18d4502ac83d047aa2087e0d07a7e3,
-        type: 3}
-      propertyPath: idleTimer
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6979245204452419530, guid: 5c18d4502ac83d047aa2087e0d07a7e3,
-        type: 3}
-      propertyPath: debugEnabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
