@@ -57,7 +57,7 @@ public abstract class InteractionBaseSO : ScriptableObject
     {
         if (interactionOwner.debugEnabled)
             Debug.Log($"{interactionName} started by {thisCharacter.ObjectName}");
-        thisCharacter.ObjectStates.Remove(objectStatesSO.IdleState);
+
     }
 
     public virtual void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)

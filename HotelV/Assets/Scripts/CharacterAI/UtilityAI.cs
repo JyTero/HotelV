@@ -96,6 +96,7 @@ public class UtilityAI : MonoBehaviour
                 {
                     if (debugEnabled)
                         interactionSelectDebugString += $"{interactionSO.InteractionName}, ";
+
                     if (CharacterHasForbiddenTraits(interactionSO, thisCharacter))
                     {
                         if (debugEnabled)
@@ -130,7 +131,9 @@ public class UtilityAI : MonoBehaviour
 
     private bool CharacterHasForbiddenTraits(InteractionBaseSO interactionSO, CharacterBase thisCharacter)
     {
-        if (thisCharacter.thisCharacterTraitsManager.CharacterTraits.Overlaps(interactionSO.ForbiddenTraits))
+        if (interactionSO.ForbiddenTraits.Count > 0)
+            return false;
+         else if (thisCharacter.thisCharacterTraitsManager.CharacterTraits.Overlaps(interactionSO.ForbiddenTraits))
             return true;
         else
             return false;
@@ -160,6 +163,7 @@ public class UtilityAI : MonoBehaviour
                     {
                         needSOUsedForWeighting = need.needSO;
                         weightedNeedValue = (float)need.needValue / 100;
+                        break;
                     }
                 }
 
@@ -167,13 +171,14 @@ public class UtilityAI : MonoBehaviour
                 if (needSOUsedForWeighting == null)
                 {
                     score = (int)(interaction.InteractionSO.InteractionBaseScore) / 2;
+                    interactionScoreBreakdownDebug = $"Character did not have weighted need ({interaction.InteractionSO.NeedToUseForWeighting.NeedName})";
                 }
                 else
                 {
                     score += (int)(interaction.InteractionSO.InteractionBaseScore * needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue));
                     if (debugEnabled)
                         interactionScoreBreakdownDebug = $"interactionBase: {interaction.InteractionSO.InteractionBaseScore} * " +
-                                                         $"needValue: {needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue)}";
+                                                         $"needValue ({needSOUsedForWeighting.NeedName}): {needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue)}";
                 }
 
             }

@@ -54,17 +54,16 @@ public class CharacterBase : InteractableObject
     {
         idleTimeStart = -1;
 
-        InteractionInScoring interaction = UtilityAI.ChooseWhatToDo(this, thisCharacterNeedsManager);
+        currentInteraction = UtilityAI.ChooseWhatToDo(this, thisCharacterNeedsManager);       
 
-
-        RunInteraction(interaction);
+        RunInteraction(currentInteraction);
 
 
     }
 
     private void RunInteraction(InteractionInScoring interaction)
     {
-        currentInteraction = interaction;
+       // currentInteraction = interaction;
         RemoveState(objectStatesSO.IdleState);
         interaction.InteractionSO.BeginInteraction(this, interaction.InteractableObject);
     }
@@ -171,10 +170,12 @@ public class CharacterBase : InteractableObject
     public void PrepareToBeSocialTarget(InteractionBaseSO socialRecieverInteractionSO, InteractableObject interactionInitiator)
     {
         InteractionInScoring beChattedTo = new(socialRecieverInteractionSO, interactionInitiator);
-        if (currentInteraction == null)
-            currentInteraction = beChattedTo;
-        else
-            queueInteraction = beChattedTo;
+        queueInteraction = beChattedTo;
+
+        //if (currentInteraction == null)
+        //    currentInteraction = beChattedTo;
+        //else
+        //    queueInteraction = beChattedTo;
 
     }
 
@@ -182,22 +183,29 @@ public class CharacterBase : InteractableObject
     {
         if (currentInteraction.InteractionSO is BeChattedWith_InteractionSO)
             RunInteraction(currentInteraction);
-        else if (queueInteraction.InteractionSO is BeChattedWith_InteractionSO)
-        {
-            RunQueuedInteraction();
-        }
+        //else if (queueInteraction.InteractionSO is BeChattedWith_InteractionSO)
+        //{
+        //    RunQueuedInteraction();
+        //}
         else
             Debug.LogWarning("No valid social response interaction found on " + objectName);
     }
 
     private void RunQueuedInteraction()
     {
+        //Debug.LogWarning($"Tried to run queued interaction, this shouldn't happen ({objectName} | {queueInteraction.InteractionSO.InteractionName})");
+
+
         currentInteraction = queueInteraction;
         queueInteraction = null;
         RunInteraction(currentInteraction);
 
     }
 
+    public void InteractionTargetReady()
+    {
+        ((SocialInteractionBaseSO)currentInteraction.InteractionSO).ContinueInteractionOnTargetReady(this, currentInteraction.InteractableObject);
+    }
 
     public void ChangCharacterMaterialByTrait(TraitBaseSO trait)
     {

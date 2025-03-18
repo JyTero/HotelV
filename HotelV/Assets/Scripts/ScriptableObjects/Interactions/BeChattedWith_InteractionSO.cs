@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "BeChattedWith_InteractionSO", menuName = "ScriptableObjects/Interactions/BeChattedWith_InteractionSO")]
 
-public class BeChattedWith_InteractionSO : InteractionBaseSO
+public class BeChattedWith_InteractionSO : SocialInteractionBaseSO
 {
     public override void InteractionStart(InteractableObject interactionOwner)
     {
@@ -15,7 +15,9 @@ public class BeChattedWith_InteractionSO : InteractionBaseSO
     {
         base.BeginInteraction(thisCharacter, interactionOwner);
 
+        //Put these into SocialReceiverInteractionBaseSO class
         thisCharacter.AddState(objectStatesSO.SocialState);
+        ((CharacterBase)interactionOwner).InteractionTargetReady(); 
     }
     public override void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
@@ -37,10 +39,10 @@ public class BeChattedWith_InteractionSO : InteractionBaseSO
         //    thisCharacter.thisCharacterNeedsManager.AdjustNeed(needPair.needSO, (int)needChangePerTick);
         //}
     }
-
+    
     public override void OnInteractionEnd(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
-        thisCharacter.RemoveState(objectStatesSO.SocialState);
+        //thisCharacter.RemoveState(objectStatesSO.SocialState);
 
         base.OnInteractionEnd(thisCharacter, interactionOwner);
 

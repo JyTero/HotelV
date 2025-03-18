@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Chat_InteractionSO", menuName = "ScriptableObjects/Interactions/Chat_InteractionSO")]
-public class Chat_InteractionSO : InteractionBaseSO
+public class Chat_InteractionSO : SocialInteractionBaseSO
 {
     [SerializeField]
     private InteractionBaseSO interactionRecieverInteractionSO;
@@ -18,18 +18,26 @@ public class Chat_InteractionSO : InteractionBaseSO
         base.BeginInteraction(thisCharacter, interactionOwner);
 
         //Would currently allow running the interaction if target chats with someone else
-        if (interactionOwner.ObjectStates.Contains(objectStatesSO.SocialState))
-            RouteToInteraction(thisCharacter, interactionOwner);
-        else
-        {
+        //if (interactionOwner.ObjectStates.Contains(objectStatesSO.SocialState))
+        //    RouteToInteraction(thisCharacter, interactionOwner);
+        //else
+        //{
             ((CharacterBase)interactionOwner).PrepareToBeSocialTarget(interactionRecieverInteractionSO, thisCharacter);
-            thisCharacter.WaitInteractionTargetToHaveSocialState(interactionOwner);
-        }
+           // thisCharacter.WaitInteractionTargetToHaveSocialState(interactionOwner);
+        //}
 
+    }
+   
+    public override void ContinueInteractionOnTargetReady(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    {
+        base.ContinueInteractionOnTargetReady(thisCharacter, interactionOwner);
+        RouteToInteraction(thisCharacter, interactionOwner);
     }
     public override void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         base.RunInteraction(thisCharacter, interactionOwner);
+
+        RunReceiverInteraction(thisCharacter, interactionOwner);
 
         interactionOwner.RegisterAsActiveInteraction(thisCharacter, this, interactionOwner);
 

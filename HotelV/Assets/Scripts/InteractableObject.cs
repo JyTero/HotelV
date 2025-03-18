@@ -119,6 +119,8 @@ public abstract class InteractableObject : MonoBehaviour
         return false;
     }
 
+
+
     public void RegisterAsActiveInteraction(CharacterBase thisCharacter, InteractionBaseSO interactionSO, InteractableObject interactionObject)
     {
         ActiveInteraction activeInteraction = new(thisCharacter, interactionSO, currentObjectTick, interactionObject, objectInteractionSpots[0]);

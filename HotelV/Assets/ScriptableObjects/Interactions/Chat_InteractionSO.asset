@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   interactionName: Chat
-  interactionBaseScore: 8
+  interactionBaseScore: 10
   interactionLenghtTicks: 8
+  forbiddenTraitsList: []
   needSONeedAdjustRates: []
   needToUseForWeight: {fileID: 0}
   InteractionEnabled: 1

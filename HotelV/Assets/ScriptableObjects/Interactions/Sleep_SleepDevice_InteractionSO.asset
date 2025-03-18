@@ -15,7 +15,8 @@ MonoBehaviour:
   objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   interactionName: Sleep
   interactionBaseScore: 10
-  interactionLenghtTicks: 480
+  interactionLenghtTicks: 12
+  forbiddenTraitsList: []
   needSONeedAdjustRates:
   - needSO: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
     needChangePerSecond: 9

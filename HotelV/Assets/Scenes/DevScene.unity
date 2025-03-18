@@ -743,7 +743,7 @@ PrefabInstance:
     - target: {fileID: 1123457701430909815, guid: 5c18d4502ac83d047aa2087e0d07a7e3,
         type: 3}
       propertyPath: HungerNeedValue
-      value: 100
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 2357627346963797432, guid: 5c18d4502ac83d047aa2087e0d07a7e3,
         type: 3}
@@ -813,7 +813,7 @@ PrefabInstance:
     - target: {fileID: 6979245204452419530, guid: 5c18d4502ac83d047aa2087e0d07a7e3,
         type: 3}
       propertyPath: debugEnabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6979245204452419530, guid: 5c18d4502ac83d047aa2087e0d07a7e3,
         type: 3}
@@ -3988,7 +3988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a754be58a8c73944288125c78cfd6342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugEnabled: 1
+  debugEnabled: 0
   needHeightOffset: -32
   hungerNeedBar: {fileID: 2084577066}
   hungerNeedNumber: {fileID: 166907379}
@@ -4830,7 +4830,7 @@ PrefabInstance:
     - target: {fileID: 6979245204452419530, guid: 5c18d4502ac83d047aa2087e0d07a7e3,
         type: 3}
       propertyPath: debugEnabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
