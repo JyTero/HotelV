@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Chat_InteractionSO", menuName = "ScriptableObjects/Interactions/Chat_InteractionSO")]
 public class Chat_InteractionSO : SocialInteractionBaseSO
 {
+    [SerializeField]
+    private int interactionRelationshipChange = 0;
 
     public override void InteractionStart(InteractableObject interactionOwner)
     {
@@ -20,12 +23,12 @@ public class Chat_InteractionSO : SocialInteractionBaseSO
         //    RouteToInteraction(thisCharacter, interactionOwner);
         //else
         //{
-            ((CharacterBase)interactionOwner).PrepareToBeSocialTarget(this, thisCharacter);
-           // thisCharacter.WaitInteractionTargetToHaveSocialState(interactionOwner);
+        ((CharacterBase)interactionOwner).PrepareToBeSocialTarget(this, thisCharacter);
+        // thisCharacter.WaitInteractionTargetToHaveSocialState(interactionOwner);
         //}
 
     }
-   
+
     public override void ContinueInteractionOnTargetReady(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         base.ContinueInteractionOnTargetReady(thisCharacter, interactionOwner);
@@ -39,7 +42,7 @@ public class Chat_InteractionSO : SocialInteractionBaseSO
 
         interactionOwner.RegisterAsActiveInteraction(thisCharacter, this, interactionOwner);
 
-       // ((CharacterBase)interactionOwner).StartSocialInteractionRecieverInteration();
+        // ((CharacterBase)interactionOwner).StartSocialInteractionRecieverInteration();
 
     }
     public override void OnInteractionTick(CharacterBase thisCharacter, InteractableObject interactionOwner)
@@ -58,6 +61,7 @@ public class Chat_InteractionSO : SocialInteractionBaseSO
 
     public override void OnInteractionEnd(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
+        AdjustCharacterRelations(thisCharacter, (CharacterBase)interactionOwner, interactionRelationshipChange);
         base.OnInteractionEnd(thisCharacter, interactionOwner);
     }
 
@@ -79,6 +83,7 @@ public class Chat_InteractionSO : SocialInteractionBaseSO
 
     public override void ResponseOnInteractionEnd(CharacterBase thisCharacter, InteractableObject interactionInitator)
     {
+        AdjustCharacterRelations(thisCharacter, (CharacterBase)interactionInitator, interactionRelationshipChange);
         base.ResponseOnInteractionEnd(thisCharacter, interactionInitator);
     }
 

@@ -4,11 +4,9 @@ using UnityEngine;
 
 public abstract class UIPanel : MonoBehaviour
 {
-
-    
     protected CharacterNeedsManager selectedNeedsManager;
     protected CharacterBase selectedCharacter;
-
+    protected CharacterBase panelLoadedFor;
     [Header("DEBUG")]
     public bool debugEnabled;
     protected string s = "";

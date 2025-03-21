@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1123457701430909815}
   - component: {fileID: 4047772587890462291}
   - component: {fileID: 541145859611065351}
+  - component: {fileID: 7084890871850720929}
   - component: {fileID: 8718597965210811948}
   m_Layer: 0
   m_Name: Character
@@ -159,6 +160,7 @@ MonoBehaviour:
   dbString: 
   thisCharacterNeedsManager: {fileID: 0}
   thisCharacterTraitsManager: {fileID: 0}
+  thisCharacterRelationshipsManager: {fileID: 0}
   idleTimer: 4
 --- !u!114 &1123457701430909815
 MonoBehaviour:
@@ -207,6 +209,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugEnabled: 1
+--- !u!114 &7084890871850720929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2357627346963797432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9a535d506e105142a03991a8c529a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8718597965210811948
 MonoBehaviour:
   m_ObjectHideFlags: 0

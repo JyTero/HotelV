@@ -58,7 +58,7 @@ public abstract class SocialInteractionBaseSO : InteractionBaseSO
         //if (interactionOwner.debugEnabled)
         //    Debug.Log($"Begins {thisCharacter.ObjectName} socialising with {interactionOwner.ObjectName}.");
 
-        interactionInitator.RegisterAsActiveInteraction(interactionTarget, this, interactionInitator);
+       // interactionInitator.RegisterAsActiveInteraction(interactionTarget, this, interactionInitator);
 
     }
 
@@ -73,6 +73,11 @@ public abstract class SocialInteractionBaseSO : InteractionBaseSO
         //if (interactionOwner.debugEnabled)
         //    Debug.Log($"{thisCharacter.ObjectName} stopped being social with {interactionOwner.ObjectName}");
         interactionTarget.OnInteractionEnd();
+    }
+
+    protected void AdjustCharacterRelations(CharacterBase relationOwner, CharacterBase relationTarget, int changeValue)
+    {
+        relationOwner.thisCharacterRelationshipsManager.ModifyRelationship(relationTarget, changeValue);
     }
 
 }

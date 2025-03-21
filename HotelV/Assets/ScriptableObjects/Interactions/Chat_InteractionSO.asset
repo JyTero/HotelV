@@ -19,6 +19,4 @@ MonoBehaviour:
   forbiddenTraitsList: []
   needSONeedAdjustRates: []
   needToUseForWeight: {fileID: 0}
-  InteractionEnabled: 1
-  interactionRecieverInteractionSO: {fileID: 11400000, guid: d7425180dfb494f44aaba15f935e5ce1,
-    type: 2}
+  interactionRelationshipChange: 2

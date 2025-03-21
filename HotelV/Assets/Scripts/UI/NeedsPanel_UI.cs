@@ -51,7 +51,7 @@ public class NeedsPanel_UI : UIPanel
     private Dictionary<NeedBaseSO, GameObject> needSOneedParentPairs = new();
     private HashSet<NeedUIGroup> needUIGroups = new();
 
-    private CharacterBase panelLoadedFor;
+
     protected override void Awake()
     {
         base.Awake();
@@ -75,46 +75,16 @@ public class NeedsPanel_UI : UIPanel
     public override void OnPanelActivation(CharacterBase selectedCharacter)
     {
         base.OnPanelActivation(selectedCharacter);
-          //  RefreshNeedsPanel();
-
     }
 
     void Update()
     {
         if (selectedCharacter == null)
             return;
-        RefreshNeedsPanel();
+        UpdateNeedsPanel();
         UpdateActiveNeeds();
-
-
-        //UpdateHunger();
-        //UpdateEnergy();
-        //UpdateFun();
     }
 
-    private void UpdateHunger()
-    {
-        int value = selectedNeedsManager.HungerNeedValue;
-
-        hungerNeedBar.current = value;
-        hungerNeedNumber.text = value.ToString();
-    }
-
-    private void UpdateEnergy()
-    {
-        int value = selectedNeedsManager.EnergyNeedValue;
-
-        energyNeedBar.current = value;
-        energyNeedNumber.text = value.ToString();
-    }
-
-    private void UpdateFun()
-    {
-        int value = selectedNeedsManager.FunNeedValue;
-
-        funNeedBar.current = value;
-        funNeedNumber.text = value.ToString();
-    }
 
     private void UpdateActiveNeeds()
     {
@@ -151,21 +121,13 @@ public class NeedsPanel_UI : UIPanel
         if (debugEnabled)
             Debug.Log(s);
     }
-    private void RefreshNeedsPanel()
+    private void UpdateNeedsPanel()
     {
         if (panelLoadedFor == selectedCharacter)
             return;
         else
         {
-            DisableAllNeedsOnPanel();
-            EnableValidNeedsOnPanel();
-            LayoutGroup layout = GetComponent<VerticalLayoutGroup>();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(layout.GetComponent<RectTransform>());
-            //  RepositionNeedsOnPanel();
-            panelLoadedFor = selectedCharacter;
-
-            if (debugEnabled)
-                Debug.Log(s);
+            ForceNeedsPanelRefresh();
         }
     }
 
@@ -194,23 +156,6 @@ public class NeedsPanel_UI : UIPanel
             }
             else
                 Debug.LogError($"UI NeedsPanel EnableValidNeedsOnPanel failed to find need {need.needSO.NeedName} from its needSOParentPairs!");
-        }
-    }
-    private void RepositionNeedsOnPanel()
-    {
-        int placedNeeds = 1;
-        int newNeedHeight = 0;
-        foreach (NeedUIGroup uiGroup in needUIGroups)
-        {
-            if (!uiGroup.needParentGO.activeInHierarchy)
-                continue;
-            else
-            {
-                newNeedHeight = placedNeeds * needHeightOffset;
-                //uiGroup.needParentGO.GetComponent<RectTransform>().pivot
-                uiGroup.needParentGO.GetComponent<RectTransform>().position = new Vector2(0, newNeedHeight);
-                placedNeeds++;
-            }
         }
     }
 

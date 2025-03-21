@@ -12,7 +12,8 @@ public class CharacterBase : InteractableObject
     public CharacterNeedsManager thisCharacterNeedsManager;
     [HideInInspector]
     public CharacterTraitsManager thisCharacterTraitsManager;
-
+    [HideInInspector]
+    public CharacterRelationshipManager thisCharacterRelationshipsManager;
 
     [SerializeField]
     [Tooltip("Idle time in ticks before new interaction search begins")]
@@ -35,6 +36,7 @@ public class CharacterBase : InteractableObject
         thisCharacterNavigation = GetComponent<CharacterNavigation>();
         thisCharacterNeedsManager = GetComponent<CharacterNeedsManager>();
         thisCharacterTraitsManager = GetComponent<CharacterTraitsManager>();
+        thisCharacterRelationshipsManager = GetComponent<CharacterRelationshipManager>();
 
         BeIdle();
     }

@@ -15,11 +15,10 @@ MonoBehaviour:
   objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   interactionName: Get food
   interactionBaseScore: 10
-  interactionLenghtTicks: 20
+  interactionLenghtTicks: 12
   forbiddenTraitsList:
   - {fileID: 11400000, guid: c99a6892e3251b146b7b8c5429c48203, type: 2}
   needSONeedAdjustRates:
   - needSO: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
     needChangePerSecond: 9
   needToUseForWeight: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
-  InteractionEnabled: 1
