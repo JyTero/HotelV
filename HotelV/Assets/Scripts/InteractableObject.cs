@@ -153,7 +153,6 @@ public abstract class InteractableObject : MonoBehaviour
                     if (activeInteractions[i].interactionObject == interactionObject)
                     {
                         activeInteractions.Remove(activeInteractions[i]);
-                        return;
                     }
                 }
 

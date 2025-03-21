@@ -64,7 +64,6 @@ public class CharacterBase : InteractableObject
        // currentInteraction = interaction;
         RemoveState(objectStatesSO.IdleState);
 
-        interaction.InteractionSO.BeginInteraction(this, interaction.InteractionOwner);
         interaction.BeginInteraction(this);
     }
 
@@ -137,11 +136,6 @@ public class CharacterBase : InteractableObject
         }
     }
 
-    public void WaitInteractionTargetToHaveSocialState(InteractableObject interactionTarget)
-    {
-        TickManager.Instance.OnTick += WaitTargetSocialIdleTick;
-    }
-
     private void WaitTargetSocialIdleTick(int currentTick)
     {
         if (currentInteraction.InteractionOwner.ObjectStates.Contains(objectStatesSO.SocialState))
@@ -167,9 +161,9 @@ public class CharacterBase : InteractableObject
         base.RemoveState(newState);
     }
 
-    public void PrepareToBeSocialTarget(InteractionBaseSO socialRecieverInteractionSO, InteractableObject interactionInitiator)
+    public void PrepareToBeSocialTarget(InteractionBaseSO socialInteractionSO, InteractableObject interactionInitiator)
     {
-        Interaction beChattedTo = new(socialRecieverInteractionSO, interactionInitiator);
+        SocialInteraction beChattedTo = new(socialInteractionSO, interactionInitiator);
         queueInteraction = beChattedTo;
 
         //if (currentInteraction == null)
@@ -179,17 +173,17 @@ public class CharacterBase : InteractableObject
 
     }
 
-    public void StartSocialInteractionRecieverInteration()
-    {
-        if (currentInteraction.InteractionSO is BeChattedWith_InteractionSO)
-            RunInteraction(currentInteraction);
-        //else if (queueInteraction.InteractionSO is BeChattedWith_InteractionSO)
-        //{
-        //    RunQueuedInteraction();
-        //}
-        else
-            Debug.LogWarning("No valid social response interaction found on " + objectName);
-    }
+    //public void StartSocialInteractionRecieverInteration()
+    //{
+    //    if (currentInteraction.InteractionSO is SocialInteractionResponseSO)
+    //        RunInteraction(currentInteraction);
+    //    //else if (queueInteraction.InteractionSO is BeChattedWith_InteractionSO)
+    //    //{
+    //    //    RunQueuedInteraction();
+    //    //}
+    //    else
+    //        Debug.LogWarning("No valid social response interaction found on " + objectName);
+    //}
 
     private void RunQueuedInteraction()
     {
@@ -204,7 +198,7 @@ public class CharacterBase : InteractableObject
 
     public void InteractionTargetReady()
     {
-        ((SocialInteractionBaseSO)currentInteraction.InteractionSO).ContinueInteractionOnTargetReady(this, currentInteraction.InteractionOwner);
+        ((SocialInteractionBaseSO)currentInteraction.InteractionSO).ContinueInteractionOnTargetReady(currentInteraction.InteractionInitiator, currentInteraction.InteractionOwner);
     }
 
     public void ChangCharacterMaterialByTrait(TraitBaseSO trait)

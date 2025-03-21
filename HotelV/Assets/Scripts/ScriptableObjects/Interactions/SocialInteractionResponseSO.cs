@@ -2,22 +2,16 @@
 //using System.Collections.Generic;
 //using UnityEngine;
 
-////[CreateAssetMenu(fileName = "BeChattedWith_InteractionSO", menuName = "ScriptableObjects/Interactions/BeChattedWith_InteractionSO")]
+//[CreateAssetMenu(fileName = "SocialInteractionResponseSO", menuName = "ScriptableObjects/Interactions/SocialInteractionResponseSO")]
 
-//public class BeChattedWith_InteractionSO : SocialInteractionBaseSO
+//public class SocialInteractionResponseSO : SocialInteractionBaseSO
 //{
-//    public override void InteractionStart(InteractableObject interactionOwner)
-//    {
-//        base.InteractionStart(interactionOwner);
-//    }
-
 //    public override void BeginInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
 //    {
 //        base.BeginInteraction(thisCharacter, interactionOwner);
 
-//        //Put these into SocialReceiverInteractionBaseSO class
 //        thisCharacter.AddState(objectStatesSO.SocialState);
-//        ((CharacterBase)interactionOwner).InteractionTargetReady(); 
+//        ((CharacterBase)interactionOwner).InteractionTargetReady();
 //    }
 //    public override void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
 //    {
@@ -38,8 +32,8 @@
 
 //        //    thisCharacter.thisCharacterNeedsManager.AdjustNeed(needPair.needSO, (int)needChangePerTick);
 //        //}
-//    }   
-    
+//    }
+
 //    public override void OnInteractionEnd(CharacterBase thisCharacter, InteractableObject interactionOwner)
 //    {
 //        //thisCharacter.RemoveState(objectStatesSO.SocialState);

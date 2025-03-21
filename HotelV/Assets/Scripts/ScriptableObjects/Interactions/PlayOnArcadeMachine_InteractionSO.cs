@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "PlayOnArcadeMachine_InteractionSO", menuName = "ScriptableObjects/Interactions/PlayOnArcadeMachine_InteractionSO")]
-public class PlayOnArcadeMachine_InteractionSO : SocialInteractionBaseSO
+public class PlayOnArcadeMachine_InteractionSO : InteractionBaseSO
 {
     public override void InteractionStart(InteractableObject thisItem)
     {

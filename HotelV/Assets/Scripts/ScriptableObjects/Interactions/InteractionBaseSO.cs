@@ -51,30 +51,30 @@ public abstract class InteractionBaseSO : ScriptableObject
         forbiddenTraits = forbiddenTraitsList.ToHashSet<TraitBaseSO>();
     }
 
-    public virtual void BeginInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public virtual void BeginInteraction(CharacterBase initiator, InteractableObject interactionOwner)
     {
         if (interactionOwner.debugEnabled)
-            Debug.Log($"{interactionName} started by {thisCharacter.ObjectName}");
+            Debug.Log($"{interactionName} started by {initiator.ObjectName}");
 
     }
 
-    public virtual void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public virtual void RunInteraction(CharacterBase initiator, InteractableObject interactionOwner)
     {
         if (interactionOwner.debugEnabled)
-            Debug.Log($"{thisCharacter.ObjectName} uses {interactionOwner.ObjectName}.");
+            Debug.Log($"{initiator.ObjectName} uses {interactionOwner.ObjectName}.");
     }
 
-    public virtual void OnInteractionTick(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public virtual void OnInteractionTick(CharacterBase initiator, InteractableObject interactionOwner)
     {
         if (interactionOwner.debugEnabled)
-            Debug.Log($"{thisCharacter.ObjectName} continues using {interactionOwner.ObjectName}");
+            Debug.Log($"{initiator.ObjectName} continues using {interactionOwner.ObjectName}");
     }
 
-    public virtual void OnInteractionEnd(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public virtual void OnInteractionEnd(CharacterBase initiator, InteractableObject interactionOwner)
     {
         if (interactionOwner.debugEnabled)
-            Debug.Log($"{thisCharacter.ObjectName} stopped using {interactionOwner.ObjectName}");
-        thisCharacter.OnInteractionEnd();
+            Debug.Log($"{initiator.ObjectName} stopped using {interactionOwner.ObjectName}");
+        initiator.OnInteractionEnd();
 
     }
 

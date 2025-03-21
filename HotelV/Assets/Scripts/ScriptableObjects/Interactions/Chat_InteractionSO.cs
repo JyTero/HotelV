@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Chat_InteractionSO", menuName = "ScriptableObjects/Interactions/Chat_InteractionSO")]
 public class Chat_InteractionSO : SocialInteractionBaseSO
 {
-    [SerializeField]
-    private InteractionBaseSO interactionRecieverInteractionSO;
 
     public override void InteractionStart(InteractableObject interactionOwner)
     {
@@ -22,7 +20,7 @@ public class Chat_InteractionSO : SocialInteractionBaseSO
         //    RouteToInteraction(thisCharacter, interactionOwner);
         //else
         //{
-            ((CharacterBase)interactionOwner).PrepareToBeSocialTarget(interactionRecieverInteractionSO, thisCharacter);
+            ((CharacterBase)interactionOwner).PrepareToBeSocialTarget(this, thisCharacter);
            // thisCharacter.WaitInteractionTargetToHaveSocialState(interactionOwner);
         //}
 
@@ -41,7 +39,7 @@ public class Chat_InteractionSO : SocialInteractionBaseSO
 
         interactionOwner.RegisterAsActiveInteraction(thisCharacter, this, interactionOwner);
 
-        ((CharacterBase)interactionOwner).StartSocialInteractionRecieverInteration();
+       // ((CharacterBase)interactionOwner).StartSocialInteractionRecieverInteration();
 
     }
     public override void OnInteractionTick(CharacterBase thisCharacter, InteractableObject interactionOwner)
@@ -61,6 +59,27 @@ public class Chat_InteractionSO : SocialInteractionBaseSO
     public override void OnInteractionEnd(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         base.OnInteractionEnd(thisCharacter, interactionOwner);
+    }
+
+
+    public override void ResponseBeginInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    {
+        base.ResponseBeginInteraction(thisCharacter, interactionOwner);
+    }
+
+    public override void ResponseRunInteraction(CharacterBase thisCharacter, InteractableObject interactionInitator)
+    {
+        base.ResponseRunInteraction(thisCharacter, interactionInitator);
+    }
+
+    public override void ResponseOnInteractionTick(CharacterBase thisCharacter, InteractableObject interactionInitator)
+    {
+        base.ResponseOnInteractionTick(thisCharacter, interactionInitator);
+    }
+
+    public override void ResponseOnInteractionEnd(CharacterBase thisCharacter, InteractableObject interactionInitator)
+    {
+        base.ResponseOnInteractionEnd(thisCharacter, interactionInitator);
     }
 
 }
