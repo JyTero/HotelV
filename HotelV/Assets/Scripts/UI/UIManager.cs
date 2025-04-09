@@ -11,13 +11,15 @@ public class UIManager : MonoBehaviour
     private GameObject currentActiveUIView;
     private NeedsPanel_UI needsPanelUI;
     private CharacterDebug_UI characterDebugUI;
-    private RelationshipPanel_UI relationsipUI;
+    private RelationshipPanel_UI relationshipUI;
+    private TraitsPanel_UI traitsPanelUI;
 
     private void Start()
     {
         needsPanelUI = FindObjectOfType<NeedsPanel_UI>();
         characterDebugUI = FindObjectOfType<CharacterDebug_UI>();
-        relationsipUI = FindAnyObjectByType<RelationshipPanel_UI>();
+        relationshipUI = FindAnyObjectByType<RelationshipPanel_UI>();
+        traitsPanelUI = FindObjectOfType<TraitsPanel_UI>();
 
         characterUI.SetActive(false);
 
@@ -32,7 +34,8 @@ public class UIManager : MonoBehaviour
 
         needsPanelUI.OnPanelActivation(character);
         characterDebugUI.OnPanelActivation(character);
-        relationsipUI.OnPanelActivation(character);
+        relationshipUI.OnPanelActivation(character);
+        traitsPanelUI.OnPanelActivation(character);
 
         characterUI.SetActive(true);
         currentActiveUIView = characterUI;

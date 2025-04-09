@@ -55,11 +55,29 @@ public abstract class InteractableObject : MonoBehaviour
 
     private void IntialiseInteractionsFromSOs()
     {
-        foreach(InteractionBaseSO interactionSO in interactionSOs)
+        dbString = "";
+
+        foreach (InteractionBaseSO interactionSO in interactionSOs)
         {
-            ObjectInteractions.Add(new(interactionSO, this));
+            switch (interactionSO.interactionType)
+            {
+                case InteractionType.Social:
+                    SocialInteraction socInteraction = new SocialInteraction(interactionSO, this);
+                    ObjectInteractions.Add(socInteraction);
+                    if (debugEnabled)
+                        dbString += $"{ObjectName} initialised interaction {interactionSO.InteractionName} as SocialInteraction ({socInteraction.GetType().ToString()})\n";
+                    continue;
+                default:
+                    Interaction interaction = new(interactionSO, this);
+                    ObjectInteractions.Add(interaction);
+                    if (debugEnabled)
+                        dbString += $"{ObjectName} initialised interaction {interactionSO.InteractionName} as Interaction ({interaction.GetType().ToString()})\n";
+                    continue;
+            }
 
         }
+        if (debugEnabled)
+            Debug.Log($" {ObjectName} initialised interactions\n {dbString}");
     }
 
     protected virtual void Start()
@@ -82,7 +100,7 @@ public abstract class InteractableObject : MonoBehaviour
             if (IsInteractionFinished(activeInteraction) == true)
             {
                 //End Ineraction
-                activeInteraction.interactionSO.OnInteractionEnd(activeInteraction.interactionPefromer, this);
+                activeInteraction.interaction.InteractionSO.OnInteractionEnd(activeInteraction.interaction);
                 //Mark for deregistration, deregister after iteration
                 deregisterActiveInteractions.Add(activeInteraction);
 
@@ -90,14 +108,13 @@ public abstract class InteractableObject : MonoBehaviour
             else
             {
                 //Update Interaction
-                activeInteraction.interactionSO.OnInteractionTick(activeInteraction.interactionPefromer,
-                                                                  activeInteraction.interactionObject);
+                activeInteraction.interaction.InteractionSO.OnInteractionTick(activeInteraction.interaction);
             }
         }
 
         foreach (ActiveInteraction activeInteraction in deregisterActiveInteractions)
         {
-            DeregisterAsActiveInteraction(activeInteraction.interactionPefromer, activeInteraction.interactionSO, this);
+            DeregisterAsActiveInteraction(activeInteraction.interaction);
             FreeInteractionSpot(activeInteraction);
         }
         deregisterActiveInteractions.Clear();
@@ -136,21 +153,21 @@ public abstract class InteractableObject : MonoBehaviour
 
 
 
-    public void RegisterAsActiveInteraction(CharacterBase thisCharacter, InteractionBaseSO interactionSO, InteractableObject interactionObject)
+    public void RegisterAsActiveInteraction(Interaction interaction)
     {
-        ActiveInteraction activeInteraction = new(thisCharacter, interactionSO, currentObjectTick, interactionObject, objectInteractionSpots[0]);
+        ActiveInteraction activeInteraction = new(interaction, currentObjectTick, objectInteractionSpots[0]);
         activeInteractions.Add(activeInteraction);
     }
 
-    public void DeregisterAsActiveInteraction(CharacterBase thisCharacter, InteractionBaseSO interactionSO, InteractableObject interactionObject)
+    public void DeregisterAsActiveInteraction(Interaction interaction)
     {
         for (int i = activeInteractions.Count - 1; i >= 0; i--)
         {
-            if (activeInteractions[i].interactionPefromer == thisCharacter)
+            if (activeInteractions[i].interaction.InteractionInitiator == interaction.InteractionInitiator)
             {
-                if (activeInteractions[i].interactionSO == interactionSO)
+                if (activeInteractions[i].interaction.InteractionSO == interaction.InteractionSO)
                 {
-                    if (activeInteractions[i].interactionObject == interactionObject)
+                    if (activeInteractions[i].interaction.InteractionOwner == interaction.InteractionOwner)
                     {
                         activeInteractions.Remove(activeInteractions[i]);
                     }
@@ -176,8 +193,7 @@ public abstract class InteractableObject : MonoBehaviour
 
     protected bool IsInteractionFinished(ActiveInteraction activeInteraction)
     {
-        int ticksRemaining = InteractionTicksRemaining(activeInteraction.interactionSO.InteractionLenghtTicks,
-                                                       activeInteraction.interactionStartTick);
+        int ticksRemaining = InteractionTicksRemaining(activeInteraction.interaction.InteractionLenght, activeInteraction.interactionStartTick);
         if (ticksRemaining <= 0)
         {
             return true;
@@ -220,6 +236,7 @@ public abstract class InteractableObject : MonoBehaviour
         }
     }
 
+
     //STATE
     public virtual void AddState(ObjectState_BaseSO state)
     {
@@ -258,20 +275,17 @@ public abstract class InteractableObject : MonoBehaviour
 
     protected class ActiveInteraction
     {
-        public CharacterBase interactionPefromer;
-        public InteractionBaseSO interactionSO;
-        public InteractableObject interactionObject;
+       public Interaction interaction;
         public int interactionStartTick;
         public Transform interactionSpot;
         public int interactionCurrentTick;
 
-        public ActiveInteraction(CharacterBase _interactionPerformer, InteractionBaseSO _interactionSO, int _interactionStartTick, InteractableObject _interactionObject, Transform _interactionSpot)
+        public ActiveInteraction(Interaction _interaction, int _interactionStartTick, Transform _interactionSpot)
         {
-            this.interactionPefromer = _interactionPerformer;
-            this.interactionSO = _interactionSO;
+
             this.interactionStartTick = _interactionStartTick;
-            this.interactionObject = _interactionObject;
             this.interactionSpot = _interactionSpot;
+            this.interaction = _interaction;
 
 
         }

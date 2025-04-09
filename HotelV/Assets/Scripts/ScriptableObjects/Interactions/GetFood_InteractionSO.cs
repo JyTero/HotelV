@@ -11,39 +11,39 @@ public class GetFood_InteractionSO : InteractionBaseSO
         base.InteractionStart(thisItem);
     }
 
-    public override void BeginInteraction(CharacterBase thisCharacter, InteractableObject thisItem)
+    public override void BeginInteraction(Interaction interaction)
     {
-        base.BeginInteraction(thisCharacter, thisItem);
+        base.BeginInteraction(interaction);
 
-        RouteToInteraction(thisCharacter, thisItem);
+        RouteToInteraction(interaction.InteractionInitiator, interaction.InteractionOwner);
     }
 
 
-    public override void RunInteraction(CharacterBase thisCharacter, InteractableObject thisItem)
+    public override void RunInteraction(Interaction interaction)
     {
-        base.RunInteraction(thisCharacter, thisItem);
+        base.RunInteraction(interaction);
 
-        thisItem.RegisterAsActiveInteraction(thisCharacter, this, thisItem);
+        interaction.InteractionOwner.RegisterAsActiveInteraction(interaction);
 
     }
 
-    public override void OnInteractionTick(CharacterBase thisCharacter, InteractableObject thisItem)
+    public override void OnInteractionTick(Interaction interaction)
     {
-        base.OnInteractionTick(thisCharacter, thisItem);
+        base.OnInteractionTick(interaction);
 
         foreach (NeedRateChangePairs needPair in needSONeedAdjustRates)
         {
 
             float needChangePerTick = NeedChangePerTick(needPair.needChangePerSecond, TickManager.Instance.TickRate);
 
-            thisCharacter.thisCharacterNeedsManager.AdjustNeed(needPair.needSO, (int)needChangePerTick);
+            interaction.InteractionInitiator.thisCharacterNeedsManager.AdjustNeed(needPair.needSO, (int)needChangePerTick);
 
         }
 
     }
-    public override void OnInteractionEnd(CharacterBase thisCharacter, InteractableObject thisItem)
+    public override void OnInteractionEnd(Interaction interaction)
     {
-        base.OnInteractionEnd(thisCharacter, thisItem);
+        base.OnInteractionEnd(interaction);
     }
 
 }

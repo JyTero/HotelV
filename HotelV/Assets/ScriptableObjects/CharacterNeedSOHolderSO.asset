@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 616b1dc749098164b9362507489f80bb, type: 3}
+  m_Name: CharacterNeedSOHolderSO
+  m_EditorClassIdentifier: 
+  HungerNeedSO: {fileID: 11400000, guid: df856de8f51e05e40960e7075cd1361a, type: 2}
+  EnergyNeedSO: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
+  FunNeedSO: {fileID: 11400000, guid: 196053246064ed242adad3ad5a9db61a, type: 2}
+  BloodNeedSO: {fileID: 11400000, guid: c036e457601e2aa4d85cc55da67d3b6c, type: 2}
+  SocialNeedSO: {fileID: 11400000, guid: b379ef49be8af0d4e8987283901d6cec, type: 2}

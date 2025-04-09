@@ -20,17 +20,11 @@ public class UtilityAI : MonoBehaviour
 
     [Header("DEBUG")]
     [SerializeField]
-    private bool debugEnabled;
-
-    private void Start()
-    {
-
-    }
-
+    private bool selectionProcessDebugEnabled;
 
     public Interaction ChooseWhatToDo(CharacterBase thisCharacter, CharacterNeedsManager thisNeedsManager)
     {
-        if (debugEnabled)
+        if (selectionProcessDebugEnabled)
         {
             interactionSelectDebugString = "";
             interactionSelectDebugString += $"{thisCharacter.ObjectName} ponders what to do:\n";
@@ -42,7 +36,7 @@ public class UtilityAI : MonoBehaviour
         Interaction highestScoringInteraction = foundInteractions[0].Interaction;
         currentInteraction = foundInteractions[0];
 
-        if (debugEnabled)
+        if (selectionProcessDebugEnabled)
         {
             interactionSelectDebugString += $"They chose to {currentInteraction.Interaction.InteractionName}\n";
             Debug.Log(interactionSelectDebugString);
@@ -81,7 +75,7 @@ public class UtilityAI : MonoBehaviour
     private void GatherInteractions(CharacterBase thisCharacter)
     {
         foundInteractions.Clear();
-        if (debugEnabled)
+        if (selectionProcessDebugEnabled)
         {
             interactionSelectDebugString += "They found:\n";
         }
@@ -94,12 +88,17 @@ public class UtilityAI : MonoBehaviour
             {
                 foreach (Interaction interaction in interactable.ObjectInteractions)
                 {
-                    if (debugEnabled)
+                    if (selectionProcessDebugEnabled)
                         interactionSelectDebugString += $"{interaction.InteractionName}, ";
-
-                    if (CharacterHasForbiddenTraits(interaction.InteractionSO, thisCharacter))
+                    if (CharacterLacksRequiredTraist(interaction.InteractionSO, thisCharacter))
                     {
-                        if (debugEnabled)
+                        if (selectionProcessDebugEnabled)
+                            interactionSelectDebugString += "not valid\n";
+                        continue;
+                    }
+                   if (CharacterHasForbiddenTraits(interaction.InteractionSO, thisCharacter))
+                    {
+                        if (selectionProcessDebugEnabled)
                             interactionSelectDebugString += "not valid\n";
                         continue;
                     }
@@ -107,13 +106,13 @@ public class UtilityAI : MonoBehaviour
                     {
                         if (interaction.InteractionEnabled)
                         {
-                            if (debugEnabled)
+                            if (selectionProcessDebugEnabled)
                                 interactionSelectDebugString += "valid\n";
                             foundInteractions.Add(new InteractionInScoring(interaction));
                         }
                         else
                         {
-                            if (debugEnabled)
+                            if (selectionProcessDebugEnabled)
                                 interactionSelectDebugString += "not valid\n";
                             continue;
                         }
@@ -125,19 +124,29 @@ public class UtilityAI : MonoBehaviour
                 continue;
 
         }
-        if (debugEnabled)
+        if (selectionProcessDebugEnabled)
             interactionSelectDebugString += $"In total they found {foundInteractions.Count} interactions.\n";
     }
 
     private bool CharacterHasForbiddenTraits(InteractionBaseSO interactionSO, CharacterBase thisCharacter)
     {
-        if (interactionSO.ForbiddenTraits.Count > 0)
+        if (interactionSO.ForbiddenTraits.Count <= 0)
             return false;
-         else if (thisCharacter.thisCharacterTraitsManager.CharacterTraits.Overlaps(interactionSO.ForbiddenTraits))
+        else if (thisCharacter.thisCharacterTraitsManager.CharacterTraits.Overlaps(interactionSO.ForbiddenTraits))
             return true;
         else
             return false;
     }
+    private bool CharacterLacksRequiredTraist(InteractionBaseSO interactionSO, CharacterBase thisCharacter)
+    {
+        if (interactionSO.RequiredTraits.Count <= 0)
+            return false;
+        else
+            return !interactionSO.RequiredTraits.All(trait => thisCharacter.thisCharacterTraitsManager.CharacterTraits.Contains(trait));
+
+    }
+
+
     private void ScoreGatheredInteractions(CharacterBase thisCharacter, CharacterNeedsManager thisNeedManager)
     {
         int score;
@@ -145,7 +154,7 @@ public class UtilityAI : MonoBehaviour
         float weightedNeedValue = 0;
 
         string interactionScoreBreakdownDebug = "";
-        if (debugEnabled)
+        if (selectionProcessDebugEnabled)
             interactionSelectDebugString += "The interactions are scored as follows:\n";
 
         foreach (InteractionInScoring interactionInScoring in foundInteractions)
@@ -170,13 +179,13 @@ public class UtilityAI : MonoBehaviour
                 //If character does not have the need interaction uses for weighting
                 if (needSOUsedForWeighting == null)
                 {
-                    score = (int)(interactionInScoring.Interaction.InteractionSO.InteractionBaseScore) / 2;
+                    score = (int)(interactionInScoring.Interaction.InteractionSO.InteractionBaseScore);
                     interactionScoreBreakdownDebug = $"Character did not have weighted need ({interactionInScoring.Interaction.InteractionSO.NeedToUseForWeighting.NeedName})";
                 }
                 else
                 {
-                    score += (int)(interactionInScoring.Interaction.InteractionSO.InteractionBaseScore * needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue));
-                    if (debugEnabled)
+                    score = (int)(interactionInScoring.Interaction.InteractionSO.InteractionBaseScore * needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue));
+                    if (selectionProcessDebugEnabled)
                         interactionScoreBreakdownDebug = $"interactionBase: {interactionInScoring.Interaction.InteractionSO.InteractionBaseScore} * " +
                                                          $"needValue ({needSOUsedForWeighting.NeedName}): {needSOUsedForWeighting.NeedWeightCurve.Evaluate(weightedNeedValue)}";
                 }
@@ -188,7 +197,7 @@ public class UtilityAI : MonoBehaviour
             }
 
             interactionInScoring.InteractionScore = score;
-            if (debugEnabled)
+            if (selectionProcessDebugEnabled)
                 interactionSelectDebugString += $"Interaction {interactionInScoring.Interaction.InteractionName} score: {interactionInScoring.InteractionScore} ({interactionScoreBreakdownDebug})\n";
             //interactionSelectDebugString += $"Interaction {interaction.InteractionSO.InteractionName} scored {interaction.InteractionScore}\n";
         }

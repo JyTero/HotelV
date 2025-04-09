@@ -11,40 +11,40 @@ public class Sleep_InteractionSO : InteractionBaseSO
         base.InteractionStart(interactionOwner);
     }
 
-    public override void BeginInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public override void BeginInteraction(Interaction interaction)
     {
-        base.BeginInteraction(thisCharacter, interactionOwner);
+        base.BeginInteraction(interaction);
 
-        RouteToInteraction(thisCharacter, interactionOwner);
+        RouteToInteraction(interaction.InteractionInitiator, interaction.InteractionOwner);
 
     }
 
-    public override void RunInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public override void RunInteraction(Interaction interaction)
     {
-        base.RunInteraction(thisCharacter, interactionOwner);
+        base.RunInteraction(interaction);
 
-        interactionOwner.RegisterAsActiveInteraction(thisCharacter, this, interactionOwner);
+        interaction.InteractionOwner.RegisterAsActiveInteraction(interaction);
 
-        thisCharacter.AddState(objectStatesSO.SleepState);
+        interaction.InteractionInitiator.AddState(objectStatesSO.SleepState);
     }
-    public override void OnInteractionTick(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public override void OnInteractionTick(Interaction interaction)
     {
-        base.OnInteractionTick(thisCharacter, interactionOwner);
+        base.OnInteractionTick(interaction);
 
         foreach (NeedRateChangePairs needPair in needSONeedAdjustRates)
         {
 
             float needChangePerTick = NeedChangePerTick(needPair.needChangePerSecond, TickManager.Instance.TickRate);
 
-            thisCharacter.thisCharacterNeedsManager.AdjustNeed(needPair.needSO, (int)needChangePerTick);
+            interaction.InteractionInitiator.thisCharacterNeedsManager.AdjustNeed(needPair.needSO, (int)needChangePerTick);
         }
     }
 
-    public override void OnInteractionEnd(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public override void OnInteractionEnd(Interaction interaction)
     {
-        base.OnInteractionEnd(thisCharacter, interactionOwner);
+        base.OnInteractionEnd(interaction);
 
-        thisCharacter.RemoveState(objectStatesSO.SleepState);
+        interaction.InteractionInitiator.RemoveState(objectStatesSO.SleepState);
     }
 
 

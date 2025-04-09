@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4f64042117e25345a4db67901b03bd8, type: 3}
   m_Name: Chat_InteractionSO
   m_EditorClassIdentifier: 
+  interactionType: 3
   objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   interactionName: Chat
   interactionBaseScore: 10
   interactionLenghtTicks: 8
   forbiddenTraitsList: []
-  needSONeedAdjustRates: []
-  needToUseForWeight: {fileID: 0}
-  interactionRelationshipChange: 2
+  requiredTraitsList: []
+  needSONeedAdjustRates:
+  - needSO: {fileID: 11400000, guid: b379ef49be8af0d4e8987283901d6cec, type: 2}
+    needChangePerSecond: 9
+  needToUseForWeight: {fileID: 11400000, guid: b379ef49be8af0d4e8987283901d6cec, type: 2}
+  interactionRelationshipChange: 4
+  responderNeedSONeedAdjustRates:
+  - needSO: {fileID: 11400000, guid: b379ef49be8af0d4e8987283901d6cec, type: 2}
+    needChangePerSecond: 9

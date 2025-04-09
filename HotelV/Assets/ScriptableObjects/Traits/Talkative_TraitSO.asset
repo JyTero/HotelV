@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398afe574f3b47245adfb93dc5b7ffcd, type: 3}
+  m_Name: Talkative_TraitSO
+  m_EditorClassIdentifier: 
+  traitName: Talkative
+  needsTraitAdds:
+  - {fileID: 11400000, guid: b379ef49be8af0d4e8987283901d6cec, type: 2}
+  needsTraitRemoves: []
+  enableDebug: 0
+  socialInteractionLenghtMultiplier: 1.5
+  relationshipScoreAdjustMultiplier: 1.5

@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Chat_InteractionSO", menuName = "ScriptableObjects/Interactions/Chat_InteractionSO")]
-public class Chat_InteractionSO : SocialInteractionBaseSO
+    [CreateAssetMenu(fileName = "FeedOnCharacter_InteractionSO", menuName = "ScriptableObjects/Interactions/FeedOnCharacter_InteractionSO")]
+public class FeedOnCharacter_InteractionSO : SocialInteractionBaseSO
 {
-
 
     public override void InteractionStart(InteractableObject interactionOwner)
     {
@@ -16,22 +14,13 @@ public class Chat_InteractionSO : SocialInteractionBaseSO
     public override void BeginInteraction(Interaction interaction)
     {
         base.BeginInteraction(interaction);
-
-        //Would currently allow running the interaction if target chats with someone else
-        //if (interactionOwner.ObjectStates.Contains(objectStatesSO.SocialState))
-        //    RouteToInteraction(thisCharacter, interactionOwner);
-        //else
-        //{
         ((CharacterBase)interaction.InteractionOwner).PrepareToBeSocialTarget(this, interaction.InteractionInitiator);
-        // thisCharacter.WaitInteractionTargetToHaveSocialState(interactionOwner);
-        //}
 
     }
-
-    public override void ContinueInteractionOnTargetReady(CharacterBase thisCharacter, InteractableObject interactionOwner)
+    public override void ContinueInteractionOnTargetReady(CharacterBase initiator, InteractableObject interactionOwner)
     {
-        base.ContinueInteractionOnTargetReady(thisCharacter, interactionOwner);
-       // RouteToInteraction(thisCharacter, interactionOwner);
+        base.ContinueInteractionOnTargetReady(initiator, interactionOwner);
+       // RouteToInteraction(interaction.InteractionInitiator, interaction.InteractionOwner);
     }
     public override void RunInteraction(Interaction interaction)
     {
@@ -54,13 +43,14 @@ public class Chat_InteractionSO : SocialInteractionBaseSO
             float needChangePerTick = NeedChangePerTick(needPair.needChangePerSecond, TickManager.Instance.TickRate);
 
             interaction.InteractionInitiator.thisCharacterNeedsManager.AdjustNeed(needPair.needSO, (int)needChangePerTick);
+
         }
     }
 
-    protected override void OnInteractionEnd(SocialInteraction socInteraction)
+    public override void OnInteractionEnd(Interaction interaction)
     {
-        AdjustCharacterRelations(socInteraction.InteractionInitiator, (CharacterBase)socInteraction.InteractionOwner, socInteraction.InteractionRelationshipScoreChange);
-        base.OnInteractionEnd(socInteraction);
+
+        base.OnInteractionEnd(interaction);
     }
 
 
@@ -78,19 +68,20 @@ public class Chat_InteractionSO : SocialInteractionBaseSO
     {
         base.ResponseOnInteractionTick(thisCharacter, interactionInitator);
 
-        foreach (NeedRateChangePairs needPair in responderNeedSONeedAdjustRates)
+        foreach (NeedRateChangePairs needPair in needSONeedAdjustRates)
         {
 
             float needChangePerTick = NeedChangePerTick(needPair.needChangePerSecond, TickManager.Instance.TickRate);
 
             thisCharacter.thisCharacterNeedsManager.AdjustNeed(needPair.needSO, (int)needChangePerTick);
+
         }
     }
 
     public override void ResponseOnInteractionEnd(SocialInteraction socInteraction)
     {
-        AdjustCharacterRelations((CharacterBase)socInteraction.InteractionOwner, socInteraction.InteractionInitiator, socInteraction.InteractionRelationshipScoreChange);
         base.ResponseOnInteractionEnd(socInteraction);
     }
 
 }
+

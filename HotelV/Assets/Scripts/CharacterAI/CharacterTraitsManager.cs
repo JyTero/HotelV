@@ -1,17 +1,14 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterTraitsManager : MonoBehaviour
 {
 
-    public HashSet<TraitBaseSO> CharacterTraits => characterTraits;
-    [SerializeField]
-    protected HashSet<TraitBaseSO> characterTraits = new();
-
-
+    public HashSet<TraitBaseSO> CharacterTraits { get; private set; }
     private CharacterBase thisCharacter;
+
+    public event Action OnTraitsChange;
 
     [Header("DEBUG")]
     public bool debugEnabled;
@@ -21,18 +18,7 @@ public class CharacterTraitsManager : MonoBehaviour
     private void Awake()
     {
         thisCharacter = GetComponent<CharacterBase>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        CharacterTraits = new();
     }
 
     public void AddTrait(TraitBaseSO trait)
@@ -46,12 +32,9 @@ public class CharacterTraitsManager : MonoBehaviour
         }
         CharacterTraits.Add(trait);
         trait.OnTraitAdd(thisCharacter);
+        OnTraitsChange.Invoke();
     }
 
-    private void OnTraitAdd()
-    {
-
-    }
 
     public void RemoveTrait(TraitBaseSO trait)
     {
@@ -64,8 +47,28 @@ public class CharacterTraitsManager : MonoBehaviour
         }
         CharacterTraits.Remove(trait);
         trait.OnTraitRemove(thisCharacter);
+        OnTraitsChange.Invoke();
     }
 
+    public Interaction ModifyInteractionByTrait(Interaction interaction)
+    {
+        foreach (TraitBaseSO trait in CharacterTraits)
+        {
+            //Do enum, check so.type and use proper MOdifyInteraction override
+            switch (interaction.InteractionSO.interactionType)
+            {
+                case InteractionType.Social:
+                    SocialInteraction socInteraction = interaction as SocialInteraction;
+                    socInteraction = trait.ModifyInteractionByTrait(socInteraction);
+                    interaction = socInteraction;
+                    break;
+                default:
+                    interaction = trait.ModifyInteractionByTrait(interaction);
+                    break;
+            }
 
- 
+
+        }
+        return interaction;
+    }
 }

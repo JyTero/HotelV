@@ -13,13 +13,8 @@ public abstract class UIPanel : MonoBehaviour
 
     protected virtual void Awake()
     {
-        
     }
 
-    public virtual void OnPanelActivation()
-    {
-
-    }
     public virtual void OnPanelActivation(CharacterBase selected)
     {
         selectedCharacter = selected;

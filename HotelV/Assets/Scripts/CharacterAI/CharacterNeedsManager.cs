@@ -31,6 +31,8 @@ public class CharacterNeedsManager : MonoBehaviour
     [Header("DEBUG")]
     [SerializeField]
     private bool debugEnabled;
+    [SerializeField]
+    private bool needDeclineDebugEnabled;
     private string dbString = "";
 
     public bool FreezeNeeds;
@@ -63,23 +65,23 @@ public class CharacterNeedsManager : MonoBehaviour
     {
         totalTicks++;
 
-        if (debugEnabled)
+        if (needDeclineDebugEnabled)
             dbString = $"{thisCharacter.ObjectName}'s needs decline:\n";
         int i = 0;
         foreach (NeedBase need in characterNeeds)
         {
 
-            if (debugEnabled)
+            if (needDeclineDebugEnabled)
                 dbString += $"need {need.needSO.NeedName} from {need.needValue} ";
 
             need.needSO.NeedPassiveDecline(need.needValue, totalTicks, this);
 
 
-            if (debugEnabled)
+            if (needDeclineDebugEnabled)
                 dbString += $"to {need.needValue}.\n";
             i++;
         }
-        if (debugEnabled)
+        if (needDeclineDebugEnabled)
             Debug.Log(dbString);
 
         if (totalTicks >= 120)
@@ -99,6 +101,8 @@ public class CharacterNeedsManager : MonoBehaviour
             else
                 continue;
         }
+        if (debugEnabled)
+            Debug.LogWarning($"Tried to adjust need that character didn't have! Need {adjustNeed.NeedName} wasn't found on {thisCharacter.ObjectName}");
     }
 
     public void AddNeed(NeedBaseSO needSO)

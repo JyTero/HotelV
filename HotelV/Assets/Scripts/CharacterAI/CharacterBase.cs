@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
@@ -23,11 +24,12 @@ public class CharacterBase : InteractableObject
 
     private UtilityAI UtilityAI;
     private Interaction currentInteraction;
-    private Interaction queueInteraction;
+    private List<Interaction> queuedInteractions = new();
     private CharacterNavigation thisCharacterNavigation;
 
     private Material defaultCharacterMat;
 
+    private TraitBaseSO newTrait;
 
     protected override void Start()
     {
@@ -55,7 +57,7 @@ public class CharacterBase : InteractableObject
     {
         idleTimeStart = -1;
 
-        currentInteraction = UtilityAI.ChooseWhatToDo(this, thisCharacterNeedsManager);       
+        currentInteraction = UtilityAI.ChooseWhatToDo(this, thisCharacterNeedsManager);
 
         RunInteraction(currentInteraction);
 
@@ -63,11 +65,22 @@ public class CharacterBase : InteractableObject
 
     private void RunInteraction(Interaction interaction)
     {
-       // currentInteraction = interaction;
+        // currentInteraction = interaction;
+        currentInteraction = interaction.CopyInteraction();
+        currentInteraction = thisCharacterTraitsManager.ModifyInteractionByTrait(currentInteraction);
         RemoveState(objectStatesSO.IdleState);
 
-        interaction.BeginInteraction(this);
+        if (currentInteraction.InteractionSO is EarnTrait_InteractionSO getTraitSO)
+        {
+            currentInteraction.InteractionInitiator = this;
+            getTraitSO.BeginInteraction(currentInteraction, newTrait);
+            newTrait = null;
+        }
+        else
+            currentInteraction.BeginInteraction(this);
     }
+
+
 
     public void SetDestination(Vector3 destination)
     {
@@ -84,7 +97,7 @@ public class CharacterBase : InteractableObject
     {
         currentInteraction = null;
 
-        if (queueInteraction != null)
+        if (QueuedInteraction() != null)
         {
             RunQueuedInteraction();
         }
@@ -111,7 +124,7 @@ public class CharacterBase : InteractableObject
             RunInteraction(currentInteraction);
             return;
         }
-        if (queueInteraction != null)
+        if (QueuedInteraction() != null)
         {
             RunQueuedInteraction();
 
@@ -165,35 +178,31 @@ public class CharacterBase : InteractableObject
 
     public void PrepareToBeSocialTarget(InteractionBaseSO socialInteractionSO, InteractableObject interactionInitiator)
     {
-        SocialInteraction beChattedTo = new(socialInteractionSO, interactionInitiator);
-        queueInteraction = beChattedTo;
-
-        //if (currentInteraction == null)
-        //    currentInteraction = beChattedTo;
-        //else
-        //    queueInteraction = beChattedTo;
-
+        SocialResponseInteraction beChattedTo = new(socialInteractionSO, interactionInitiator);
+        queuedInteractions.Add(beChattedTo);
     }
 
-    //public void StartSocialInteractionRecieverInteration()
-    //{
-    //    if (currentInteraction.InteractionSO is SocialInteractionResponseSO)
-    //        RunInteraction(currentInteraction);
-    //    //else if (queueInteraction.InteractionSO is BeChattedWith_InteractionSO)
-    //    //{
-    //    //    RunQueuedInteraction();
-    //    //}
-    //    else
-    //        Debug.LogWarning("No valid social response interaction found on " + objectName);
-    //}
+    public void AddInteractionToQueue(InteractionBaseSO interactionSO, InteractableObject interactionOwner)
+    {
+        Interaction i = new((interactionOwner.ObjectInteractions.FirstOrDefault(inter => inter.InteractionSO == interactionSO).InteractionSO),
+                             interactionOwner);
+        queuedInteractions.Add(i);
+    }
+
+    public void AddTrait(TraitBaseSO trait)
+    {
+        newTrait = trait;
+        Interaction getTraitInteraction = ObjectInteractions.FirstOrDefault(inter => inter.InteractionSO is EarnTrait_InteractionSO);
+        queuedInteractions.Add(getTraitInteraction);
+    }
 
     private void RunQueuedInteraction()
     {
         //Debug.LogWarning($"Tried to run queued interaction, this shouldn't happen ({objectName} | {queueInteraction.InteractionSO.InteractionName})");
 
 
-        currentInteraction = queueInteraction;
-        queueInteraction = null;
+        currentInteraction = queuedInteractions[0];
+        queuedInteractions.RemoveAt(0);
         RunInteraction(currentInteraction);
 
     }
@@ -203,11 +212,11 @@ public class CharacterBase : InteractableObject
         ((SocialInteractionBaseSO)currentInteraction.InteractionSO).ContinueInteractionOnTargetReady(currentInteraction.InteractionInitiator, currentInteraction.InteractionOwner);
     }
 
-    public void ChangCharacterMaterialByTrait(TraitBaseSO trait)
+    public void ChangCharacterMaterial(Material newMat)
     {
         var mr = GetComponent<MeshRenderer>();
         defaultCharacterMat = mr.material;
-        mr.material = trait.TraitCharacterAppearanceMaterial;
+        mr.material = newMat;
     }
 
     public void RestoreDefaultMateria()
@@ -224,7 +233,14 @@ public class CharacterBase : InteractableObject
 
     public Interaction QueuedInteraction()
     {
-        return queueInteraction;
+        if (queuedInteractions.Count > 0)
+            return queuedInteractions[0];
+        else
+            return null;
+    }
+    public List<Interaction> QueuedInteractionsList()
+    {
+        return queuedInteractions;
     }
 
     protected override void OnDisable()

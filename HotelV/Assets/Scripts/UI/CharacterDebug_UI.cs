@@ -44,11 +44,24 @@ public class CharacterDebug_UI : UIPanel
     }
     private void UpdateCharQueuedInteraction()
     {
-        var queuedInteraction = selectedCharacter.QueuedInteraction();
-        if (queuedInteraction == null)
+        var q = selectedCharacter.QueuedInteractionsList();
+        string s = "";
+        if (q.Count <= 0)
             charQueuedInteractionTMP.text = "null";
         else
-            charQueuedInteractionTMP.text = queuedInteraction.InteractionName;
+        {
+            foreach (Interaction interaction in q)
+            {
+                s += interaction.InteractionName;
+            }
+        }
+        charQueuedInteractionTMP.text = s;
+
+        //var queuedInteraction = selectedCharacter.QueuedInteraction();
+        //if (queuedInteraction == null)
+        //    charQueuedInteractionTMP.text = "null";
+        //else
+        //    charQueuedInteractionTMP.text = queuedInteraction.InteractionName;
     }
     private void UpdateCharCurrentState()
     {

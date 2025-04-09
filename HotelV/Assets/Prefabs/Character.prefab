@@ -154,6 +154,8 @@ MonoBehaviour:
   - {fileID: 2395173861143709604}
   interactionSOs:
   - {fileID: 11400000, guid: 9c14dc7d8f8cbdd4ca07b25fa724eabc, type: 2}
+  - {fileID: 11400000, guid: cc5edc9377083eb4bb50e31273647fea, type: 2}
+  - {fileID: 11400000, guid: 255b98701233246419a313ac304f4c0a, type: 2}
   currentObjectTick: -1
   objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
   debugEnabled: 1

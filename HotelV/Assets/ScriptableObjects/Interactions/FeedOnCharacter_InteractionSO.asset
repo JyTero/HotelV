@@ -9,17 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ac097cc8d7d2e547ba81efdfbfe22bf, type: 3}
-  m_Name: Sleep_SleepDevice_InteractionSO
+  m_Script: {fileID: 11500000, guid: 87455c7602303944cacedf1259a58943, type: 3}
+  m_Name: FeedOnCharacter_InteractionSO
   m_EditorClassIdentifier: 
-  interactionType: 2
   objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
-  interactionName: Sleep
+  interactionName: Feed upon
   interactionBaseScore: 10
   interactionLenghtTicks: 12
   forbiddenTraitsList: []
-  requiredTraitsList: []
+  requiredTraitsList:
+  - {fileID: 11400000, guid: c99a6892e3251b146b7b8c5429c48203, type: 2}
   needSONeedAdjustRates:
+  - needSO: {fileID: 11400000, guid: c036e457601e2aa4d85cc55da67d3b6c, type: 2}
+    needChangePerSecond: 10
+  needToUseForWeight: {fileID: 11400000, guid: c036e457601e2aa4d85cc55da67d3b6c, type: 2}
+  responderNeedSONeedAdjustRates:
   - needSO: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
-    needChangePerSecond: 9
-  needToUseForWeight: {fileID: 11400000, guid: 5fe5124fe71e0084baef739916e1d816, type: 2}
+    needChangePerSecond: -14

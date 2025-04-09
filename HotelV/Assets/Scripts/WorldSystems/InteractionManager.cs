@@ -12,6 +12,14 @@ public class InteractionManager : MonoBehaviour
     public HashSet<InteractableObject> AllInteractableObjects { get => allInteractableObjects; protected set => allInteractableObjects = value; }
     protected HashSet<InteractableObject> allInteractableObjects = new();
 
+    public enum InteractionType
+    {
+        Sleep,
+        Eat,
+        Social,
+    }
+
+
     private void Awake()
     {
         if (Instance == null)

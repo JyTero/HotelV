@@ -9,13 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a404dc409a4ed754cabde176cc185713, type: 3}
-  m_Name: BeChattedTo_InteractionSO
+  m_Script: {fileID: 11500000, guid: 07198d8f4d9ac0d498d54ee9139fed33, type: 3}
+  m_Name: TurnIntoVampire_InteractionSO
   m_EditorClassIdentifier: 
-  objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
-  interactionName: Be chatted with
-  interactionBaseScore: 0
-  interactionLenghtTicks: 8
+  objectStatesSO: {fileID: 0}
+  interactionName: Turn into Vampire
+  interactionBaseScore: -1
+  interactionLenghtTicks: 0
+  forbiddenTraitsList: []
   needSONeedAdjustRates: []
   needToUseForWeight: {fileID: 0}
-  InteractionEnabled: 1
+  vampireTrait: {fileID: 11400000, guid: c99a6892e3251b146b7b8c5429c48203, type: 2}

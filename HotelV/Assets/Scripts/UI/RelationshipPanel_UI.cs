@@ -31,7 +31,7 @@ public class RelationshipPanel_UI : UIPanel
 
     void Update()
     {
-        totalRelations.text = selectedCharacter.thisCharacterRelationshipsManager.CharacterRelationships.Count.ToString();
+       // totalRelations.text = selectedCharacter.thisCharacterRelationshipsManager.CharacterRelationships.Count.ToString();
 
         if (selectedCharacter == null)
             return;
@@ -84,7 +84,7 @@ public class RelationshipPanel_UI : UIPanel
             uiGroup.Relationship = relationship;
             uiGroup.RelationshipName.text = relationship.relationshipTarget.ObjectName;
             uiGroup.RelationshipScore.text = relationship.relationshopScore.ToString();
-            uiGroup.RelationshipItemParentGO.transform.SetParent(this.gameObject.transform);
+            uiGroup.RelationshipItemParentGO.transform.SetParent(this.gameObject.transform, false);
             uiGroup.RelationshipItemParentGO.SetActive(true);
 
             activeRelationshipItems.Add(uiGroup);

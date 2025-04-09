@@ -4,36 +4,50 @@ using UnityEngine;
 
 public abstract class SocialInteractionBaseSO : InteractionBaseSO
 {
+
+    [SerializeField]
+    protected int interactionRelationshipChange;
+    public int InteractionRelationshipChange { get => interactionRelationshipChange; protected set => interactionRelationshipChange = value; }
+    [SerializeField]
+    protected List<NeedRateChangePairs> responderNeedSONeedAdjustRates = new();
+
     public override void InteractionStart(InteractableObject thisItem)
     {
         base.InteractionStart(thisItem);
     }
 
-    public override void BeginInteraction(CharacterBase initiator, InteractableObject interactionReceiver)
+    public override void BeginInteraction(Interaction interaction)
     {
-        base.BeginInteraction(initiator, interactionReceiver);
+        base.BeginInteraction(interaction);
+        interaction.InteractionInitiator.AddState(objectStatesSO.SocialState);
+
+    }
+
+    public override void RunInteraction(Interaction interaction)
+    {
+        base.RunInteraction(interaction);
+
+    }
+
+    public override void OnInteractionTick(Interaction interaction)
+    {
+        base.OnInteractionTick(interaction);
 
 
     }
 
-    public override void RunInteraction(CharacterBase initiator, InteractableObject interactionReceiver)
+    public override void OnInteractionEnd(Interaction interaction)
     {
-        base.RunInteraction(initiator, interactionReceiver);
-
+        OnInteractionEnd(interaction as SocialInteraction);
+        base.OnInteractionEnd(interaction);
+   
     }
 
-    public override void OnInteractionTick(CharacterBase initiator, InteractableObject interactionReceiver)
+    protected virtual void OnInteractionEnd(SocialInteraction socInteraction)
     {
-        base.OnInteractionTick(initiator, interactionReceiver);
-
-
+        ResponseOnInteractionEnd(socInteraction);
     }
 
-    public override void OnInteractionEnd(CharacterBase initiator, InteractableObject interactionReceiver)
-    {
-        base.OnInteractionEnd(initiator, interactionReceiver);
-        ResponseOnInteractionEnd((CharacterBase)interactionReceiver, initiator);
-    }
     public virtual void ContinueInteractionOnTargetReady(CharacterBase initiator, InteractableObject interactionOwner)
     {
         RouteToInteraction(initiator, interactionOwner);
@@ -49,7 +63,7 @@ public abstract class SocialInteractionBaseSO : InteractionBaseSO
         //if (interactionOwner.debugEnabled)
         //    Debug.Log($"{interactionName} started by {thisCharacter.ObjectName}");
 
-        initiator.AddState(objectStatesSO.SocialState);
+        interactionReceiver.AddState(objectStatesSO.SocialState);
         initiator.InteractionTargetReady();
     }
 
@@ -58,7 +72,7 @@ public abstract class SocialInteractionBaseSO : InteractionBaseSO
         //if (interactionOwner.debugEnabled)
         //    Debug.Log($"Begins {thisCharacter.ObjectName} socialising with {interactionOwner.ObjectName}.");
 
-       // interactionInitator.RegisterAsActiveInteraction(interactionTarget, this, interactionInitator);
+        // interactionInitator.RegisterAsActiveInteraction(interactionTarget, this, interactionInitator);
 
     }
 
@@ -68,11 +82,12 @@ public abstract class SocialInteractionBaseSO : InteractionBaseSO
         //    Debug.Log($"{thisCharacter.ObjectName} continues socialising with {interactionOwner.ObjectName}");
     }
 
-    public virtual void ResponseOnInteractionEnd(CharacterBase interactionTarget, InteractableObject interactionInitator)
+    public virtual void ResponseOnInteractionEnd(SocialInteraction socInteraction)
     {
         //if (interactionOwner.debugEnabled)
         //    Debug.Log($"{thisCharacter.ObjectName} stopped being social with {interactionOwner.ObjectName}");
-        interactionTarget.OnInteractionEnd();
+        socInteraction.InteractionOwner.AddState(objectStatesSO.SocialState);
+        ((CharacterBase)socInteraction.InteractionOwner).OnInteractionEnd();
     }
 
     protected void AdjustCharacterRelations(CharacterBase relationOwner, CharacterBase relationTarget, int changeValue)

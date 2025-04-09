@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class TraitBaseSO : ScriptableObject
 {
-    public string TraitName { get => TraitName; protected set => traitName = value; }
+    public string TraitName { get => traitName; protected set => traitName = value; }
     [SerializeField]
     protected string traitName;
 
@@ -14,10 +14,6 @@ public abstract class TraitBaseSO : ScriptableObject
     [SerializeField]
     protected List<NeedBaseSO> needsTraitRemoves = new();
 
-    [SerializeField]
-    protected Material traitCharacterAppearanceMaterial;
-    public Material TraitCharacterAppearanceMaterial { get => traitCharacterAppearanceMaterial; protected set => traitCharacterAppearanceMaterial = value; }
-
     public bool enableDebug = false;
     private string s = "";
     public virtual void OnTraitAdd(CharacterBase thisCharacter)
@@ -25,7 +21,7 @@ public abstract class TraitBaseSO : ScriptableObject
         s = $"{thisCharacter.ObjectName} got a new trait: {this.traitName}\n";
         AddTraitRemoveNeeds(thisCharacter);
         AddTraitAddNeeds(thisCharacter);
-        thisCharacter.ChangCharacterMaterialByTrait(this);
+
 
         FindAnyObjectByType<NeedsPanel_UI>().ForceNeedsPanelRefresh();
 
@@ -71,7 +67,6 @@ public abstract class TraitBaseSO : ScriptableObject
             }
         }
     }
-
     private void RemoveTraitRemoveNeeds(CharacterBase thisCharacter)
     {
         if (needsTraitAdds.Count != 0)
@@ -86,7 +81,6 @@ public abstract class TraitBaseSO : ScriptableObject
             }
         }
     }
-
     private void RemoveTraitAddNeeds(CharacterBase thisCharacter)
     {
         if (needsTraitRemoves.Count != 0)
@@ -100,4 +94,7 @@ public abstract class TraitBaseSO : ScriptableObject
             }
         }
     }
+
+    public virtual Interaction ModifyInteractionByTrait(Interaction interaction) { return interaction; }
+    public virtual SocialInteraction ModifyInteractionByTrait(SocialInteraction socialInteraction) { return socialInteraction; }
 }

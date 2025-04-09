@@ -4,8 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
+
 public abstract class InteractionBaseSO : ScriptableObject
 {
+   // public InteractionType InteractionType { get => interactionType; protected set => interactionType = value; }
+    //[SerializeField]
+    public InteractionType interactionType = InteractionType.Default;
+
     [SerializeField]
     protected ObjectStateHolderSO objectStatesSO;
 
@@ -25,6 +31,11 @@ public abstract class InteractionBaseSO : ScriptableObject
     protected HashSet<TraitBaseSO> forbiddenTraits = new();
     [SerializeField]
     protected List<TraitBaseSO> forbiddenTraitsList = new();
+
+    public HashSet<TraitBaseSO> RequiredTraits { get => requiredTraits; protected set => requiredTraits = value; }
+    protected HashSet<TraitBaseSO> requiredTraits = new();
+    [SerializeField]
+    protected List<TraitBaseSO> requiredTraitsList = new();
 
     public HashSet<ObjectState_BaseSO> InvalidInteractionOwnerStates { get => invalidInteractionOwnerStates; protected set => invalidInteractionOwnerStates = value; }
     [SerializeField]
@@ -49,32 +60,33 @@ public abstract class InteractionBaseSO : ScriptableObject
     public virtual void InteractionStart(InteractableObject interactionOwner)
     {
         forbiddenTraits = forbiddenTraitsList.ToHashSet<TraitBaseSO>();
+        requiredTraits = requiredTraitsList.ToHashSet<TraitBaseSO>();
     }
 
-    public virtual void BeginInteraction(CharacterBase initiator, InteractableObject interactionOwner)
+    public virtual void BeginInteraction(Interaction interaction)
     {
-        if (interactionOwner.debugEnabled)
-            Debug.Log($"{interactionName} started by {initiator.ObjectName}");
+        if (interaction.InteractionOwner.debugEnabled)
+            Debug.Log($"{interactionName} started by {interaction.InteractionInitiator.ObjectName}");
 
     }
 
-    public virtual void RunInteraction(CharacterBase initiator, InteractableObject interactionOwner)
+    public virtual void RunInteraction(Interaction interaction)
     {
-        if (interactionOwner.debugEnabled)
-            Debug.Log($"{initiator.ObjectName} uses {interactionOwner.ObjectName}.");
+        if (interaction.InteractionOwner.debugEnabled)
+            Debug.Log($"{interaction.InteractionInitiator.ObjectName} uses {interaction.InteractionOwner.ObjectName}.");
     }
 
-    public virtual void OnInteractionTick(CharacterBase initiator, InteractableObject interactionOwner)
+    public virtual void OnInteractionTick(Interaction interaction)
     {
-        if (interactionOwner.debugEnabled)
-            Debug.Log($"{initiator.ObjectName} continues using {interactionOwner.ObjectName}");
+        //if (interactionOwner.debugEnabled)
+        //    Debug.Log($"{initiator.ObjectName} continues using {interactionOwner.ObjectName}");
     }
 
-    public virtual void OnInteractionEnd(CharacterBase initiator, InteractableObject interactionOwner)
+    public virtual void OnInteractionEnd(Interaction interaction)
     {
-        if (interactionOwner.debugEnabled)
-            Debug.Log($"{initiator.ObjectName} stopped using {interactionOwner.ObjectName}");
-        initiator.OnInteractionEnd();
+        if (interaction.InteractionOwner.debugEnabled)
+            Debug.Log($"{interaction.InteractionInitiator.ObjectName} stopped using {interaction.InteractionOwner.ObjectName}");
+        interaction.InteractionInitiator.OnInteractionEnd();
 
     }
 
@@ -108,18 +120,23 @@ public abstract class InteractionBaseSO : ScriptableObject
     }
 
 
-
     protected void RouteToInteraction(CharacterBase thisCharacter, InteractableObject interactionOwner)
     {
         Transform interactionSpot = interactionOwner.GetInteractionSpot();
-        if (CanRunInteraction(interactionSpot))
+        if (interactionSpot != null)
         {
             thisCharacter.SetDestination(interactionSpot.position);
         }
-        else { }
+        else
+        {
+            //Handle item with no free interaction slots
+        }
     }
 
-
+    public InteractionType GetInteractionType()
+    {
+        return interactionType;
+    }
 
     [System.Serializable]
     public class NeedRateChangePairs
@@ -131,6 +148,6 @@ public abstract class InteractionBaseSO : ScriptableObject
         {
             this.needSO = need;
             this.needChangePerSecond = needChangePerSecond;
-        }   
+        }
     }
 }

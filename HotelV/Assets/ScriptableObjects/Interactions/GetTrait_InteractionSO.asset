@@ -9,13 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16b51ba9c645e8f4ba64e405ab3360b4, type: 3}
-  m_Name: SocialInteractionResponseSO
+  m_Script: {fileID: 11500000, guid: 861a7c13cef8b0549846503371c190e4, type: 3}
+  m_Name: GetTrait_InteractionSO
   m_EditorClassIdentifier: 
+  interactionType: 0
   objectStatesSO: {fileID: 11400000, guid: 32124af5e1d89544ca4ab85c1857b8b2, type: 2}
-  interactionName: Social Response
+  interactionName: Earn trait
   interactionBaseScore: 0
   interactionLenghtTicks: 0
   forbiddenTraitsList: []
+  requiredTraitsList: []
   needSONeedAdjustRates: []
   needToUseForWeight: {fileID: 0}
