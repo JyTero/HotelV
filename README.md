@@ -19,4 +19,4 @@ Due to being a hobby project, documentation is sporadic and not stored within th
 
 For any questions, write up into Discussions or send me a message on a platform of your choice, I’d love to talk about the project! 
 
- 
+Shared under CC BY-NC-ND 4.0
