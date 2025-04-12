@@ -1,6 +1,6 @@
 Hotel V is a hobby project of mine in which I’ll be slowly building a hotel management game with smart and individual characters. Player constructs and manages the hotel through a group of player-controlled characters. 
 
-I’m currently building the basics for a utility AI which will serve as the foundation for most all characters within the game. The development happens within the Dev branch with main having anything semi-playable. 
+I’m currently building the basics for a utility AI which will serve as the foundation for most all characters within the game. The development happens within the Dev branch with main having anything semi-playable, which is currently nothing, so please do check the Dev branch. I tend to keep the build here functioning and error free, hence sparse pushes.
 
 Current notable features include:  
 - Characters are driven by Utility AI which chooses interaction based on character needs. (Trait weighting planned) 
